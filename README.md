@@ -1,4 +1,4 @@
-# Lunettes - Kubernetes Container Lifecycle Observability Service 
+# Lunettes - Kubernetes Container Lifecycle Observability Service
 
 ## Introduction
 
@@ -9,18 +9,18 @@ Lunettes' comprehensive observability service leverages different observability 
 By providing a user-friendly approach to troubleshooting and performance optimization, Lunettes' solution can help improve the overall quality of services on Kubernetes.
 
 ## Key features
-### Container Lifecycle SLIs/SLOs: 
+### Container Lifecycle SLIs/SLOs:
 Lunettes calculates the time taken by the infrastructure to attempt to deliver a container (Pod on Kubernetes) and defines this metric as the container delivery SLI. Based on this metric, Lunettes recognizes the time costs associated with different container lifecycle stages, including scheduling, image pulling, IP allocation, and container starting, thereby enabling the calculation of total infrastructure time consumption. The container delivery SLO, on the other hand, is defined based on container specifications.
 
 Lunettes' definition of the container delivery SLI/SLO enables service owners to evaluate and improve the quality of the platform's resource delivery process in a digitalized manner.
 
 ![ContainerDeliverySli/Slo](./statics/deliveryslo.png)
-### Container Lifecycle Diagnose Service 
+### Container Lifecycle Diagnose Service
 To identify the root cause of any issues, Lunettes analyzes observability signals throughout the container lifecycle and assigns an error code that covers common problems such as excessive resource consumption error, configuration errors, etc.
 
 ![ContainerDeliverySli/Slo](./statics/deliverydiagnose.png)
 
-### Container Lifecycle Tracing Service 
+### Container Lifecycle Tracing Service
 By recognizing the start and end of each container lifecycle stage, Lunettes is able to construct a tracing structure that follows OpenTelemetry standards.
 
 ![ContainerDeliverySli/Slo](./statics/deliverytracing.png)
@@ -105,7 +105,7 @@ By recognizing the start and end of each container lifecycle stage, Lunettes is 
 To get started with [kind](https://kind.sigs.k8s.io/) quickly, see [this guide](./docs/QUICK_START.md).
 
 ### Deploy
-Step1: Bootstrap a Kubernetes cluster with Kubeadm/Kind. 
+Step1: Bootstrap a Kubernetes cluster with Kubeadm/Kind.
 
 - [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
@@ -115,7 +115,7 @@ The following method will expose the service through NodePort. Please make sure 
 
 Step2: Install Lunettes with Helm
 ```bash
-# Use NodePort 
+# Use NodePort
 helm install deploy/helm/lunettes \
   # Setting enableAuditApiserver to true will enable the auditing of the apiserver for you.
   # Please note that this process will restart the apiserver.
@@ -139,7 +139,7 @@ Open [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEG
 Please visit [docs]()
 
 ## Community
-Any questions related to Lunettes please each us via:
-- Slack 
-- DingTalk 
-- Github Issue
+Any questions related to Lunettes please reach us via:
+- Slack
+- DingTalk
+- GitHub Issue
