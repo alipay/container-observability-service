@@ -1,0 +1,46 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "0.0.0.0"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 36443
+  # 安装 kubeproxy
+  kubeProxyMode: "ipvs"
+nodes:
+- role: control-plane
+  image: kindest/node:v1.22.0
+  extraPortMappings:
+  # port forward 9090 on the host to 31090 on this node
+  - containerPort: 30190 # 可用于 nodeport, prometheus
+    hostPort: 9091 # kind 所在的宿主机 port
+    protocol: tcp # Optional, defaults to tcp
+  - containerPort: 30610 # 可用于 nodeport, kibana
+    hostPort: 9092 # kind 所在的宿主机 port
+    protocol: tcp # Optional, defaults to tcp
+  - containerPort: 30930 # 可用于 nodeport, es
+    hostPort: 9093 # kind 所在的宿主机 port
+    protocol: tcp # Optional, defaults to tcp
+  - containerPort: 30920 # 可用于 nodeport, es
+    hostPort: 9094 # kind 所在的宿主机 port
+    protocol: tcp # Optional, defaults to tcp
+  - containerPort: 30686 # 可用于 nodeport, jaeger
+    hostPort: 9095 # kind 所在的宿主机 port
+    protocol: tcp # Optional, defaults to tcp
+  - containerPort: 30880 # 可用于 nodeport, lunettes
+    hostPort: 9096 # kind 所在的宿主机 port
+    protocol: tcp # Optional, defaults to tcp
+  - containerPort: 30180 # 可用于 nodeport, grafana
+    hostPort: 9097 # kind 所在的宿主机 port
+    protocol: tcp # Optional, defaults to tcp
+  - containerPort: 30280 # 可用于 nodeport, grafanadi
+    hostPort: 9099 # kind 所在的宿主机 port
+    protocol: tcp # Optional, defaults to tcp
+  # 为 master 节点添加label
+  labels:
+    kubernetes.io/hostname: master
+- role: worker
+  image: kindest/node:v1.22.0

@@ -1,0 +1,51 @@
+{{- if .Values.enableAuditApiserver }}
+apiVersion: v1
+data:
+  audit-policy.yaml: |
+    apiVersion: audit.k8s.io/v1beta1
+    kind: Policy
+    omitStages:
+     - RequestReceived
+    rules:
+    - level: None
+      nonResourceURLs:
+      - "/*"
+    - level: None
+      resources:
+      - group: "coordination.k8s.io"
+        resources:
+        - leases
+      - group: "apiregistration.k8s.io"
+        resources:
+        - apiservices
+        - apiservices/status
+    - level: RequestResponse
+      verbs:
+      - create
+      - update
+      - patch
+      - delete
+      - deletecollection
+      resources:
+      - group: ""
+        resources:
+        - pods
+        - nodes
+        - pods/status
+        - pods/binding
+        - pods/attach
+        - pods/eviction
+        - events
+    - level: Metadata
+      verbs:
+      - create
+      - update
+      - patch
+      - delete
+      - deletecollection
+      resources: []
+kind: ConfigMap
+metadata:
+  name: apiserver-audit-config
+  namespace: {{ .Values.namespace }}
+{{- end }}

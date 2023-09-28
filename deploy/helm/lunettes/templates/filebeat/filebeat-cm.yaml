@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    k8s-app: filebeat
+data:
+  filebeat-inputs.yml: |-
+    - type: log
+      json.keys_under_root: true
+      json.overwrite_keys: true
+      paths:
+        - /audit/audit.log
+      scan_frequency: 1s
+      fields_under_root: true
+      fields:
+        annotations:
+          cluster: {{ .Values.cluster }}
+      processors:
+      - drop_fields:
+          when:
+            equals:
+              responseObject.kind: Status
+          fields: ["responseObject.status"]
+      - drop_event:
+           when:
+              equals:
+                level: Metadata
+  filebeat.yml: |-
+    http:
+      enabled: true
+      host: localhost
+      port: 5066
+    filebeat.config.inputs:
+      enabled: true
+      path: /etc/filebeat/filebeat-inputs.yml
+      reload.enabled: true
+      reload.period: 10s
+    logging:
+      to_files: true
+      files:
+        rotateeverybytes: 104857600
+
+    processors:
+      - add_cloud_metadata:
+      - add_host_metadata:
+
+    output.elasticsearch:
+      hosts: ["es-cluster-svc.{{ .Values.namespace }}:9200"]
+      index: "audit_{{ .Values.cluster }}"
+      username: {{ .Values.esUser }}
+      password: {{ .Values.esPassword }}
+      bulk_max_size: 100
+      pipeline: "ztimestamp"
+      worker: 10
+
+    setup:
+      template.enabled: false
+      template.name: audit
+      template.pattern: audit-*
+      ilm.enabled: false

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      securityContext:
+        fsGroup: 472
+        supplementalGroups:
+          - 0
+      containers:
+      - name: grafana
+        image: {{ .Values.grafanaImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+          - containerPort: 3000
+            name: http-grafana
+            protocol: TCP
+        resources:
+{{ toYaml .Values.grafanaResources | indent 10 }}
+        volumeMounts:
+        - name: grafana-datasoruce
+          mountPath: /etc/grafana/provisioning/datasources/
+        - name: grafana-dashboards-provision
+          mountPath: /etc/grafana/provisioning/dashboards/dashboards.yaml
+          subPath: dashboards.yaml
+        - name: grafana-dashboards-general
+          mountPath: /home/data/grafana/dashboards
+        - name: grafana-config
+          mountPath: /etc/grafana/grafana.ini
+          subPath: grafana.ini  
+      volumes:
+      - name: grafana-datasoruce
+        configMap:
+          name: grafana-datasource
+      - name: grafana-dashboards-provision
+        configMap:
+          name: grafana-dashboards-provision
+      - name: grafana-dashboards-general
+        configMap:
+          name: grafana-dashboards-general
+      - name: grafana-config
+        configMap:
+          name: grafana-config                                       
+          items:
+          - key: grafana.ini
+            path: grafana.ini

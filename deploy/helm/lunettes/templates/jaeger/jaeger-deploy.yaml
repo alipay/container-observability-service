@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: jaeger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+      - env:
+        - name: COLLECTOR_OTLP_ENABLED
+          value: "true"
+        image: {{ .Values.jaegerImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        name: jaeger
+        resources: 
+{{ toYaml .Values.jaegerResources | indent 10 }}        

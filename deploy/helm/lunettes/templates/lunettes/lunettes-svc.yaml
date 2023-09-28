@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ template "lunettes.fullname" . }}
+  name: {{ template "lunettes.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+  - name: lunettes-node
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+{{- if eq .Values.lunettesType "NodePort" }}
+    nodePort: {{ .Values.lunettesNodeport }}
+{{- end }}
+  selector:
+    app: {{ template "lunettes.fullname" . }}
+  type: {{ .Values.lunettesType }}

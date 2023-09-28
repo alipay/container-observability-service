@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+data:
+  kibana.yml: |
+    server.port: 5601
+    server.host: "0.0.0.0"
+    elasticsearch.hosts: "http://es-cluster-svc.{{ .Values.namespace }}:9200"
+    kibana.index: ".kibana"
+kind: ConfigMap
+metadata:
+  name: kibana-config
+  namespace: {{ .Values.namespace }}

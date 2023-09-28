@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grafanadi
+  name: grafanadi
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: grafanadi
+  template:
+    metadata:
+      labels:
+        app: grafanadi
+    spec:
+      securityContext:
+        fsGroup: 472
+        supplementalGroups:
+          - 0
+      containers:
+      - command:
+        - ./grafanadi
+        - --config-file=/app/config-file.yaml
+        - --enable-kube-client={{ .Values.grafanadiInitKubeClient }}
+        name: grafanadi
+        image: {{ .Values.lunettesImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: 8080
+          name: http-grafanadi
+          protocol: TCP
+        resources:
+{{ toYaml .Values.grafanadiResources | indent 10 }}
+        volumeMounts:
+        - mountPath: /var/grafana
+          name: grafana-pv
+        - mountPath: /app/config-file.yaml
+          name: cm-vol
+          readOnly: true
+          subPath: config-file.yaml
+      volumes:
+      - name: grafana-pv
+        hostPath:
+          path: /data/volume/grafana
+      - configMap:
+          defaultMode: 420
+          name: grafanadi-cm
+        name: cm-vol

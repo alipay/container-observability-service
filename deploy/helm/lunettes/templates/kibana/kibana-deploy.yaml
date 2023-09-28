@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: es-kibana
+  name: es-kibana
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: es-kibana
+  template:
+    metadata:
+      labels:
+        app: es-kibana
+    spec:
+      containers:
+      - image: {{ .Values.kibanaImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        name: kibana
+        volumeMounts:
+        - name: kibana-config
+          mountPath: /usr/share/kibana/config/kibana.yml
+          subPath: kibana.yml
+        resources:
+{{ toYaml .Values.kibanaResources | indent 10 }}          
+      volumes:
+      - name: kibana-config
+        configMap:
+          name: kibana-config

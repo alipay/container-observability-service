@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      securityContext:
+        runAsUser: 0
+      containers:
+      - image: {{ .Values.promImage }}
+        name: prometheus
+        args:
+          - "--config.file=/etc/prometheus/prometheus.yml"
+          - "--storage.tsdb.path=/prometheus"
+          - "--storage.tsdb.retention.time=24h"
+          - "--web.enable-admin-api"
+          - "--web.enable-lifecycle"
+        ports:
+          - containerPort: 9090
+            name: http
+        volumeMounts:
+          - mountPath: "/etc/prometheus"
+            name: config-volume
+          - mountPath: "/prometheus"
+            name: data
+        resources: 
+{{ toYaml .Values.prometheusResources | indent 10 }}
+      volumes:
+      - name: data
+        hostPath:
+          path: /data/prometheus/
+      - configMap:
+          name: prometheus-config
+        name: config-volume

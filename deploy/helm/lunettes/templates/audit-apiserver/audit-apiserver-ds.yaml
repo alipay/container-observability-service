@@ -1,0 +1,57 @@
+{{- if .Values.enableAuditApiserver }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: apiserver-audit-installer
+  namespace: {{ .Values.namespace }}
+  labels:
+    k8s-app: apiserver-audit-installer
+spec:
+  selector:
+    matchLabels:
+      name: apiserver-audit-installer
+  template:
+    metadata:
+      labels:
+        name: apiserver-audit-installer
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: audit-config-installer
+        image: {{ .Values.lunettesImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        command:
+        - /auditinstaller
+        env:
+        - name: NAMESPACE
+          value: {{ .Values.namespace }}
+        - name: AUDIT_LOG_MAX_AGE
+          value: "{{ .Values.auditLogMaxAge }}"
+        - name: AUDIT_LOG_MAX_BACKUP
+          value: "{{ .Values.auditLogMaxBackup }}"
+        - name: AUDIT_LOG_MAX_SIZE
+          value: "{{ .Values.auditLogMaxSize }}"
+        resources:
+{{ toYaml .Values.auditResources | indent 10 }}
+        volumeMounts:
+        - name: rootdir
+          mountPath: /node/root
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: rootdir
+        hostPath:
+          path: /
+{{- end }}          

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: http-grafana
+{{- if eq .Values.grafanaType "NodePort" }}
+    nodePort: {{ .Values.grafanaNodePort }}
+{{- end }}
+  selector:
+    app: grafana
+  type: {{ .Values.grafanaType }}

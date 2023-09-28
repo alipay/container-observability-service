@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: filebeat
+  namespace: {{ .Values.namespace }}
+  labels:
+    k8s-app: filebeat
+spec:
+  selector:
+    matchLabels:
+      k8s-app: filebeat
+  template:
+    metadata:
+      labels:
+        k8s-app: filebeat
+    spec:
+      initContainers:
+      - command:
+        - bash
+        - -c
+        - chown -R 1000:1000 /usr/share/filebeat/data /usr/share/filebeat/logs
+        image: {{ .Values.filebeatImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        name: init
+        resources: {}
+        securityContext:
+          procMount: Default
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /usr/share/filebeat/logs
+          name: filebeat-logs
+      containers:
+      - name: filebeat
+        args: [
+          "-c", "/etc/filebeat/filebeat.yml",
+          "-e",
+        ]
+        image: {{ .Values.filebeatImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        resources: 
+{{ toYaml .Values.filebeatResources | indent 10 }}        
+        volumeMounts:
+        - mountPath: /etc/filebeat
+          name: config
+          readOnly: true
+        - mountPath: /usr/share/filebeat/logs
+          name: filebeat-logs
+        - name: audit-logs
+          mountPath: /audit
+          readOnly: true
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:  # 硬策略
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: filebeat-config
+        name: config
+      - emptyDir: {}
+        name: filebeat-logs
+      - name: audit-logs
+        hostPath:
+          path: /var/log/k8s-audit
+          type: DirectoryOrCreate

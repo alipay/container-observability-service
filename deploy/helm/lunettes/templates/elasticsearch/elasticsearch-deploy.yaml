@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: es-single
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: es
+  template:
+    metadata:
+      labels:
+        name: es
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+      initContainers:
+      - name: init-sysctl
+        image: {{ .Values.elasticInitImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        command: ["sh", "-c", "sysctl -w vm.max_map_count=655360; chown -R 1000:1000 /data"]
+        securityContext:
+          runAsUser: 0
+          privileged: true
+        volumeMounts:
+        - name: es-data
+          mountPath: /data
+      containers:
+      - name: elasticsearch
+        image: {{ .Values.elasticImage }}
+        env:
+        - name: ES_JAVA_OPTS
+          value: "{{ .Values.esJavaOptions }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: 9200
+        - containerPort: 9300
+        resources: 
+{{ toYaml .Values.elasticsearchResources | indent 10 }}        
+        volumeMounts:
+        - name: es-data
+          mountPath: /data
+        - name: es-conf
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+          subPath: elasticsearch.yml
+      volumes:
+      - name: es-data
+        hostPath:
+          path: /data/resource/middleware/es7/data
+      - name: es-conf
+        configMap:
+            name: es-config

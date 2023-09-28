@@ -1,0 +1,121 @@
+# Default values for lunettes.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# share
+namespace: lunettes
+imagePullPolicy: IfNotPresent
+kubernetesSvcHost: kubernetes.default
+cluster: staging
+esUser: elastic
+esPassword: changeme
+
+# audit-apiserver
+enableAuditApiserver: false
+auditResources:
+  limits:
+    cpu: 100m
+    memory: 200Mi
+  requests:
+    cpu: 100m
+    memory: 200Mi
+auditLogMaxAge: 1
+auditLogMaxBackup: 2
+auditLogMaxSize: 200
+
+# lunettes
+lunettesImage: lunettes:v1
+lunettesNodeport: 30880
+lunettesType: LoadBalancer
+apiserverEnabled: true
+traceEnable: false
+lunettesResources:
+  limits:
+    cpu: 4
+    memory: 10Gi
+  requests:
+    cpu: 1
+    memory: 500Mi
+
+# grafanadi
+grafanadiInitKubeClient: false
+grafanadiImage: change/me:version
+grafanadiType: LoadBalancer
+grafanadiNodePort: 30280
+grafanadiResources:
+  limits:
+    cpu: 250m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 500Mi
+
+# grafana
+grafanaImage: grafana/grafana:7.5.5
+grafanaType: LoadBalancer
+grafanaNodePort: 30180
+grafanaResources:
+  limits:
+    cpu: 250m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 500Mi
+
+# kibana
+kibanaImage: docker.elastic.co/kibana/kibana:6.6.0
+kibanaNodePort: 30610
+kibanaResources:
+  limits:
+    cpu: 250m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 500Mi
+
+# filebeat
+filebeatImage: elastic/filebeat:6.6.2
+filebeatResources:
+  limits:
+    cpu: 100m
+    memory: 200Mi
+  requests:
+    cpu: 100m
+    memory: 200Mi
+
+# elasticsearch
+elasticImage: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
+elasticInitImage: busybox:stable
+elastic1NodePort: 30920
+elastic2NodePort: 30930
+esJavaOptions: "-Xms1g -Xmx1g"
+elasticsearchResources:
+  limits:
+    cpu: 1
+    memory: 2G
+  requests:
+    cpu: 1
+    memory: 2G
+
+# prometheus
+promImage: prom/prometheus
+prometheusNodePort: 30190
+prometheusResources:
+  limits:
+    cpu: 100m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 512Mi
+
+# jaejer
+jaegerImage: quay.io/jaegertracing/all-in-one:1.45
+jaegerType: LoadBalancer
+jaegerNodePort: 30686
+jaegerResources:
+  limits:
+    cpu: 100m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 512Mi

@@ -1,0 +1,17 @@
+driver: "mysql"
+mysqloptions:
+  host: "host"
+  port: "2883"
+  username: "lunettes"
+  password: "xxxx"
+  dbName: "lunettes"
+  charset: "utf8mb4"
+  parseTime: true
+  maxIdleConns: 10
+  maxOpenConns: 20
+  maxLifetime: 100
+  LogMode: true
+esoptions:
+  endpoint: "https://endpoint.com"
+  username: "es-username"
+  password: "es-password"

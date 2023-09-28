@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  config-file.yaml: |
+    driver: "elasticsearch"
+    mysqloptions:
+      host: "sqlhost"
+    esoptions:
+      endpoint: "http://es-cluster-svc.{{ .Values.namespace }}:9200"
+      username: {{ .Values.esUser }}
+      password: {{ .Values.esPassword }}
+kind: ConfigMap
+metadata:
+  name: grafanadi-cm
+  namespace: {{ .Values.namespace }}
