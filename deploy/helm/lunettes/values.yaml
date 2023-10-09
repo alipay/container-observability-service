@@ -24,7 +24,7 @@ auditLogMaxBackup: 2
 auditLogMaxSize: 200
 
 # lunettes
-lunettesImage: lunettes:v1
+lunettesImage: lunettes/lunettes:latest
 lunettesNodeport: 30880
 lunettesType: LoadBalancer
 apiserverEnabled: true
@@ -39,7 +39,6 @@ lunettesResources:
 
 # grafanadi
 grafanadiInitKubeClient: false
-grafanadiImage: change/me:version
 grafanadiType: LoadBalancer
 grafanadiNodePort: 30280
 grafanadiResources:
@@ -51,7 +50,7 @@ grafanadiResources:
     memory: 500Mi
 
 # grafana
-grafanaImage: grafana/grafana:7.5.5
+grafanaImage: lunettes/grafana:latest
 grafanaType: LoadBalancer
 grafanaNodePort: 30180
 grafanaResources:

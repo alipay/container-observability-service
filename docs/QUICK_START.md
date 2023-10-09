@@ -23,8 +23,6 @@ kind create cluster \
 
 ```bash
 helm upgrade --install lunettes deploy/helm/lunettes/ \
-  --set lunettesImage={docker_repo}/lunettes:latest \
-  --set grafanaImage={docker_repo}/grafana:lunettes \
   --set enableAuditApiserver=true \
   --set lunettesType=NodePort \
   --set grafanadiType=NodePort \
