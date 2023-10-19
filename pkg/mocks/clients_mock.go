@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"regexp"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"github.com/pkg/errors"
 )
 
