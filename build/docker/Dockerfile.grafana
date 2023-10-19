@@ -1,0 +1,10 @@
+# Use the official Grafana image as the base image.
+FROM grafana/grafana:latest
+
+# Define the list of plugins to install, separated by spaces.
+ARG PLUGINS=""
+
+# Install each plugin.
+RUN for plugin in $PLUGINS; do \
+      grafana-cli plugins install $plugin; \
+    done

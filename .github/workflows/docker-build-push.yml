@@ -1,0 +1,67 @@
+# 工作流名称
+name: Build and Push Docker Image
+
+on:
+  push:
+    tags: "*"
+
+env:
+  LUNETTES_DOCKERHUB_REPO: lunettes/lunettes
+  GRAFANA_DOCKERHUB_REPO: lunettes/grafana
+  # Plugins to be installed.
+  GRAFANA_PLUGINS: yesoreyeram-infinity-datasource marcusolsson-json-datasource volkovlabs-form-panel marcusolsson-dynamictext-panel
+jobs:
+  main:
+    # Run on Ubuntu.
+    runs-on: ubuntu-latest
+    steps:
+      # git checkout code
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Set up QEMU, as it is a dependency for docker buildx.
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      # Set up Docker buildx to facilitate the building of multi-platform images.
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      # 登录 docker hub
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          # GitHub Repo => Settings => Secrets add Docker Hub login key information
+          # DOCKERHUB_USERNAME is the Docker Hub username.
+          # DOCKERHUB_TOKEN: docker hub => Account Setting => Security => New Access Token.
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # Use the git command to retrieve the current tag information and store it in the environment variable APP_VERSION.
+      - name: Generate App Version
+        run: echo APP_VERSION=`git describe --tags --always` >> $GITHUB_ENV
+      - name: Build and push lunettes
+        id: docker_build_lunettes
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: build/docker/Dockerfile.lunettes
+          # Generate multi-platform images, see https://github.com/docker-library/bashbrew/blob/v0.1.1/architecture/oci-platform.go
+          platforms: |
+            linux/amd64
+          # Generate two Docker tags: ${APP_VERSION} 和 latest
+          tags: |
+            ${{ env.LUNETTES_DOCKERHUB_REPO }}:latest
+            ${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
+      - name: Build and push grafana
+        id: docker_build_grafana
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: build/docker/Dockerfile.grafana
+          # Generate multi-platform images, see https://github.com/docker-library/bashbrew/blob/v0.1.1/architecture/oci-platform.go
+          platforms: |
+            linux/amd64
+          # docker build arg
+          build-args: |
+            PLUGINS=${{ env.GRAFANA_PLUGINS }}
+          # Generate two Docker tags: ${APP_VERSION} 和 latest
+          tags: |
+            ${{ env.GRAFANA_DOCKERHUB_REPO }}:latest
+            ${{ env.GRAFANA_DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
