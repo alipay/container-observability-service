@@ -17,7 +17,7 @@ var (
 	InvalidMountConfig  = "InvalidMountConfig"  // 用户自身问题  hostPath卷配置错误
 	AccessError         = "AccessError"         // 权限错误or延迟
 	NFSError            = "NFSError"            // NFS版本或转换协议不支持
-	NoSpaceLeftOnDevice = "NoSpaceLeftOnDevice" // Owner 健松  磁盘空间不足
+	NoSpaceLeftOnDevice = "NoSpaceLeftOnDevice" // 磁盘空间不足
 
 	FailedMount = "FailedMount" // 其他原因
 )
