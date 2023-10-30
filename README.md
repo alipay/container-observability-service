@@ -1,8 +1,8 @@
 # Lunettes - Container Lifecycle Observability Service
-<h4><p align="center">Observe Your Stack, Energize Your APP</p></h4>
 
+<strong><p align="center">Observe Your Stack, Energize Your APP</p></strong>
 
----
+------
 
 [中文](./README-zh_CN.md)
 
