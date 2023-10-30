@@ -1,4 +1,10 @@
-# Lunettes - Kubernetes Container Lifecycle Observability Service
+# Lunettes - Container Lifecycle Observability Service
+
+<strong><p align="center">Observe Your Stack, Energize Your APP</p></strong>
+
+------
+
+[中文](./README-zh_CN.md)
 
 ## Introduction
 
@@ -9,7 +15,7 @@ Lunettes' comprehensive observability service leverages different observability 
 By providing a user-friendly approach to troubleshooting and performance optimization, Lunettes' solution can help improve the overall quality of services on Kubernetes.
 
 ## Key features
-### Container Lifecycle SLIs/SLOs:
+### Resource Delivery SLIs/SLOs:
 Lunettes calculates the time taken by the infrastructure to attempt to deliver a container (Pod on Kubernetes) and defines this metric as the container delivery SLI. Based on this metric, Lunettes recognizes the time costs associated with different container lifecycle stages, including scheduling, image pulling, IP allocation, and container starting, thereby enabling the calculation of total infrastructure time consumption. The container delivery SLO, on the other hand, is defined based on container specifications.
 
 Lunettes' definition of the container delivery SLI/SLO enables service owners to evaluate and improve the quality of the platform's resource delivery process in a digitalized manner.
@@ -25,8 +31,46 @@ By recognizing the start and end of each container lifecycle stage, Lunettes is 
 
 ![ContainerDeliverySli/Slo](./statics/deliverytracing.png)
 
+## Getting Started
+
+### Quick Start
+
+To get started with [kind](https://kind.sigs.k8s.io/) quickly, see [this guide](./docs/QUICK_START.md).
+
+### Deploy
+Step1: Bootstrap a Kubernetes cluster with Kubeadm/Kind.
+
+- [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Installing Helm](https://helm.sh/docs/intro/install/)
+
+The following method will expose the service through NodePort. Please make sure that your current operating environment can access the Kubernetes nodeIP.
+
+Step2: Install Lunettes with Helm
+```bash
+# Use NodePort
+helm install deploy/helm/lunettes \
+  # Setting enableAuditApiserver to true will enable the auditing of the apiserver for you.
+  # Please note that this process will restart the apiserver.
+  --set enableAuditApiserver=true
+  --set grafanaType=NodePort
+  --set jaegerType=NodePort
+```
+
+Step3: Find the endpoint of Lunettes dashboard service
+```bash
+export LUNETTES_IP=node_ip
+export GRAFANA_NODEPORT=$(kubectl -n lunettes get svc grafana -o jsonpath='{.spec.ports[0].nodePort}')
+export JAEGER_NODEPORT=$(kubectl -n lunettes get svc jaeger-collector -o jsonpath='{.spec.ports[0].nodePort}')
+```
+
+Open [http://[LUNETTES_IP]:[LUNETTES_NODEPORT]](http://[LUNETTES_IP]:[LUNETTES_NODEPORT]) in your browser and access debugpod or debugslo endpoint, the default username and password are `admin:admin`.
+
+Open [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?) in your browser and access trace endpoint.
+
 ## Configurations
-### SLO configuration
+Lunettes is highly configurable. Below we give some examples of how you can adjust resource delivery SLO and container lifecycle tracing to different scenarios with simple configurations.
+### Resource Delivery SLO configuration
 ```json
 {
     "UserOnlineConfigMap":{
@@ -42,7 +86,7 @@ By recognizing the start and end of each container lifecycle stage, Lunettes is 
     ]
 }
 ```
-### Tracing configuration
+### Container Lifecycle Tracing configuration
 ```json
 [
   {
@@ -98,42 +142,6 @@ By recognizing the start and end of each container lifecycle stage, Lunettes is 
 ]
 ```
 
-## Getting Started
-
-### Quick Start
-
-To get started with [kind](https://kind.sigs.k8s.io/) quickly, see [this guide](./docs/QUICK_START.md).
-
-### Deploy
-Step1: Bootstrap a Kubernetes cluster with Kubeadm/Kind.
-
-- [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/)
-- [Installing Helm](https://helm.sh/docs/intro/install/)
-
-The following method will expose the service through NodePort. Please make sure that your current operating environment can access the Kubernetes nodeIP.
-
-Step2: Install Lunettes with Helm
-```bash
-# Use NodePort
-helm install deploy/helm/lunettes \
-  # Setting enableAuditApiserver to true will enable the auditing of the apiserver for you.
-  # Please note that this process will restart the apiserver.
-  --set enableAuditApiserver=true
-  --set grafanaType=NodePort
-  --set jaegerType=NodePort
-```
-
-Step3: Find the endpoint of Lunettes dashboard service
-```bash
-export LUNETTES_IP=node_ip
-export GRAFANA_NODEPORT=$(kubectl -n lunettes get svc grafana -o jsonpath='{.spec.ports[0].nodePort}')
-export JAEGER_NODEPORT=$(kubectl -n lunettes get svc jaeger-collector -o jsonpath='{.spec.ports[0].nodePort}')
-```
-
-Open [http://[LUNETTES_IP]:[LUNETTES_NODEPORT]](http://[LUNETTES_IP]:[LUNETTES_NODEPORT]) in your browser and access debugpod or debugslo endpoint, the default username and password are `admin:admin`.
-
-Open [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?) in your browser and access trace endpoint.
 
 ## Documentation
 Please visit [docs]()
