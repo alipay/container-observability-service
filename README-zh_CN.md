@@ -1,4 +1,5 @@
-# Lunettes -- 一个面向 Kubernetes 平台的容器生命周期可观测工具
+# Lunettes - 容器生命周期可观测服务
+<h4><p align="center">Observe Your Stack, Energize Your APP</p></h4>
 
 ## 简介
 
