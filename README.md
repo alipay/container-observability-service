@@ -144,7 +144,7 @@ Lunettes is highly configurable. Below we give some examples of how you can adju
 
 
 ## Documentation
-Please visit [docs]()
+Please visit [docs](/docs)
 
 ## Community
 Any questions related to Lunettes please reach us via:
