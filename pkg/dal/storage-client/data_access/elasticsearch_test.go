@@ -1430,6 +1430,7 @@ func TestQueryDebuggingWithPodUid(t *testing.T) {
 		assert.NotEqual(t, tc.expectErr, err)
 	}
 }
+
 func Test_querySloByResult(t *testing.T) {
 
 	type TestCase struct {
@@ -1452,7 +1453,7 @@ func Test_querySloByResult(t *testing.T) {
 					{Source: &sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
-				return map[string]string{"StartUpResultFromCreate": string(b)}
+				return map[string]string{"SLOViolationReason": string(b)}
 			},
 			expectLen:  1,
 			expectCode: http.StatusOK,
@@ -1469,7 +1470,7 @@ func Test_querySloByResult(t *testing.T) {
 					{Source: &sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
-				return map[string]string{"DeliverySLOReasonNew": string(b)}
+				return map[string]string{"SLOViolationReason": string(b)}
 			},
 			expectLen:  1,
 			expectCode: http.StatusOK,
