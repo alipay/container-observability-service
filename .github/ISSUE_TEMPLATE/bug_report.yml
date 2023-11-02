@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a bug encountered while operating Lunettes
+labels: ["bug"]
+body:
+  - type: checkboxes
+    attributes:
+      label: There's no existing/similar bug report.
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+        - label: I have searched the existing issues
+          required: true
+
+  - type: textarea
+    attributes:
+      label: "Describe the bug:"
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Expected behavior:"
+      description: A clear and concise description of what you expected to happen.
+      placeholder: I expected ... to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Additional"
+      description: |
+        Anything else we need to know?
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: Lunettes version
+      placeholder: |
+        v0.1.0
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: Kubernetes version
+      placeholder: |
+        v1.20.3
+    validations:
+      required: false
