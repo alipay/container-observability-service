@@ -7,7 +7,7 @@
 </p>
 
 
-## 简介
+## 🌾 简介
 
 Kubernetes 广泛用于构建容器服务（Caas）平台，其包含了众多自治组件共同驱动容器的交付过程，具有相当的复杂性。对开发人员和 SRE 来说，使用起来并非很容易。
 
@@ -15,7 +15,7 @@ Lunettes 的综合可观测性服务利用不同的可观测信息（例如 K8s 
 
 Lunettes 提供了用户友好的故障排除和服务性能优化方法，Lunettes 的解决方案可以帮助用户提高 Kubernetes 上的服务的整体质量。
 
-## 功能特性
+## 🔥 功能特性
 ### 资源交付 SLI/SLO 服务
 Lunettes 计算基础设施交付容器的时间（在 Kubernetes 上的 Pod），并将此指标定义为容器交付的 SLI。
 基于这个指标，Lunettes 识别出容器生命周期不同交付阶段的时间，包括调度、镜像拉取、IP 分配和容器启动，并且可以计算出总体的时间消耗。另一方面，容器交付的 SLO 是基于容器规格定义的，因容器规格不同而有所差异。
@@ -32,7 +32,7 @@ Lunettes 可以识别容器生命周期每个交付阶段的开始和结尾，�
 
 ![ContainerDeliverySli/Slo](./statics/deliverytracing.png)
 
-## 开始
+## 🎬 开始
 
 ### 快速开始
 
@@ -67,7 +67,7 @@ export JAEGER_NODEPORT=$(kubectl -n lunettes get svc jaeger-collector -o jsonpat
 在浏览器打开 [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?) 然后访问 trace 接口。
 
 
-## 配置
+## 🛠 配置
 Lunettes是一个高度可配置化的服务。下面是一个实例，用户可以简单地配置资源交付SLO以及容器生命周期Tracing以适配不同的场景。
 
 ### SLO 配置
@@ -142,10 +142,10 @@ Lunettes是一个高度可配置化的服务。下面是一个实例，用户可
 ]
 ```
 
-## 文档
+## 📑 文档
 详情请见 [docs](/docs)
 
-## 社区
+## 💡 社区
 您有任何与 Lunettes 有关的问题可以通过下列方式联系我们：
 - Slack
 - 钉钉
