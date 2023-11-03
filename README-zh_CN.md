@@ -1,7 +1,11 @@
 # Lunettes - 容器生命周期可观测服务
 <strong><p align="center">Observe Your Stack, Energize Your APP</p></strong>
 
-------
+<p align="center">
+<img src="https://img.shields.io/badge/license-Apache 2.0-blue.svg" alt="Apache-2.0 License">
+<img src="https://img.shields.io/badge/PRs-Welcome-brightgreen" alt="PRs welcome!" />
+</p>
+
 
 ## 简介
 
