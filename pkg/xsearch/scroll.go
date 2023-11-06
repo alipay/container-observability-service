@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"golang.org/x/sync/errgroup"
 
 	"k8s.io/klog/v2"
@@ -50,7 +50,7 @@ func Scroll(client *elastic.Client, index string, query elastic.Query, f func(js
 			totalGot += len(results.Hits.Hits)
 			for _, hit := range results.Hits.Hits {
 				select {
-				case hits <- *hit.Source:
+				case hits <- hit.Source:
 				case <-ctx.Done():
 					return ctx.Err()
 				}

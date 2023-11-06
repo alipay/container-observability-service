@@ -2,11 +2,15 @@
 
 <strong><p align="center">Observe Your Stack, Energize Your APP</p></strong>
 
-------
+<p align="center">
+<img src="https://img.shields.io/badge/license-Apache 2.0-blue.svg" alt="Apache-2.0 License">
+<img src="https://img.shields.io/badge/PRs-Welcome-brightgreen" alt="PRs welcome!" />
+</p>
+
 
 [中文](./README-zh_CN.md)
 
-## Introduction
+## 🌾 Introduction
 
 Kubernetes is widely used for building container-as-a-service platforms, but its numerous autonomous components working together to drive the container delivery process can create significant complexity for developers and SREs.
 
@@ -14,7 +18,7 @@ Lunettes' comprehensive observability service leverages different observability 
 
 By providing a user-friendly approach to troubleshooting and performance optimization, Lunettes' solution can help improve the overall quality of services on Kubernetes.
 
-## Key features
+## 🔥 Key features
 ### Resource Delivery SLIs/SLOs:
 Lunettes calculates the time taken by the infrastructure to attempt to deliver a container (Pod on Kubernetes) and defines this metric as the container delivery SLI. Based on this metric, Lunettes recognizes the time costs associated with different container lifecycle stages, including scheduling, image pulling, IP allocation, and container starting, thereby enabling the calculation of total infrastructure time consumption. The container delivery SLO, on the other hand, is defined based on container specifications.
 
@@ -31,7 +35,7 @@ By recognizing the start and end of each container lifecycle stage, Lunettes is 
 
 ![ContainerDeliverySli/Slo](./statics/deliverytracing.png)
 
-## Getting Started
+## 🎬 Getting Started
 
 ### Quick Start
 
@@ -68,7 +72,7 @@ Open [http://[LUNETTES_IP]:[LUNETTES_NODEPORT]](http://[LUNETTES_IP]:[LUNETTES_N
 
 Open [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?) in your browser and access trace endpoint.
 
-## Configurations
+## 🛠 Configurations
 Lunettes is highly configurable. Below we give some examples of how you can adjust resource delivery SLO and container lifecycle tracing to different scenarios with simple configurations.
 ### Resource Delivery SLO configuration
 ```json
@@ -143,10 +147,10 @@ Lunettes is highly configurable. Below we give some examples of how you can adju
 ```
 
 
-## Documentation
+## 📑 Documentation
 Please visit [docs](/docs)
 
-## Community
+## 💡 Community
 Any questions related to Lunettes please reach us via:
 - Slack
 - DingTalk

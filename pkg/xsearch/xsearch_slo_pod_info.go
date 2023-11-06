@@ -11,7 +11,7 @@ import (
 
 	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/utils"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/klog/v2"
 )
@@ -20,65 +20,61 @@ const (
 	podInfoIndexName = "slo_pod_info"
 	podInfoTypeName  = "_doc"
 
-	sloPodInfoMapping = `
-	{
-		"mappings" : {
-		  "_doc" : {
-			"properties" : {
-			  "podName" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },          
-			  "bizId" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },
-			  "clusterName" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },
-			  "namespace" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },          
-			  "deliveryStatus" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },
-			  "startTime" : {
-				"type" : "date"
-			  },
-			  "bizSource" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },  
-			  "stageTimestamp" : {
-				"type" : "date"
-			  },          
-			  "deliveryProgress" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },
-			  "currentTime" : {
-				"type" : "date"
-			  },
-			  "auditID" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },
-			  "podIP" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  },
-			  "podUID" : {
-				"type" : "keyword",
-				"ignore_above" : 256
-			  }
+	sloPodInfoMapping = `{
+		"mappings": {
+			"properties": {
+				"podName": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"bizId": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"clusterName": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"namespace": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"deliveryStatus": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"startTime": {
+					"type": "date"
+				},
+				"bizSource": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"stageTimestamp": {
+					"type": "date"
+				},
+				"deliveryProgress": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"currentTime": {
+					"type": "date"
+				},
+				"auditID": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"podIP": {
+					"type": "keyword",
+					"ignore_above": 256
+				},
+				"podUID": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
 			}
-		  }
-	  }
-	}
-	`
+		}
+	}`
 )
 
 var (
@@ -370,7 +366,7 @@ func InitSloPodInfo(cluster string, podInfoCacheUid utils.LRU) error {
 		if results != nil {
 			for _, hit := range results.Hits.Hits {
 				podInfo := &SloPodInfo{}
-				if er := json.Unmarshal(*hit.Source, podInfo); er == nil {
+				if er := json.Unmarshal(hit.Source, podInfo); er == nil {
 					//add pod info list
 					rs := []*SloPodInfo{podInfo}
 					podInfoCacheUid.Put(podInfo.PodUid, rs)

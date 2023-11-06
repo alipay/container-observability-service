@@ -10,7 +10,7 @@ import (
 	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/utils"
 	"github.com/alipay/container-observability-service/pkg/xsearch"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	corev1 "k8s.io/api/core/v1"

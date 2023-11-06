@@ -4,10 +4,14 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/alipay/container-observability-service/internal/grafanadi/service"
+	interutils "github.com/alipay/container-observability-service/internal/grafanadi/utils"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
+	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
 	storagemodel "github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
+	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/utils"
 )
 
@@ -19,11 +23,23 @@ type ContainerlifecycleHandler struct {
 }
 
 func (handler *ContainerlifecycleHandler) GetContainerLifecycleData(key, value string) (int, interface{}, error) {
+	podYamls := make([]*model.PodYaml, 0)
 	lifephases := make([]*storagemodel.LifePhase, 0)
 	slolist := make([]*storagemodel.SloTraceData, 0)
 	if len(value) == 0 {
 		return 0, nil, nil
 	}
+	begin := time.Now()
+	defer func() {
+		cost := utils.TimeSinceInMilliSeconds(begin)
+		metrics.QueryMethodDurationMilliSeconds.WithLabelValues("GetContainerLifecycleData").Observe(cost)
+	}()
+
+	util := interutils.Util{
+		Storage: handler.storage,
+	}
+	util.GetUid(podYamls, key, &value)
+
 	if err := handler.storage.QueryLifePhaseWithPodUid(&lifephases, value); err != nil {
 		return http.StatusOK, nil, fmt.Errorf("QueryLifePhaseWithPodUid error, error is %s", err)
 	}

@@ -3,6 +3,7 @@ package handler
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -61,7 +62,7 @@ func (handler *PodDeliveryHandler) QueryPodDeliveryWithPodUid(key, value string)
 	begin := time.Now()
 	defer func() {
 		cost := utils.TimeSinceInMilliSeconds(begin)
-		metrics.QueryMethodDurationMilliSeconds.WithLabelValues("QueryNodeYaml").Observe(cost)
+		metrics.QueryMethodDurationMilliSeconds.WithLabelValues("QueryPodDeliveryWithPodUid").Observe(cost)
 	}()
 	util := interutils.Util{
 		Storage: handler.storage,
@@ -70,6 +71,7 @@ func (handler *PodDeliveryHandler) QueryPodDeliveryWithPodUid(key, value string)
 
 	err := handler.storage.QuerySloTraceDataWithPodUID(&sloTraces, value)
 	if err != nil {
+		log.Printf("QueryPodInfoWithPodUid error: %s\n", err)
 		return http.StatusOK, nil, fmt.Errorf("QueryPodInfoWithPodUid error, error is %s", err)
 	}
 	if len(sloTraces) == 0 {

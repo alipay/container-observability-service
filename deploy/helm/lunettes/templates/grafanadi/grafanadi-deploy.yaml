@@ -39,6 +39,27 @@ spec:
           name: cm-vol
           readOnly: true
           subPath: config-file.yaml
+      - command:
+        - ./restapi
+        - --config-file=/app/config-file.yaml
+        - --listen-addr=:8089
+        - --enable-kube-client={{ .Values.grafanadiInitKubeClient }}
+        name: restapi
+        image: {{ .Values.lunettesImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: 8089
+          name: http-restapi
+          protocol: TCP
+        resources:
+{{ toYaml .Values.grafanadiResources | indent 10 }}
+        volumeMounts:
+        - mountPath: /var/grafana
+          name: grafana-pv
+        - mountPath: /app/config-file.yaml
+          name: cm-vol
+          readOnly: true
+          subPath: config-file.yaml
       volumes:
       - name: grafana-pv
         hostPath:
