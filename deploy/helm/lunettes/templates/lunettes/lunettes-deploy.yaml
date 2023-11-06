@@ -47,6 +47,7 @@ spec:
         - --v=6
         - --apiserver-enabled={{ .Values.apiserverEnabled }}
         - --log_dir=/logs
+        - --logtostderr=true
         - --es-buffer-duration=10s
         - --es-fetch-interval=1s
         - --es-endpoint=http://es-cluster-svc.{{ .Values.namespace }}:9200

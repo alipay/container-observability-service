@@ -41,6 +41,7 @@ lunettesResources:
 grafanadiInitKubeClient: false
 grafanadiType: LoadBalancer
 grafanadiNodePort: 30280
+restapiNodePort: 30289
 grafanadiResources:
   limits:
     cpu: 250m
@@ -62,7 +63,7 @@ grafanaResources:
     memory: 500Mi
 
 # kibana
-kibanaImage: docker.elastic.co/kibana/kibana:6.6.0
+kibanaImage: kibana:7.17.13
 kibanaNodePort: 30610
 kibanaResources:
   limits:
@@ -73,7 +74,7 @@ kibanaResources:
     memory: 500Mi
 
 # filebeat
-filebeatImage: elastic/filebeat:6.6.2
+filebeatImage: elastic/filebeat:7.17.14
 filebeatResources:
   limits:
     cpu: 100m
@@ -83,7 +84,7 @@ filebeatResources:
     memory: 200Mi
 
 # elasticsearch
-elasticImage: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
+elasticImage: elasticsearch:7.17.13
 elasticInitImage: busybox:stable
 elastic1NodePort: 30920
 elastic2NodePort: 30930

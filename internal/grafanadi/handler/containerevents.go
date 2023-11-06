@@ -4,10 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/alipay/container-observability-service/internal/grafanadi/service"
+	interutils "github.com/alipay/container-observability-service/internal/grafanadi/utils"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
+	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/utils"
 )
 
@@ -19,7 +22,22 @@ type ContainerEventsHandler struct {
 }
 
 func (handler *ContainerEventsHandler) GetContainerEventsData(key, value string) (int, interface{}, error) {
+	podYamls := make([]*model.PodYaml, 0)
 	podLifephases := make([]*model.LifePhase, 0)
+	if value == "" {
+		return http.StatusOK, nil, nil
+	}
+
+	begin := time.Now()
+	defer func() {
+		cost := utils.TimeSinceInMilliSeconds(begin)
+		metrics.QueryMethodDurationMilliSeconds.WithLabelValues("GetContainerEventsData").Observe(cost)
+	}()
+	util := interutils.Util{
+		Storage: handler.storage,
+	}
+	util.GetUid(podYamls, key, &value)
+
 	if err := handler.storage.QueryLifePhaseWithPodUid(&podLifephases, value); err != nil {
 		return http.StatusOK, nil, fmt.Errorf("QueryLifePhaseWithPodUid error, error is %s", err)
 	}

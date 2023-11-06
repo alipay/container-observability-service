@@ -3,11 +3,10 @@ name: Build and Push Docker Image
 
 on:
   push:
-    tags: "*"
 
 env:
-  LUNETTES_DOCKERHUB_REPO: lunettes/lunettes
-  GRAFANA_DOCKERHUB_REPO: lunettes/grafana
+  LUNETTES_DOCKERHUB_REPO: 18079109051/lunettes
+  GRAFANA_DOCKERHUB_REPO: 18079109051/grafana
   # Plugins to be installed.
   GRAFANA_PLUGINS: yesoreyeram-infinity-datasource marcusolsson-json-datasource volkovlabs-form-panel marcusolsson-dynamictext-panel
 jobs:
@@ -45,6 +44,10 @@ jobs:
           # Generate multi-platform images, see https://github.com/docker-library/bashbrew/blob/v0.1.1/architecture/oci-platform.go
           platforms: |
             linux/amd64
+            linux/arm64
+          # docker build arg
+          build-args: |
+            GOARCH=$(go env GOARCH)
           # Generate two Docker tags: ${APP_VERSION} 和 latest
           tags: |
             ${{ env.LUNETTES_DOCKERHUB_REPO }}:latest
@@ -58,6 +61,7 @@ jobs:
           # Generate multi-platform images, see https://github.com/docker-library/bashbrew/blob/v0.1.1/architecture/oci-platform.go
           platforms: |
             linux/amd64
+            linux/arm64
           # docker build arg
           build-args: |
             PLUGINS=${{ env.GRAFANA_PLUGINS }}

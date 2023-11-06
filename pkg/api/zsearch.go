@@ -14,7 +14,7 @@ import (
 
 	v1 "k8s.io/api/core/v1"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"k8s.io/klog/v2"
 
 	"github.com/alipay/container-observability-service/pkg/utils"
@@ -287,7 +287,7 @@ func (s *Server) querySloByResult(requestParams *sloReq) []*slodata {
 
 	for _, hit := range searchReulst.Hits.Hits {
 		slo := &slodata{}
-		if er := json.Unmarshal(*hit.Source, slo); er == nil {
+		if er := json.Unmarshal(hit.Source, slo); er == nil {
 			returnResult = append(returnResult, slo)
 		}
 	}
@@ -353,7 +353,7 @@ func (s *Server) queryDeleteSloByResult(requestParams *sloReq) []*slodata {
 
 	for _, hit := range searchResult.Hits.Hits {
 		slo := &slodata{}
-		if er := json.Unmarshal(*hit.Source, slo); er == nil {
+		if er := json.Unmarshal(hit.Source, slo); er == nil {
 			returnResult = append(returnResult, slo)
 		}
 	}
@@ -418,7 +418,7 @@ func (s *Server) queryUpgradeSloByResult(requestParams *sloReq) []*slodata {
 
 	for _, hit := range searchResult.Hits.Hits {
 		slo := &slodata{}
-		if er := json.Unmarshal(*hit.Source, slo); er == nil {
+		if er := json.Unmarshal(hit.Source, slo); er == nil {
 			returnResult = append(returnResult, slo)
 		}
 	}
@@ -444,7 +444,7 @@ func (s *Server) queryPodPhaseWithPodUIDOrName(podUID string, podName string) []
 
 	for _, hit := range searchReulst.Hits.Hits {
 		podPha := &podPhase{}
-		if er := json.Unmarshal(*hit.Source, podPha); er == nil {
+		if er := json.Unmarshal(hit.Source, podPha); er == nil {
 			returnResult = append(returnResult, podPha)
 		}
 	}
@@ -480,7 +480,7 @@ func (s *Server) queryPodYamlWithPodUIDOrName(req *debugPodParam) []*podyaml {
 
 	for _, hit := range searchResult.Hits.Hits {
 		pyaml := &podyaml{}
-		if er := json.Unmarshal(*hit.Source, pyaml); er == nil {
+		if er := json.Unmarshal(hit.Source, pyaml); er == nil {
 			if pyaml.Pod != nil {
 				result = append(result, pyaml)
 			}
@@ -508,7 +508,7 @@ func getPodUIDListByHostname(hostname string) []string {
 	for _, hit := range searchResult.Hits.Hits {
 		var jsonData interface{}
 		var err error
-		err = json.Unmarshal(*hit.Source, &jsonData)
+		err = json.Unmarshal(hit.Source, &jsonData)
 		if err != nil {
 			continue
 		}
@@ -541,7 +541,7 @@ func getPodUIDListByIP(ip string) []string {
 	for _, hit := range searchResult.Hits.Hits {
 		var jsonData interface{}
 		var err error
-		err = json.Unmarshal(*hit.Source, &jsonData)
+		err = json.Unmarshal(hit.Source, &jsonData)
 		if err != nil {
 			continue
 		}
@@ -574,7 +574,7 @@ func getPodUIDListByPodName(podName string) []string {
 	for _, hit := range searchResult.Hits.Hits {
 		var jsonData interface{}
 		var err error
-		err = json.Unmarshal(*hit.Source, &jsonData)
+		err = json.Unmarshal(hit.Source, &jsonData)
 		if err != nil {
 			continue
 		}
@@ -613,7 +613,7 @@ func queryPodphaseWithPodUID(podUID string) []*podPhase {
 
 	for _, hit := range searchResult.Hits.Hits {
 		podPha := &podPhase{}
-		if er := json.Unmarshal(*hit.Source, podPha); er == nil {
+		if er := json.Unmarshal(hit.Source, podPha); er == nil {
 			podPha.PlfID = hit.Id
 			returnResult = append(returnResult, podPha)
 		}
@@ -636,7 +636,7 @@ func queryPodphaseWithPodName(podName string) []*podPhase {
 
 	for _, hit := range searchReulst.Hits.Hits {
 		podPha := &podPhase{}
-		if er := json.Unmarshal(*hit.Source, podPha); er == nil {
+		if er := json.Unmarshal(hit.Source, podPha); er == nil {
 			podPha.PlfID = hit.Id
 
 			returnResult = append(returnResult, podPha)
@@ -668,7 +668,7 @@ func queryPodYamlWithPodUID(podUID string) []*podyaml {
 
 	for _, hit := range searchResult.Hits.Hits {
 		pyaml := &podyaml{}
-		if er := json.Unmarshal(*hit.Source, pyaml); er == nil {
+		if er := json.Unmarshal(hit.Source, pyaml); er == nil {
 			if pyaml.Pod != nil {
 				result = append(result, pyaml)
 			}
@@ -701,7 +701,7 @@ func QuerySloPodInfo(podUID string) []*xsearch.SloPodInfo {
 
 	for _, hit := range searchResult.Hits.Hits {
 		podInfo := &xsearch.SloPodInfo{}
-		if er := json.Unmarshal(*hit.Source, podInfo); er == nil {
+		if er := json.Unmarshal(hit.Source, podInfo); er == nil {
 			result = append(result, podInfo)
 		}
 	}
@@ -728,7 +728,7 @@ func queryPodYamlsWithNodeIP(nodeIP string, withDeleted bool) []*podyaml {
 	dedup := make(map[string]string)
 	for _, hit := range searchResult.Hits.Hits {
 		pyaml := &podyaml{}
-		if er := json.Unmarshal(*hit.Source, pyaml); er == nil {
+		if er := json.Unmarshal(hit.Source, pyaml); er == nil {
 			if pyaml.Pod != nil {
 				if _, ok := dedup[pyaml.PodUID]; !ok {
 					result = append(result, pyaml)
@@ -755,7 +755,7 @@ func queryPreemptionMasterByVictimPodNam(podName string) *podPhase {
 
 	for _, hit := range searchReulst.Hits.Hits {
 		podPha := &podPhase{}
-		if er := json.Unmarshal(*hit.Source, podPha); er == nil {
+		if er := json.Unmarshal(hit.Source, podPha); er == nil {
 			return podPha
 		}
 	}
@@ -774,7 +774,7 @@ func queryPodLifePhaseByID(docId string) *podPhase {
 
 	for _, hit := range searchReulst.Hits.Hits {
 		podPha := &podPhase{}
-		if er := json.Unmarshal(*hit.Source, podPha); er == nil {
+		if er := json.Unmarshal(hit.Source, podPha); er == nil {
 			podPha.PlfID = hit.Id
 			return podPha
 		}
@@ -794,7 +794,7 @@ func queryAuditLogByID(auditID string) *k8saudit.Event {
 
 	for _, hit := range searchReulst.Hits.Hits {
 		auditLog := &k8saudit.Event{}
-		if er := json.Unmarshal(*hit.Source, auditLog); er == nil {
+		if er := json.Unmarshal(hit.Source, auditLog); er == nil {
 			return auditLog
 		}
 	}
@@ -823,7 +823,7 @@ func querySpansByUID(uid string) []*span {
 
 	for _, hit := range searchReulst.Hits.Hits {
 		originalSpan := &spans.Span{}
-		if er := json.Unmarshal(*hit.Source, originalSpan); er == nil {
+		if er := json.Unmarshal(hit.Source, originalSpan); er == nil {
 			result = append(result, &span{
 				Name:       originalSpan.Name,
 				Type:       originalSpan.Type,

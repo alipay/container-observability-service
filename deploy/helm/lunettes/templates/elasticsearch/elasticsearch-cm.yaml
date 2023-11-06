@@ -5,11 +5,12 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   elasticsearch.yml: |
-    cluster.name: my-es
-    # node.name: dev-es-kibana
+    cluster.name: lunettes-es
+    discovery.type: single-node
     bootstrap.memory_lock: false
     network.host: 0.0.0.0
     http.port: 9200
     action.auto_create_index: .monitoring*,.watches,.triggered_watches,.watcher-history*,.ml*,spans*
     path.data: /data
     search.max_open_scroll_context: 10000
+    xpack.security.enabled: false

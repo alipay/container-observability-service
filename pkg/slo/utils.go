@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/alipay/container-observability-service/pkg/queue"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"golang.org/x/sync/errgroup"
 	k8s_audit "k8s.io/apiserver/pkg/apis/audit"
 
@@ -281,7 +281,7 @@ func (r *SimpleZSearchReader) Run(stop <-chan struct{}) {
 			totalGot += len(results.Hits.Hits)
 			for _, hit := range results.Hits.Hits {
 				select {
-				case hits <- *hit.Source:
+				case hits <- hit.Source:
 				case <-r.ctx.Done():
 					return r.ctx.Err()
 				}
