@@ -12,7 +12,6 @@ import (
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
 	"github.com/alipay/container-observability-service/pkg/utils"
-	"github.com/gocarina/gocsv"
 	"github.com/gorilla/mux"
 	"k8s.io/klog"
 )
@@ -52,7 +51,7 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/deliverypodcreatetable").HandlerFunc(handlerWrapper(handler.PodDeliveryFactory, s.Storage))
 		r.Path("/deliverypoddeletetable").HandlerFunc(handlerWrapper(handler.PodDeliveryFactory, s.Storage))
 		r.Path("/deliverypodupgradetable").HandlerFunc(handlerWrapper(handler.PodDeliveryUpgradeFactory, s.Storage))
-		r.Path("/containerstatus").HandlerFunc(csvHandlerWrapper(handler.ContainerStatusFactory, s.Storage))
+		r.Path("/containerstatus").HandlerFunc(handlerWrapper(handler.ContainerStatusFactory, s.Storage))
 		r.Path("/keylifecycleevents").HandlerFunc(handlerWrapper(handler.PodPhaseFactory, s.Storage))
 		r.Path("/deliverytrace").HandlerFunc(handlerWrapper(handler.TraceFactory, s.Storage))
 		r.Path("/clusterdistribute").HandlerFunc(handlerWrapper(handler.DebuggingPodsFactory, s.Storage))
@@ -64,6 +63,13 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/podyamlgraphnodes").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/podyamlgraphedges").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
+		r.Path("/queryyamls").HandlerFunc(yamlHandlerWrapper(handler.YamlFactory, s.Storage))
+
+		r.Path("/statics/reset.css").HandlerFunc(handler.FileDownload)
+		r.Path("/statics/app.css").HandlerFunc(handler.FileDownload)
+		r.Path("/statics/jsonTree.css").HandlerFunc(handler.FileDownload)
+		r.Path("/statics/jsonTree.js").HandlerFunc(handler.FileDownload)
+		r.Path("/statics/icons.svg").HandlerFunc(handler.FileDownload)
 
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {
@@ -96,9 +102,8 @@ func handlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface)
 		defer r.Body.Close()
 		p := h(w, r, storage)
 		var (
-			err      error
-			respObj  interface{}
-			respBody []byte
+			err     error
+			respObj interface{}
 		)
 		code := http.StatusOK
 		msg := "query success"
@@ -162,18 +167,10 @@ func handlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface)
 		corsHeader(r, w)
 
 		// set code
-		w.WriteHeader(code)
-
-		// no errors, write response.
-		bodyLen := len(respBody)
-		if bodyLen > 0 {
-			w.Header().Set("Content-Length", strconv.Itoa(bodyLen))
-			w.Write(respBody)
-		}
 	}
 }
 
-func csvHandlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface) http.HandlerFunc {
+func yamlHandlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		p := h(w, r, storage)
@@ -186,25 +183,11 @@ func csvHandlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterfa
 		msg := "query success"
 		defer func() {
 			if err != nil {
-				w.Header().Set("Content-Type", "text/csv")
-				w.Header().Set("Content-Disposition", "attachment;filename=content.csv")
-				// set cors header
-				corsHeader(r, w)
-				// set code
 				w.WriteHeader(code)
-				errorResponse := model.Response{
-					Code:    code,
-					Status:  http.StatusText(code),
-					Message: msg,
-				}
-				res, err := json.Marshal(errorResponse)
-				if err != nil {
-					klog.Errorf("Marshal response failed: %s", err.Error())
-					return
-				}
-				w.Write(res)
+				w.Write([]byte(msg))
 			}
 		}()
+
 		klog.V(6).Infof("uri: %s", r.RequestURI)
 		// parse request
 		err = p.ParseRequest()
@@ -228,19 +211,15 @@ func csvHandlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterfa
 			msg = err.Error()
 			return
 		}
-		// if err := json.NewEncoder(w).Encode(respObj); err != nil {
-		// 	log.Printf("json enc: %+v", err)
-		// }
-		if err := gocsv.Marshal(respObj, w); err != nil {
-			log.Printf("json enc: %+v", err)
-		}
-		// set header
-		w.Header().Set("Content-Type", "text/csv")
-		w.Header().Set("Content-Disposition", "attachment;filename=content.csv")
-		// set cors header
+
+		respBody = respObj.([]byte)
+
+		w.Header().Set("Content-Type", "text/html;charset=UTF-8")
 		corsHeader(r, w)
+
 		// write result to response
 		w.WriteHeader(code)
+
 		// no errors, write response.
 		bodyLen := len(respBody)
 		if bodyLen > 0 {

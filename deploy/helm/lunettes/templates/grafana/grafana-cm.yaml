@@ -1113,7 +1113,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "yaml",
-                        "url": "http://lunettes.lunettes.svc.cluster.local:8080/api/v1/debugpodyaml?uid=${__data.fields[\"PodUID\"]}"
+                        "url": "http://localhost:9099/queryyamls?resource=pod&uid=${__data.fields[\"PodUID\"]}"
                       }
                     ]
                   },
@@ -1138,7 +1138,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "NodeYaml",
-                        "url": "http://lunettes.lunettes.svc.cluster.local:8080/api/v1/debugpodyaml?name=${__data.fields[\"NodeName\"]}"
+                        "url": "http://localhost:9099/queryyamls?resource=node&name=${__data.fields[\"NodeName\"]}"
                       }
                     ]
                   },
@@ -2463,7 +2463,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=Cluster.keyword&timeattr=Created&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=Cluster.keyword&timeattr=Created&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2570,7 +2570,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=SLOViolationReason.keyword&timeattr=Created&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=SLOViolationReason.keyword&timeattr=Created&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2645,7 +2645,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason:success&percentiles=DeliveryDuration&timeattr=Created&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason:success&percentiles=DeliveryDuration&timeattr=Created&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2746,7 +2746,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=Cluster.keyword&overtime=$timestep&timeattr=Created&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=Cluster.keyword&overtime=$timestep&timeattr=Created&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2846,7 +2846,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=SLOViolationReason.keyword&timeattr=Created&overtime=$timestep&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=SLOViolationReason.keyword&timeattr=Created&overtime=$timestep&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2947,7 +2947,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason:success&percentiles=DeliveryDuration&timeattr=Created&overtime=$timestep&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason:success&percentiles=DeliveryDuration&timeattr=Created&overtime=$timestep&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -3489,7 +3489,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "Pod信息",
-                        "url": "\r\nhttp://lunettes.lunettes.svc.cluster.local:8080/api/v1/debugpod?uid=${__data.fields.PodUid}"
+                        "url": "\r\nhttp://localhost:9097/d/lunettes-debugpod/lunettes-debugpod?orgId=1&var-podinfo=uid&var-podinfovalue=${__data.fields.PodUid}"
                       }
                     ]
                   }
