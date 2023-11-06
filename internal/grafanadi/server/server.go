@@ -152,15 +152,13 @@ func handlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface)
 			return
 		}
 
-		if err := json.NewEncoder(w).Encode(respObj); err != nil {
-			log.Printf("json enc: %+v", err)
-		}
-
 		// set header
 		w.Header().Set("Content-Type", "application/json;charset=UTF-8")
 		// set cors header
 		corsHeader(r, w)
-
+		if err := json.NewEncoder(w).Encode(respObj); err != nil {
+			log.Printf("json enc: %+v", err)
+		}
 		// set code
 		w.WriteHeader(code)
 
