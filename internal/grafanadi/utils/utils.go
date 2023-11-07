@@ -91,8 +91,16 @@ func AggregationFromParams(index, doctype, timeAttr, filters, lte, gte, terms, p
 		if len(fAry[1]) == 0 {
 			continue
 		}
-		boolSearch = boolSearch.Filter(elastic.NewTermsQuery(fAry[0], fAry[1]))
-		//boolSearch = boolSearch.Must(elastic.NewTermsQuery(fAry[0], fAry[1]))
+		// add operation for query
+		if strings.HasPrefix(fAry[1], "!") {
+			fVal := strings.TrimPrefix(fAry[1], "!")
+			if len(fVal) == 0 {
+				continue
+			}
+			boolSearch = boolSearch.MustNot(elastic.NewTermsQuery(fAry[0], fVal))
+		} else {
+			boolSearch = boolSearch.Filter(elastic.NewTermsQuery(fAry[0], fAry[1]))
+		}
 	}
 
 	if len(lte) > 0 && len(gte) > 0 {

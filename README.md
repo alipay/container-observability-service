@@ -39,7 +39,7 @@ By recognizing the start and end of each container lifecycle stage, Lunettes is 
 
 ### Quick Start
 
-To get started with [kind](https://kind.sigs.k8s.io/) quickly, see [this guide](./docs/QUICK_START.md).
+To get started with [kind](https://kind.sigs.k8s.io/) quickly, see [this guide](./docs/quick_start.md).
 
 ### Deploy
 Step1: Bootstrap a Kubernetes cluster with Kubeadm/Kind.
