@@ -337,6 +337,6 @@ func main() {
 	log.Printf("waiting...\n")
 	// avoid to exit without any load
 	stopChan := make(chan os.Signal, 1)
-	signal.Notify(stopChan, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL, syscall.SIGQUIT, syscall.SIGINT)
+	signal.Notify(stopChan, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL, syscall.SIGQUIT)
 	<-stopChan
 }
