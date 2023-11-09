@@ -9,7 +9,7 @@ import (
 	"github.com/alipay/container-observability-service/pkg/common"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/mocks"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"github.com/stretchr/testify/assert"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -43,8 +43,8 @@ func TestQuerySpanWithPodUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(sp)
 				spBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &spBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: spBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"OwnerRef.UID": string(b)}
@@ -62,8 +62,8 @@ func TestQuerySpanWithPodUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(sp)
 				spBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &spBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: spBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"OwnerRef.UID": string(b)}
@@ -81,8 +81,8 @@ func TestQuerySpanWithPodUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(sp)
 				spBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &spBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: spBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"abc": string(b)}
@@ -140,8 +140,8 @@ func TestQueryLifePhaseWithPodUid(t *testing.T) {
 				}
 				lp, _ := json.Marshal(lifePhase)
 				phaseBytes := json.RawMessage(lp)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &phaseBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: phaseBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podUID": string(b)}
@@ -159,8 +159,8 @@ func TestQueryLifePhaseWithPodUid(t *testing.T) {
 				}
 				lp, _ := json.Marshal(lifePhase)
 				phaseBytes := json.RawMessage(lp)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &phaseBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: phaseBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podUID": string(b)}
@@ -216,8 +216,8 @@ func TestQueryPodYamlsWithPodUID(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podUID": string(b)}
@@ -236,8 +236,8 @@ func TestQueryPodYamlsWithPodUID(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podUID": string(b)}
@@ -292,8 +292,8 @@ func TestQueryPodYamlsWithPodName(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podName": string(b)}
@@ -312,8 +312,8 @@ func TestQueryPodYamlsWithPodName(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podName": string(b)}
@@ -369,8 +369,8 @@ func TestQueryPodYamlsWithHostName(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"hostname": string(b)}
@@ -389,8 +389,8 @@ func TestQueryPodYamlsWithHostName(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"hostname": string(b)}
@@ -445,8 +445,8 @@ func TestQueryPodYamlsWithPodIp(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podIP": string(b)}
@@ -465,8 +465,8 @@ func TestQueryPodYamlsWithPodIp(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podIP": string(b)}
@@ -522,8 +522,8 @@ func TestQueryPodListWithNodeip(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"hostIP.keyword": string(b)}
@@ -543,8 +543,8 @@ func TestQueryPodListWithNodeip(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"hostIP.keyword": string(b)}
@@ -595,8 +595,8 @@ func Test_getPodUIDListByHostname(t *testing.T) {
 			esReqRepExpect: func() map[string]string {
 				var res = "{\"podUID\": \"abcdef\"}"
 				sloBytes := json.RawMessage(res)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"hostname.keyword": string(b)}
@@ -611,8 +611,8 @@ func Test_getPodUIDListByHostname(t *testing.T) {
 			esReqRepExpect: func() map[string]string {
 				var res = "{\"podUID\": \"abcdef\"}"
 				sloBytes := json.RawMessage(res)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"hostname.keyword": string(b)}
@@ -663,8 +663,8 @@ func Test_getPodUIDListByPodName(t *testing.T) {
 			esReqRepExpect: func() map[string]string {
 				var res = "{\"podUID\": \"abcdef\"}"
 				sloBytes := json.RawMessage(res)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podName": string(b)}
@@ -679,8 +679,8 @@ func Test_getPodUIDListByPodName(t *testing.T) {
 			esReqRepExpect: func() map[string]string {
 				var res = "{\"podUID\": \"abcdef\"}"
 				sloBytes := json.RawMessage(res)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podName": string(b)}
@@ -730,8 +730,8 @@ func Test_getPodUIDListByPodIP(t *testing.T) {
 			esReqRepExpect: func() map[string]string {
 				var res = "{\"podUID\": \"abcdef\"}"
 				sloBytes := json.RawMessage(res)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podIP.keyword": string(b)}
@@ -746,8 +746,8 @@ func Test_getPodUIDListByPodIP(t *testing.T) {
 			esReqRepExpect: func() map[string]string {
 				var res = "{\"podUID\": \"abcdef\"}"
 				sloBytes := json.RawMessage(res)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podIP.keyword": string(b)}
@@ -801,8 +801,8 @@ func TestQueryNodeYamlsWithNodeName(t *testing.T) {
 				}
 				ny, _ := json.Marshal(nodeYaml)
 				nodeBytes := json.RawMessage(ny)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeName": string(b)}
@@ -820,8 +820,8 @@ func TestQueryNodeYamlsWithNodeName(t *testing.T) {
 				}
 				ny, _ := json.Marshal(nodeYaml)
 				nodeBytes := json.RawMessage(ny)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeName": string(b)}
@@ -875,8 +875,8 @@ func TestQueryNodeYamlsWithNodeUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(nodeYaml)
 				nodeBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"uid": string(b)}
@@ -894,8 +894,8 @@ func TestQueryNodeYamlsWithNodeUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(nodeYaml)
 				nodeBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"uid": string(b)}
@@ -946,8 +946,8 @@ func TestQueryNodeUIDListWithNodeIp(t *testing.T) {
 			esReqRepExpect: func() map[string]string {
 				var res = "{\"uid\": \"abcdef\"}"
 				sloBytes := json.RawMessage([]byte(res))
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeIp": string(b)}
@@ -962,8 +962,8 @@ func TestQueryNodeUIDListWithNodeIp(t *testing.T) {
 			esReqRepExpect: func() map[string]string {
 				var res = "{\"uid\": \"abcdef\"}"
 				sloBytes := json.RawMessage([]byte(res))
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeIp": string(b)}
@@ -1017,8 +1017,8 @@ func TestQueryNodeYamlsWithNodeIP(t *testing.T) {
 				}
 				pb, _ := json.Marshal(nodeYaml)
 				nodeBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeIp": string(b)}
@@ -1036,8 +1036,8 @@ func TestQueryNodeYamlsWithNodeIP(t *testing.T) {
 				}
 				pb, _ := json.Marshal(nodeYaml)
 				nodeBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeIp": string(b)}
@@ -1091,8 +1091,8 @@ func TestQueryPodInfoWithPodUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podInfo)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podUID": string(b)}
@@ -1110,8 +1110,8 @@ func TestQueryPodInfoWithPodUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podInfo)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podUID": string(b)}
@@ -1166,8 +1166,8 @@ func TestQueryPodYamlsWithNodeIP(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"hostIP.keyword": string(b)}
@@ -1185,8 +1185,8 @@ func TestQueryPodYamlsWithNodeIP(t *testing.T) {
 				}
 				pb, _ := json.Marshal(podYaml)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"hostIP.keyword": string(b)}
@@ -1238,8 +1238,8 @@ func TestQueryNodephaseWithNodeName(t *testing.T) {
 				lifePhase := &model.NodeLifePhase{PlfID: "abcdef"}
 				pb, _ := json.Marshal(lifePhase)
 				lifeBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &lifeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: lifeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeName": string(b)}
@@ -1255,8 +1255,8 @@ func TestQueryNodephaseWithNodeName(t *testing.T) {
 				lifePhase := &model.NodeLifePhase{PlfID: "abcdef"}
 				pb, _ := json.Marshal(lifePhase)
 				lifeBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &lifeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: lifeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeName": string(b)}
@@ -1308,8 +1308,8 @@ func TestQueryNodephaseWithNodeUID(t *testing.T) {
 				lifePhase := &model.NodeLifePhase{PlfID: "abcdef"}
 				pb, _ := json.Marshal(lifePhase)
 				lifeBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &lifeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: lifeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"uid": string(b)}
@@ -1325,8 +1325,8 @@ func TestQueryNodephaseWithNodeUID(t *testing.T) {
 				lifePhase := &model.NodeLifePhase{PlfID: "abcdef"}
 				pb, _ := json.Marshal(lifePhase)
 				lifeBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &lifeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: lifeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"uid": string(b)}
@@ -1378,8 +1378,8 @@ func TestQueryDebuggingWithPodUid(t *testing.T) {
 				slotrace := &model.SloTraceData{}
 				pb, _ := json.Marshal(slotrace)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"PodUID": string(b)}
@@ -1395,8 +1395,8 @@ func TestQueryDebuggingWithPodUid(t *testing.T) {
 				slotrace := &model.SloTraceData{}
 				pb, _ := json.Marshal(slotrace)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"PodUID": string(b)}
@@ -1449,8 +1449,8 @@ func Test_querySloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"SLOViolationReason": string(b)}
@@ -1466,8 +1466,8 @@ func Test_querySloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"SLOViolationReason": string(b)}
@@ -1483,8 +1483,8 @@ func Test_querySloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"SLOViolationReason": string(b)}
@@ -1500,8 +1500,8 @@ func Test_querySloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"SLOViolationReason": string(b)}
@@ -1517,8 +1517,8 @@ func Test_querySloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"SLOViolationReason": string(b)}
@@ -1570,8 +1570,8 @@ func Test_queryUpgradeSloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"UpgradeResult": string(b)}
@@ -1587,8 +1587,8 @@ func Test_queryUpgradeSloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"UpgradeResult": string(b)}
@@ -1641,8 +1641,8 @@ func Test_queryDeleteSloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"DeleteResult": string(b)}
@@ -1658,8 +1658,8 @@ func Test_queryDeleteSloByResult(t *testing.T) {
 				slo := &model.Slodata{}
 				pb, _ := json.Marshal(slo)
 				sloBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &sloBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: sloBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"DeleteResult": string(b)}
@@ -1714,8 +1714,8 @@ func TestDebuggingNodeUidParams(t *testing.T) {
 				}
 				ny, _ := json.Marshal(nodeYaml)
 				nodeBytes := json.RawMessage(ny)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"nodeName": string(b)}
@@ -1733,8 +1733,8 @@ func TestDebuggingNodeUidParams(t *testing.T) {
 				}
 				ny, _ := json.Marshal(nodeYaml)
 				nodeBytes := json.RawMessage(ny)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"uid": string(b)}
@@ -1791,8 +1791,8 @@ func TestQueryAuditWithAuditId(t *testing.T) {
 				}
 				pb, _ := json.Marshal(audit)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"auditID": string(b)}
@@ -1846,8 +1846,8 @@ func TestQueryEventPodsWithPodUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(audit)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"objectRef.uid.keyword": string(b)}
@@ -1900,8 +1900,8 @@ func TestQueryEventNodeWithPodUid(t *testing.T) {
 				}
 				pb, _ := json.Marshal(audit)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"objectRef.uid.keyword": string(b)}
@@ -1956,8 +1956,8 @@ func TestQueryEventWithTimeRange(t *testing.T) {
 				}
 				pb, _ := json.Marshal(audit)
 				podBytes := json.RawMessage(pb)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &podBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: podBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"stageTimestamp": string(b)}
@@ -2009,8 +2009,8 @@ func TestQueryPodYamlWithParams(t *testing.T) {
 				}
 				ny, _ := json.Marshal(podYaml)
 				nodeBytes := json.RawMessage(ny)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podName": string(b)}
@@ -2029,8 +2029,8 @@ func TestQueryPodYamlWithParams(t *testing.T) {
 				}
 				ny, _ := json.Marshal(podYaml)
 				nodeBytes := json.RawMessage(ny)
-				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: 1, Hits: []*elastic.SearchHit{
-					{Source: &nodeBytes},
+				sr := elastic.SearchResult{Hits: &elastic.SearchHits{TotalHits: &elastic.TotalHits{}, Hits: []*elastic.SearchHit{
+					{Source: nodeBytes},
 				}}}
 				b, _ := json.Marshal(sr)
 				return map[string]string{"podIP": string(b)}

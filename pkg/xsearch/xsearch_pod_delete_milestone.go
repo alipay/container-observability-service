@@ -11,7 +11,7 @@ import (
 
 	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/utils"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"k8s.io/klog/v2"
 )
 
@@ -143,7 +143,7 @@ func GetAllPodDeleteMilestoneByScroll(cluster string) (*utils.SafeMap, error) {
 
 		for _, hit := range searchResult.Hits.Hits {
 			podDeleteMileStone := &PodDeleteMileStone{}
-			if er := json.Unmarshal(*hit.Source, podDeleteMileStone); er == nil {
+			if er := json.Unmarshal(hit.Source, podDeleteMileStone); er == nil {
 				result.Set(podDeleteMileStone.Key, podDeleteMileStone)
 			}
 		}

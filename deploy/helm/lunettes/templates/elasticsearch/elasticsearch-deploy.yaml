@@ -33,6 +33,8 @@ spec:
         env:
         - name: ES_JAVA_OPTS
           value: "{{ .Values.esJavaOptions }}"
+        - name: ATTEMPT_SECURITY_AUTO_CONFIG
+          value: "false"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
         - containerPort: 9200

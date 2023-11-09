@@ -26,7 +26,7 @@ import (
 	"github.com/alipay/container-observability-service/pkg/utils"
 	"github.com/alipay/container-observability-service/pkg/xsearch"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"github.com/prometheus/client_golang/prometheus"
 	"golang.org/x/sync/errgroup"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -43,15 +43,13 @@ const (
 	metaTypeName     = "meta"
 	metaMapping      = `
 	{
-	  "mappings": {
-		"meta": {
-		  "properties": {
-		    "LastReadTime": {
-		      "type": "long"
-		    }
-		  }
+		"mappings": {
+			"properties": {
+				"LastReadTime": {
+					"type": "long"
+				}
+			}
 		}
-	  }
 	}`
 )
 
@@ -276,9 +274,9 @@ func (lr *logReader) getLastReadTime() time.Time {
 
 	if result.Found {
 		conf := &metaConf{}
-		err := json.Unmarshal(*result.Source, conf)
+		err := json.Unmarshal(result.Source, conf)
 		if err != nil {
-			klog.Errorf("failed unmarshal %s: %s", string(*result.Source), err.Error())
+			klog.Errorf("failed unmarshal %s: %s", string(result.Source), err.Error())
 			return now
 		}
 
@@ -497,7 +495,7 @@ func (lr *logReader) fetchEvents(timeDuration time.Duration) (int64, error) {
 					//hitEvents := shares.NewHitEventSlice(len(results.Hits.Hits))
 					for _, hit := range results.Hits.Hits {
 						hitEvent := shares.NewHitEvent()
-						hitEvent.UnmarshalToEvent(hit.Source)
+						hitEvent.UnmarshalToEvent(&hit.Source)
 						//hitEvents.Append(hitEvent)
 						hitEventSlice.Append(hitEvent)
 					}

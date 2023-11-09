@@ -12,7 +12,7 @@ import (
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
 	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/utils"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 
 	// utils "github.com/alipay/container-observability-service/pkg/utils"
 	"k8s.io/klog"
@@ -68,7 +68,7 @@ func (s *StorageEsImpl) QuerySpanWithPodUid(data interface{}, uid string) error 
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -107,7 +107,7 @@ func (s *StorageEsImpl) QueryLifePhaseWithPodUid(data interface{}, uid string) e
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -146,7 +146,7 @@ func (s *StorageEsImpl) QueryPodYamlsWithPodUID(data interface{}, uid string) er
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -185,7 +185,7 @@ func (s *StorageEsImpl) QueryPodYamlsWithPodName(data interface{}, podName strin
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -224,7 +224,7 @@ func (s *StorageEsImpl) QueryPodYamlsWithHostName(data interface{}, hostName str
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -263,7 +263,7 @@ func (s *StorageEsImpl) QueryPodYamlsWithPodIp(data interface{}, podIp string) e
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -301,7 +301,7 @@ func (s *StorageEsImpl) QueryPodListWithNodeip(data interface{}, nodeIp string, 
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -340,7 +340,7 @@ func (s *StorageEsImpl) QueryPodUIDListByHostname(data interface{}, hostName str
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -378,7 +378,7 @@ func (s *StorageEsImpl) QueryPodUIDListByPodIP(data interface{}, podIp string) e
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -416,7 +416,7 @@ func (s *StorageEsImpl) QueryPodUIDListByPodName(data interface{}, podName strin
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -454,7 +454,7 @@ func (s *StorageEsImpl) QueryNodeYamlsWithNodeUid(data interface{}, nodeUid stri
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -492,7 +492,7 @@ func (s *StorageEsImpl) QueryNodeYamlsWithNodeName(data interface{}, nodeName st
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -530,7 +530,7 @@ func (s *StorageEsImpl) QueryNodeYamlsWithNodeIP(data interface{}, nodeIp string
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -569,7 +569,7 @@ func (s *StorageEsImpl) QueryNodeUIDListWithNodeIp(data interface{}, nodeIp stri
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -616,7 +616,7 @@ func (s *StorageEsImpl) QueryPodYamlsWithNodeIP(data interface{}, nodeIp string)
 	var wg sync.WaitGroup
 	for _, hit := range searchResult.Hits.Hits {
 		pyaml := &model.PodYaml{}
-		if er := json.Unmarshal(*hit.Source, pyaml); er == nil {
+		if er := json.Unmarshal(*&hit.Source, pyaml); er == nil {
 			if pyaml.Pod != nil {
 				if _, ok := dedup[pyaml.PodUid]; !ok {
 					podrestun := &model.PodYaml{
@@ -694,7 +694,7 @@ func (s *StorageEsImpl) QueryPodInfoWithPodUid(data interface{}, podUid string) 
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -733,7 +733,7 @@ func (s *StorageEsImpl) QueryNodephaseWithNodeUID(data interface{}, nodeUid stri
 
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -772,7 +772,7 @@ func (s *StorageEsImpl) QueryNodephaseWithNodeName(data interface{}, nodeName st
 
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -809,7 +809,7 @@ func (s *StorageEsImpl) QuerySloTraceDataWithPodUID(data interface{}, podUid str
 
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -910,7 +910,7 @@ func (s *StorageEsImpl) QueryCreateSloWithResult(data interface{}, requestParams
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -980,7 +980,7 @@ func (s *StorageEsImpl) QueryUpgradeSloWithResult(data interface{}, requestParam
 
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -1047,7 +1047,7 @@ func (s *StorageEsImpl) QueryDeleteSloWithResult(data interface{}, requestParams
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -1093,7 +1093,7 @@ func (s *StorageEsImpl) QueryNodeYamlWithParams(data interface{}, debugparams *m
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -1136,7 +1136,7 @@ func (s *StorageEsImpl) QueryAuditWithAuditId(data interface{}, auditid string) 
 		return fmt.Errorf("the query is error")
 	}
 	for _, hit := range searchReulst.Hits.Hits {
-		err = json.Unmarshal(*hit.Source, &res)
+		err = json.Unmarshal(*&hit.Source, &res)
 		if err != nil {
 			return err
 		}
@@ -1177,7 +1177,7 @@ func (s *StorageEsImpl) QueryEventPodsWithPodUid(data interface{}, PodUid string
 		return fmt.Errorf("the query is error")
 	}
 	for _, hit := range searchReulst.Hits.Hits {
-		err = json.Unmarshal(*hit.Source, &res)
+		err = json.Unmarshal(*&hit.Source, &res)
 		if err != nil {
 			return err
 		}
@@ -1218,7 +1218,7 @@ func (s *StorageEsImpl) QueryEventNodeWithPodUid(data interface{}, PodUid string
 		return fmt.Errorf("the query is error")
 	}
 	for _, hit := range searchReulst.Hits.Hits {
-		err = json.Unmarshal(*hit.Source, &res)
+		err = json.Unmarshal(*&hit.Source, &res)
 		if err != nil {
 			return err
 		}
@@ -1260,7 +1260,7 @@ func (s *StorageEsImpl) QueryEventWithTimeRange(data interface{}, from, to time.
 		return fmt.Errorf("the query is error")
 	}
 	for _, hit := range searchReulst.Hits.Hits {
-		err = json.Unmarshal(*hit.Source, &res)
+		err = json.Unmarshal(*&hit.Source, &res)
 		if err != nil {
 			return err
 		}
@@ -1300,7 +1300,7 @@ func (s *StorageEsImpl) QueryPodYamlWithParams(data interface{}, params *model.P
 	}
 	var hits []*json.RawMessage
 	for _, hit := range searchResult.Hits.Hits {
-		hits = append(hits, hit.Source)
+		hits = append(hits, &hit.Source)
 	}
 	hitsStr, err := json.Marshal(hits)
 	if err != nil {
@@ -1355,7 +1355,7 @@ func (s *StorageEsImpl) QueryResourceYamlWithUID(kind, uid string) (interface{},
 	for _, hit := range searchResult.Hits.Hits {
 		if kind == PodResource {
 			objYaml := &model.PodYaml{}
-			if er := json.Unmarshal(*hit.Source, objYaml); er == nil {
+			if er := json.Unmarshal(*&hit.Source, objYaml); er == nil {
 				if objYaml.Pod != nil {
 					result = append(result, objYaml)
 					fmt.Println("fetch pod yaml")
@@ -1363,7 +1363,7 @@ func (s *StorageEsImpl) QueryResourceYamlWithUID(kind, uid string) (interface{},
 			}
 		} else if kind == NodeResource {
 			objYaml := &model.NodeYaml{}
-			if er := json.Unmarshal(*hit.Source, objYaml); er == nil {
+			if er := json.Unmarshal(*&hit.Source, objYaml); er == nil {
 				if objYaml.Node != nil {
 					result = append(result, objYaml)
 				}
@@ -1415,14 +1415,14 @@ func (s *StorageEsImpl) QueryResourceYamlWithName(kind, name string) (interface{
 	for _, hit := range searchResult.Hits.Hits {
 		if kind == PodResource {
 			objYaml := &model.PodYaml{}
-			if er := json.Unmarshal(*hit.Source, objYaml); er == nil {
+			if er := json.Unmarshal(*&hit.Source, objYaml); er == nil {
 				if objYaml.Pod != nil {
 					result = append(result, objYaml)
 				}
 			}
 		} else if kind == NodeResource {
 			objYaml := &model.NodeYaml{}
-			if er := json.Unmarshal(*hit.Source, objYaml); er == nil {
+			if er := json.Unmarshal(*&hit.Source, objYaml); er == nil {
 				if objYaml.Node != nil {
 					result = append(result, objYaml)
 				}

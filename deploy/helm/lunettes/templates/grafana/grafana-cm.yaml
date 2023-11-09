@@ -2463,7 +2463,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=Cluster.keyword&timeattr=Created&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=Cluster.keyword&timeattr=Created&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2570,7 +2570,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=SLOViolationReason.keyword&timeattr=Created&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=SLOViolationReason.keyword&timeattr=Created&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2645,7 +2645,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason:success&percentiles=DeliveryDuration&timeattr=Created&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason:success&percentiles=DeliveryDuration&timeattr=Created&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2746,7 +2746,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=Cluster.keyword&overtime=$timestep&timeattr=Created&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=Cluster.keyword&overtime=$timestep&timeattr=Created&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2846,7 +2846,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=SLOViolationReason.keyword&timeattr=Created&overtime=$timestep&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason.keyword:$deliveryresult&terms=SLOViolationReason.keyword&timeattr=Created&overtime=$timestep&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -2947,7 +2947,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=data&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason:success&percentiles=DeliveryDuration&timeattr=Created&overtime=$timestep&gte=$__from&lte=$__to",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/elasticaggregations?index=slo_data&doctype=_doc&filters=Namespace.keyword:$namespace*Cluster.keyword:$cluster*SLOViolationReason:success&percentiles=DeliveryDuration&timeattr=Created&overtime=$timestep&gte=$__from&lte=$__to",
               "url_options": {
                 "data": "",
                 "method": "GET"

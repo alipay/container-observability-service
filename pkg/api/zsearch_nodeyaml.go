@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/alipay/container-observability-service/pkg/metrics"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"k8s.io/klog/v2"
 
 	corev1 "k8s.io/api/core/v1"
@@ -41,7 +41,7 @@ func queryNodeYamlWithNodeName(nodeName string) *nodeOpStruct {
 	}
 
 	for _, hit := range searchResult.Hits.Hits {
-		if er := json.Unmarshal(*hit.Source, result); er == nil {
+		if er := json.Unmarshal(hit.Source, result); er == nil {
 			return result
 		}
 
