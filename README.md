@@ -53,12 +53,12 @@ The following method will expose the service through NodePort. Please make sure 
 Step2: Install Lunettes with Helm
 ```bash
 # Use NodePort
-helm install deploy/helm/lunettes \
+helm install lunettes oci://ghcr.io/alipay/lunettes-chart \
   # Setting enableAuditApiserver to true will enable the auditing of the apiserver for you.
   # Please note that this process will restart the apiserver.
-  --set enableAuditApiserver=true
-  --set grafanaType=NodePort
-  --set jaegerType=NodePort
+  --set enableAuditApiserver=true \
+  --set grafanaType=NodePort \
+  --set jaegerType=NodePort 
 ```
 
 Step3: Find the endpoint of Lunettes dashboard service

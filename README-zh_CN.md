@@ -47,12 +47,12 @@ Lunettes 可以识别容器生命周期每个交付阶段的开始和结尾，�
 第二步：通过 Helm 安装 Lunettes
 ```bash
 # Use NodePort 
-helm install deploy/helm/lunettes \
+helm install lunettes oci://ghcr.io/alipay/lunettes-chart \
   # enableAuditApiserver 设置为 true 将会开启 apiserver 的审计能力
   # 注意: 该过程会重启 apiserver
-  --set enableAuditApiserver=true
-  --set grafanaType=NodePort
-  --set jaegerType=NodePort
+  --set enableAuditApiserver=true \
+  --set grafanaType=NodePort \
+  --set jaegerType=NodePort 
 ```
 
 第三步：获取 Lunettes 服务的接口

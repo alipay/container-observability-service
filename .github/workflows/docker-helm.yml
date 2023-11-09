@@ -1,5 +1,5 @@
 # 工作流名称
-name: Build and Push Docker Image
+name: Build and Push Docker Image and Helm package
 
 on:
   push:
@@ -10,6 +10,8 @@ env:
   GRAFANA_DOCKERHUB_REPO: lunettes/grafana
   # Plugins to be installed.
   GRAFANA_PLUGINS: yesoreyeram-infinity-datasource marcusolsson-json-datasource volkovlabs-form-panel marcusolsson-dynamictext-panel
+  REGISTRY: ghcr.io
+
 jobs:
   main:
     # Run on Ubuntu.
@@ -65,3 +67,27 @@ jobs:
           tags: |
             ${{ env.GRAFANA_DOCKERHUB_REPO }}:latest
             ${{ env.GRAFANA_DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          # Publishing and installing a package with GitHub Actions
+          # see: https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: azure/setup-helm@v3
+        id: install
+
+      - name: get epository name
+        run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+
+      - name: helm package chart
+        run: |
+          sed -i 's/grafanaImage: lunettes\/grafana:latest/grafanaImage: lunettes\/grafana:${{ env.APP_VERSION }}/g' deploy/helm/lunettes/values.yaml
+          sed -i 's/lunettesImage: lunettes\/lunettes:latest/lunettesImage: lunettes\/lunettes:${{ env.APP_VERSION }}/g' deploy/helm/lunettes/values.yaml
+          helm package deploy/helm/lunettes --app-version=${{ env.APP_VERSION }} --version=${{ env.APP_VERSION }} -d _out
+
+      - name: helm push chart
+        run: helm push _out/lunettes-chart-${{ env.APP_VERSION }}.tgz oci://ghcr.io/${{ env.REPOSITORY_NAME }}
