@@ -62,7 +62,7 @@ export GRAFANA_NODEPORT=$(kubectl -n lunettes get svc grafana -o jsonpath='{.spe
 export JAEGER_NODEPORT=$(kubectl -n lunettes get svc jaeger-collector -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
-在浏览器打开 [http://[LUNETTES_IP]:[LUNETTES_NODEPORT]](http://[LUNETTES_IP]:[LUNETTES_NODEPORT]) 然后访问 debugpod 或者 debugslo 接口。默认的用户名和密码是 `admin:admin`.
+在浏览器打开 [http://[LUNETTES_IP]:[GRAFANA_NODEPORT]](http://[LUNETTES_IP]:[GRAFANA_NODEPORT]) 然后访问 debugpod 或者 debugslo 接口。默认的用户名和密码是 `admin:admin`.
 
 在浏览器打开 [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?) 然后访问 trace 接口。
 

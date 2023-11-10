@@ -68,7 +68,7 @@ export GRAFANA_NODEPORT=$(kubectl -n lunettes get svc grafana -o jsonpath='{.spe
 export JAEGER_NODEPORT=$(kubectl -n lunettes get svc jaeger-collector -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
-Open [http://[LUNETTES_IP]:[LUNETTES_NODEPORT]](http://[LUNETTES_IP]:[LUNETTES_NODEPORT]) in your browser and access debugpod or debugslo endpoint, the default username and password are `admin:admin`.
+Open [http://[LUNETTES_IP]:[GRAFANA_NODEPORT]](http://[LUNETTES_IP]:[GRAFANA_NODEPORT]) in your browser and access debugpod or debugslo endpoint, the default username and password are `admin:admin`.
 
 Open [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?) in your browser and access trace endpoint.
 
