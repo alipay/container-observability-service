@@ -8,8 +8,6 @@ import (
 	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/shares"
 
-	"github.com/alipay/container-observability-service/pkg/kube"
-
 	"github.com/oliveagle/jsonpath"
 
 	"github.com/alipay/container-observability-service/pkg/utils"
@@ -74,34 +72,6 @@ func processPatchNoSubresource(auditEvent *shares.AuditEvent) {
 		extraInfo["user"] = auditEvent.User
 		extraInfo["requestObject"] = auditEvent.RequestObject
 		extraInfo["UserAgent"] = auditEvent.UserAgent
-		_ = xsearch.SavePodLifePhase(clusterName, responsePod.Namespace, string(responsePod.UID),
-			responsePod.Name, opName, false, auditEvent.RequestReceivedTimestamp.Time,
-			auditEvent.RequestReceivedTimestamp.Time, extraInfo, string(auditEvent.AuditID))
-	}
-
-	//识别容器升级
-	if pod.Annotations["request-action-type"] == "RequestUpgrade" {
-		extraInfo := make(map[string]interface{})
-		extraInfo["user"] = auditEvent.User
-		extraInfo["requestObject"] = auditEvent.RequestObject
-		extraInfo["UserAgent"] = auditEvent.UserAgent
-		if responsePod.Spec.NodeName != "" {
-			nodeStatus := kube.GetNodeSummary(responsePod.Spec.NodeName)
-			if nodeStatus != "" {
-				extraInfo["NodeStatus"] = nodeStatus
-			}
-			extraInfo["NodeInfo"] = kube.GetNodeInfo(responsePod.Spec.NodeName)
-		}
-		var image string
-		if len(pod.Spec.Containers) > 0 && pod.Spec.Containers[0].Image != "" {
-			image = pod.Spec.Containers[0].Image
-		}
-		var opName string
-		if image != "" {
-			opName = "upgrade container " + " to " + image
-		} else {
-			opName = "upgrade container "
-		}
 		_ = xsearch.SavePodLifePhase(clusterName, responsePod.Namespace, string(responsePod.UID),
 			responsePod.Name, opName, false, auditEvent.RequestReceivedTimestamp.Time,
 			auditEvent.RequestReceivedTimestamp.Time, extraInfo, string(auditEvent.AuditID))
