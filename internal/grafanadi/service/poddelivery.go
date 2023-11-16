@@ -18,7 +18,7 @@ func ConverPodCreate2Frame(sloTraces []*storagemodel.SloTraceData) []model.Deliv
 			{Key: "DeliveryEnv", Value: convertNil("")},
 			{Key: "PodType", Value: convertNil(time.Duration(slo.PodSLO).String())},
 			{Key: "SloHint", Value: convertNil(slo.SloHint)},
-			{Key: "CreationResult", Value: convertNil(slo.StartUpResultFromCreate)},
+			{Key: "CreationResult", Value: convertNil(slo.SLOViolationReason)},
 			{Key: "CreatedAt", Value: convertNil(slo.CreatedTime.Format(time.RFC3339Nano))},
 			{Key: "ReadyAt", Value: convertNil(slo.ReadyAt.Format(time.RFC3339Nano))},
 		}
