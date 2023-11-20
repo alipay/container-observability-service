@@ -1,3 +1,7 @@
+<p align="center">
+<img src="./statics/lunettes-logo.png" width="30%"/>
+</p>
+
 # Lunettes - Container Lifecycle Observability Service
 
 <strong><p align="center">Observe Your Stack, Energize Your APP</p></strong>
