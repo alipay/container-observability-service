@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 	"sync"
 	"time"
 
@@ -662,7 +661,6 @@ func InitZsearch(zsearchEndPoint, username, password string, extraInfo interface
 			elastic.SetURL(zsearchEndPoint),
 			elastic.SetBasicAuth(username, password),
 			elastic.SetSniff(false),
-			elastic.SetTraceLog(log.New(os.Stdout, "", log.LstdFlags)),
 		)
 		if err != nil {
 			panic(err)
