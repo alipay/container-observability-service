@@ -22,7 +22,7 @@ kind create cluster \
 ## Deploy Lunettes with helm
 
 ```bash
-helm upgrade --install lunettes deploy/helm/lunettes/ \
+helm install lunettes oci://ghcr.io/alipay/lunettes-chart \
   --set enableAuditApiserver=true \
   --set lunettesType=NodePort \
   --set grafanadiType=NodePort \
