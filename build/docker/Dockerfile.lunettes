@@ -11,6 +11,7 @@ RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build -v -a -o a
 RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build -v -a -o auditinstaller ./cmd/audit_init
 RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build -v -a -o grafanadi ./cmd/grafanadi
 
+
 # Copy the aggregator binary into a thin image
 FROM ubuntu:devel
 WORKDIR /

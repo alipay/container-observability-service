@@ -7,6 +7,7 @@ spec:
   ports:
   - port: 8080
     protocol: TCP
+    name: http-grafanadi
     targetPort: http-grafanadi
 {{- if eq .Values.grafanadiType "NodePort" }}
     nodePort: {{ .Values.grafanadiNodePort }}
