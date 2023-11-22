@@ -41,7 +41,6 @@ lunettesResources:
 grafanadiInitKubeClient: false
 grafanadiType: LoadBalancer
 grafanadiNodePort: 30280
-restapiNodePort: 30289
 grafanadiResources:
   limits:
     cpu: 250m

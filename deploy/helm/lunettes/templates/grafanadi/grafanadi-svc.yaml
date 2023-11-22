@@ -12,13 +12,6 @@ spec:
 {{- if eq .Values.grafanadiType "NodePort" }}
     nodePort: {{ .Values.grafanadiNodePort }}
 {{- end }}
-  - port: 8089
-    name: http-restapi
-    protocol: TCP
-    targetPort: http-restapi
-{{- if eq .Values.grafanadiType "NodePort" }}
-    nodePort: {{ .Values.restapiNodePort }}
-{{- end }}
   selector:
     app: grafanadi
   type: {{ .Values.grafanadiType }}

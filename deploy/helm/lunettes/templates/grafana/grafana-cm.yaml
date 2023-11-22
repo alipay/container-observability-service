@@ -1113,7 +1113,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "yaml",
-                        "url": "http://localhost:9099/queryyamls?resource=pod&uid=${__data.fields[\"PodUID\"]}"
+                        "url": "http://grafanadi.lunettes.svc.cluster.local:30280/queryyamls?resource=pod&uid=${__data.fields[\"PodUID\"]}"
                       }
                     ]
                   },
@@ -1138,7 +1138,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "NodeYaml",
-                        "url": "http://localhost:9099/queryyamls?resource=node&name=${__data.fields[\"NodeName\"]}"
+                        "url": "http://grafanadi.lunettes.svc.cluster.local:30280/queryyamls?resource=node&name=${__data.fields[\"NodeName\"]}"
                       }
                     ]
                   },
@@ -3489,7 +3489,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "Pod信息",
-                        "url": "\r\nhttp://localhost:9097/d/lunettes-debugpod/lunettes-debugpod?orgId=1&var-podinfo=uid&var-podinfovalue=${__data.fields.PodUid}"
+                        "url": "\r\nhttp://grafanadi.lunettes.svc.cluster.local:30180/d/lunettes-debugpod/lunettes-debugpod?orgId=1&var-podinfo=uid&var-podinfovalue=${__data.fields.PodUid}"
                       }
                     ]
                   }

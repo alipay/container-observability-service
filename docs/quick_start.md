@@ -30,6 +30,12 @@ helm upgrade --install lunettes deploy/helm/lunettes/ \
   --set jaegerType=NodePort
 ```
 
+## Access to podyaml and nodeyaml
+
+```bash
+sudo echo "127.0.0.1       grafanadi.lunettes.svc.cluster.local" >>/etc/hosts
+```
+
 ## Create test pod
 
 ```bash
@@ -42,9 +48,9 @@ Open broswer to visit
 - lunettes
   - debugpod api: [http://localhost:9096/api/v1/debugpod?name=nginx](http://localhost:9096/api/v1/debugpod?name=nginx)
   - debugslo api: [http://localhost:9096/api/v1/debugslo?result=success](http://localhost:9096/api/v1/debugslo?result=success)
-- grafana: http://localhost:9097 The default username and password are admin/admin.
-  - debugpod: [http://localhost:9097/d/lunettes-debugslo/lunettes-debugslo?orgId=1](http://localhost:9097/d/lunettes-debugslo/lunettes-debugslo?orgId=1)
-  - debugslo: [http://localhost:9097/d/lunettes-debugslo/lunettes-debugslo?orgId=1](http://localhost:9097/d/lunettes-debugslo/lunettes-debugslo?orgId=1)
+- grafana: http://localhost:30180 The default username and password are admin/admin.
+  - debugpod: [http://localhost:30180/d/lunettes-debugslo/lunettes-debugslo?orgId=1](http://localhost:30180/d/lunettes-debugslo/lunettes-debugslo?orgId=1)
+  - debugslo: [http://localhost:30180/d/lunettes-debugslo/lunettes-debugslo?orgId=1](http://localhost:30180/d/lunettes-debugslo/lunettes-debugslo?orgId=1)
 - jaejer: [http://localhost:9095/search](http://localhost:9095/search)
 - kibana: [http://localhost:9092](http://localhost:9092)
 - prometheus: [http://localhost:9091/graph?](http://localhost:9091/graph?)
