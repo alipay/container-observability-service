@@ -41,8 +41,8 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r := mux.NewRouter()
 		// containerlifecycle
 
-		r.Path("/apis/v1/debugging/pods").HandlerFunc(handlerWrapper(handler.PodResetResultFactory, s.Storage))
-
+		// r.Path("/apis/v1/debugging/pods").HandlerFunc(handlerWrapper(handler.PodResetResultFactory, s.Storage))
+		r.Path("/podresetresult").HandlerFunc(handlerWrapper(handler.PodResetResultFactory, s.Storage))
 		log.Println("ListenAndServe ...")
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {

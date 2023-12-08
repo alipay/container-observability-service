@@ -2,14 +2,19 @@ package handler
 
 import (
 	"errors"
-	"fmt"
+	// "fmt"
+	"time"
 	"net/http"
 	"regexp"
 	"sync"
 
 	"github.com/alipay/container-observability-service/internal/restapi/model"
+	"github.com/alipay/container-observability-service/internal/restapi/service"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
 	clientmodel "github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
+	"github.com/alipay/container-observability-service/pkg/utils"
+	interutils "github.com/alipay/container-observability-service/internal/grafanadi/utils"
+	"github.com/alipay/container-observability-service/pkg/metrics"
 )
 
 type PodResetResultHandler struct {
@@ -20,11 +25,16 @@ type PodResetResultHandler struct {
 }
 
 type PodResetResultParams struct {
-	podUID   string
-	podName  string
-	podIP    string
-	hostname string
+	PodUIDName string
+	PodUID     string
 }
+
+// type PodResetResultParams struct {
+// 	podUID   string
+// 	podName  string
+// 	podIP    string
+// 	hostname string
+// }
 
 func (handler *PodResetResultHandler) RequestParams() interface{} {
 
@@ -33,11 +43,17 @@ func (handler *PodResetResultHandler) RequestParams() interface{} {
 
 func (handler *PodResetResultHandler) ParseRequest() error {
 	params := PodResetResultParams{}
+	// if handler.request.Method == http.MethodGet {
+	// 	params.podUID = handler.request.URL.Query().Get("uid")
+	// 	params.podName = handler.request.URL.Query().Get("name")
+	// 	params.podIP = handler.request.URL.Query().Get("podip")
+	// 	params.hostname = handler.request.URL.Query().Get("hostname")
+	// }
 	if handler.request.Method == http.MethodGet {
-		params.podUID = handler.request.URL.Query().Get("uid")
-		params.podName = handler.request.URL.Query().Get("name")
-		params.podIP = handler.request.URL.Query().Get("podip")
-		params.hostname = handler.request.URL.Query().Get("hostname")
+		key := handler.request.URL.Query().Get("searchkey")
+		value := handler.request.URL.Query().Get("searchvalue")
+		params.PodUIDName = key
+		params.PodUID = value
 	}
 
 	handler.requestParams = &params
@@ -45,35 +61,35 @@ func (handler *PodResetResultHandler) ParseRequest() error {
 }
 
 func (handler *PodResetResultHandler) ValidRequest() error {
-	reqParam := handler.requestParams
-	if reqParam.podUID == "" && reqParam.podName == "" && reqParam.podIP == "" && reqParam.hostname == "" {
-		return fmt.Errorf("uid or name or podip or hostname needed")
-	}
+	// reqParam := handler.requestParams
+	// if reqParam.podUID == "" && reqParam.podName == "" && reqParam.podIP == "" && reqParam.hostname == "" {
+	// 	return fmt.Errorf("uid or name or podip or hostname needed")
+	// }
 	return nil
 }
 
-func (handler *PodResetResultHandler) QueryPodResetResult() (int, interface{}, error) {
-
+func (handler *PodResetResultHandler) QueryPodResetResult(key, value string) (int, interface{}, error) {
 	podInfos := make([]*clientmodel.PodInfo, 0)
 	var podRest = model.DebugPodRestResult{}
 	var responseResult clientmodel.Response
 	slotracedata := make([]*clientmodel.SloTraceData, 0)
 	lifephases := make([]*clientmodel.LifePhase, 0)
-	podyaml := make([]*clientmodel.PodYaml, 0)
+	podYamls := make([]*clientmodel.PodYaml, 0)
+	if value == "" {
+		return http.StatusOK, nil, nil
+	}
 
-	podUid := handler.requestParams.podUID
-	if handler.requestParams.podName != "" {
-		err := handler.storage.QueryPodUIDListByPodName(&podyaml, handler.requestParams.podName)
-		if err == nil && len(podyaml) > 0 {
-			podUid = podyaml[0].PodUid
-		}
+	begin := time.Now()
+	defer func() {
+		cost := utils.TimeSinceInMilliSeconds(begin)
+		metrics.QueryMethodDurationMilliSeconds.WithLabelValues("QueryNodeYaml").Observe(cost)
+	}()
+	util := interutils.Util{
+		Storage: handler.storage,
 	}
-	if handler.requestParams.hostname != "" {
-		err := handler.storage.QueryPodUIDListByHostname(&podyaml, handler.requestParams.hostname)
-		if err == nil && len(podyaml) > 0 {
-			podUid = podyaml[0].PodUid
-		}
-	}
+	util.GetUid(podYamls, key, &value)
+	podUid := value
+
 	match, _ := regexp.MatchString("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", podUid)
 	if !match {
 		responseResult = clientmodel.Response{
@@ -211,8 +227,10 @@ func (handler *PodResetResultHandler) QueryPodResetResult() (int, interface{}, e
 		podRest.DebugPodRes = podResult
 		responseResult.Data = podRest
 	}
+	dataFrame := service.ConvertResetResult2Frame(responseResult)
+	// dataFrame := service.ConvertPodInfo2Frame(podInfos)
 
-	return http.StatusOK, responseResult, nil
+	return http.StatusOK, dataFrame, nil
 }
 
 func (handler *PodResetResultHandler) Process() (int, interface{}, error) {
@@ -220,7 +238,10 @@ func (handler *PodResetResultHandler) Process() (int, interface{}, error) {
 	var err error
 	var httpStatus int
 
-	httpStatus, result, err = handler.QueryPodResetResult()
+	// httpStatus, result, err = handler.QueryPodResetResult()
+	if handler.requestParams.PodUID != "" {
+		httpStatus, result, err = handler.QueryPodResetResult(handler.requestParams.PodUIDName, handler.requestParams.PodUID)
+	}
 
 	return httpStatus, result, err
 }
