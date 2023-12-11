@@ -157,5 +157,5 @@ Please visit [docs](/docs)
 ## 💡 Community
 Any questions related to Lunettes please reach us via:
 - Slack
-- DingTalk
-- GitHub Issue
+- [DingTalk](https://qr.dingtalk.com/action/joingroup?code=v1,k1,11giuLFUSQIWJ1Otmzn2egYQnu9p+sNhe1yktypjpz0=&_dt_no_comment=1&origin=11)
+- [GitHub Issue](https://github.com/alipay/container-observability-service/issues)

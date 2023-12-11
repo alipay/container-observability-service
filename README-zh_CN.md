@@ -152,5 +152,5 @@ Lunettes是一个高度可配置化的服务。下面是一个实例，用户可
 ## 💡 社区
 您有任何与 Lunettes 有关的问题可以通过下列方式联系我们：
 - Slack
-- 钉钉
-- Github Issue
+- [钉钉](https://qr.dingtalk.com/action/joingroup?code=v1,k1,11giuLFUSQIWJ1Otmzn2egYQnu9p+sNhe1yktypjpz0=&_dt_no_comment=1&origin=11)
+- [Github Issue](https://github.com/alipay/container-observability-service/issues)
