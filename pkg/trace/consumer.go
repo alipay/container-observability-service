@@ -9,6 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/alipay/container-observability-service/pkg/common"
 	"github.com/alipay/container-observability-service/pkg/shares"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -19,7 +20,7 @@ import (
 )
 
 var (
-	lunettesNs            = "lunettes"
+	lunettesNs            = common.LunettesNs
 	lunettesConfigMapName = "lunettes-config-trace"
 	kubeconfigPath        = "/etc/kubernetes/kubeconfig/admin.kubeconfig"
 )
