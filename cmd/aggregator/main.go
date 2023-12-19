@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/alipay/container-observability-service/pkg/common"
 	"github.com/alipay/container-observability-service/pkg/spans"
 	"github.com/alipay/container-observability-service/pkg/trace"
 
@@ -189,6 +190,11 @@ func newRootCmd() *cobra.Command {
 		&options.EnableTrace, "trace-enable", "",
 		true,
 		"If close the trace feature, default false")
+
+	cmd.PersistentFlags().StringVarP(
+		&common.LunettesNs, "lunettes-ns", "",
+		"lunettes",
+		"get configmap form lunettes namespace")
 
 	return cmd
 }
