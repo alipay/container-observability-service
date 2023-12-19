@@ -46,7 +46,7 @@ jobs:
       run: |
         helm upgrade --install lunettes deploy/helm/lunettes/ \
           --set lunettesImage=${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }} \
-          --set namespace=lunettes-h
+          --set namespace=lunettes-h \
           --set enableAuditApiserver=true \
           --set lunettesType=NodePort \
           --set grafanadiType=NodePort \
