@@ -83,6 +83,7 @@ func refreshLunettesConfigFromConfigMap(stop <-chan struct{}) {
 	}
 
 	refreshConfigMap := func() {
+		klog.Infof("config refreshConfigMap, lunettesNs is %s", lunettesNs)
 		lunettesConfigMap, err := cs.CoreV1().ConfigMaps(lunettesNs).Get(context.TODO(), lunettesConfigMapName, metav1.GetOptions{})
 		if err != nil {
 			klog.Errorf("failed to get lunettes configmap: %v", err)
