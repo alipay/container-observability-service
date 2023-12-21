@@ -39,10 +39,6 @@ const (
 	kubeConfigPath        = "/etc/kubernetes/kubeconfig/admin.kubeconfig"
 )
 
-var (
-	lunettesNs = common.LunettesNs
-)
-
 func GlobalLunettesConfig() *LunettesConfig {
 	val := configValue.Load()
 	if ptr, ok := val.(*LunettesConfig); ok && ptr != nil {
@@ -83,8 +79,8 @@ func refreshLunettesConfigFromConfigMap(stop <-chan struct{}) {
 	}
 
 	refreshConfigMap := func() {
-		klog.Infof("config refreshConfigMap, lunettesNs is %s", lunettesNs)
-		lunettesConfigMap, err := cs.CoreV1().ConfigMaps(lunettesNs).Get(context.TODO(), lunettesConfigMapName, metav1.GetOptions{})
+		klog.Infof("config refreshConfigMap, common.LunettesNs is %s", common.LunettesNs)
+		lunettesConfigMap, err := cs.CoreV1().ConfigMaps(common.LunettesNs).Get(context.TODO(), lunettesConfigMapName, metav1.GetOptions{})
 		if err != nil {
 			klog.Errorf("failed to get lunettes configmap: %v", err)
 			return
