@@ -46,8 +46,8 @@ spec:
         - --otlp-collector=jaeger-collector.{{ .Values.namespace }}:4317
         - --v=6
         - --apiserver-enabled={{ .Values.apiserverEnabled }}
-        - --log_dir=/logs
-        - --logtostderr=true
+        - --log_dir={{ .Values.lunettesLogdir }}
+        - --alsologtostderr={{ .Values.lunettesAlsologtostderr }}
         - --es-buffer-duration=10s
         - --es-fetch-interval=1s
         - --es-endpoint=http://es-cluster-svc.{{ .Values.namespace }}:9200

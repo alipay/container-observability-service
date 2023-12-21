@@ -29,6 +29,8 @@ lunettesNodeport: 30880
 lunettesType: LoadBalancer
 apiserverEnabled: true
 traceEnable: false
+lunettesLogdir: /logs
+lunettesAlsologtostderr: true
 lunettesResources:
   limits:
     cpu: 4
