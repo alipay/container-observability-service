@@ -13,6 +13,21 @@ RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build -v -a -o g
 
 # Copy the aggregator binary into a thin image
 FROM ubuntu:devel
+
+LABEL software.ubuntu="curl,vim,ping,telnet,nc,dnsutils,traceroute,net-tools"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    vim \
+    iputils-ping \
+    telnet \
+    netcat-traditional \
+    dnsutils \
+    traceroute \
+    net-tools \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /
 COPY --from=builder /src/aggregator .
 COPY --from=builder /src/statics ./statics

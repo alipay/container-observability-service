@@ -6,6 +6,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/alipay/container-observability-service/pkg/common"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	clientset "k8s.io/client-go/kubernetes"
@@ -34,7 +35,6 @@ type LunettesConfig struct {
 
 const (
 	RetainOldMetrics      = false
-	lunettesNs            = "lunettes"
 	lunettesConfigMapName = "lunettes-config"
 	kubeConfigPath        = "/etc/kubernetes/kubeconfig/admin.kubeconfig"
 )
@@ -79,7 +79,8 @@ func refreshLunettesConfigFromConfigMap(stop <-chan struct{}) {
 	}
 
 	refreshConfigMap := func() {
-		lunettesConfigMap, err := cs.CoreV1().ConfigMaps(lunettesNs).Get(context.TODO(), lunettesConfigMapName, metav1.GetOptions{})
+		klog.Infof("config refreshConfigMap, common.LunettesNs is %s", common.LunettesNs)
+		lunettesConfigMap, err := cs.CoreV1().ConfigMaps(common.LunettesNs).Get(context.TODO(), lunettesConfigMapName, metav1.GetOptions{})
 		if err != nil {
 			klog.Errorf("failed to get lunettes configmap: %v", err)
 			return

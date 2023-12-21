@@ -9,6 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/alipay/container-observability-service/pkg/common"
 	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/shares"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -20,7 +21,6 @@ import (
 )
 
 var (
-	lunettesNs            = "lunettes"
 	lunettesConfigMapName = "lunettes-config"
 	kubeconfigPath        = "/etc/kubernetes/kubeconfig/admin.kubeconfig"
 )
@@ -188,7 +188,8 @@ func (p *SpanProcessor) RefreshConfig() {
 	}
 
 	refreshConfigMap := func() {
-		lunettesConfigMap, err := cs.CoreV1().ConfigMaps(lunettesNs).Get(context.TODO(), lunettesConfigMapName, metav1.GetOptions{})
+		klog.Infof("spans refreshConfigMap, common.LunettesNs is %s", common.LunettesNs)
+		lunettesConfigMap, err := cs.CoreV1().ConfigMaps(common.LunettesNs).Get(context.TODO(), lunettesConfigMapName, metav1.GetOptions{})
 		if err != nil {
 			klog.Errorf("failed to get span configmap: %v", err)
 			return
