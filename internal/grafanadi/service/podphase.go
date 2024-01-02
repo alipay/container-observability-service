@@ -85,6 +85,7 @@ func ConvertPodPhase2Frame(podPhases []*storagemodel.LifePhase) model.DataFrame 
 				if msg != "" && msg != nil {
 					phaseMessage = msg.(string)
 				}
+				op = msg.(string)
 			}
 			ext = phase.ExtraInfo.(map[string]interface{})["auditEvent.ResponseObject"]
 			if ext != nil {
