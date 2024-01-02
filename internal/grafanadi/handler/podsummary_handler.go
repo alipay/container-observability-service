@@ -71,11 +71,6 @@ func (handler *PodSummaryHandler) QueryPodSummary(key, value string) (int, inter
 	util.GetUid(podYamls, key, &value)
 	podUid := value
 
-	match, _ := regexp.MatchString("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", podUid)
-	if !match {
-		return http.StatusBadRequest, nil, nil
-	}
-
 	var err error
 	var wg sync.WaitGroup
 	wg.Add(3)
