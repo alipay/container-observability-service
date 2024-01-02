@@ -3,7 +3,6 @@ package handler
 import (
 	"errors"
 	"net/http"
-	"regexp"
 	"sync"
 	"time"
 
