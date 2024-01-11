@@ -62,10 +62,14 @@ spec:
         env:
         - name: GOTRACEBACK
           value: crash
+{{- if .Values.kubernetesSvcHost }}
         - name: KUBERNETES_SERVICE_HOST
-          value: {{ .Values.kubernetesSvcHost }}
+          value: "{{ .Values.kubernetesSvcHost }}"
+{{- end }}
+{{- if .Values.kubernetesSvcPort }}
         - name: KUBERNETES_SERVICE_PORT
-          value: "6443"
+          value: "{{ .Values.kubernetesSvcPort }}"
+{{- end }}
         ports:
         - name: metrics
           containerPort: 9091

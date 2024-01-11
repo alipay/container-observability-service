@@ -5,7 +5,8 @@
 # share
 namespace: lunettes
 imagePullPolicy: IfNotPresent
-kubernetesSvcHost: kubernetes.default
+# kubernetesSvcHost: kubernetes.default
+# kubernetesSvcPort: "6443"
 cluster: staging
 esUser: elastic
 esPassword: changeme
