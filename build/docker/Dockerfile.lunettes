@@ -16,6 +16,9 @@ FROM ubuntu:devel
 
 LABEL software.ubuntu="curl,vim,ping,telnet,nc,dnsutils,traceroute,net-tools"
 
+RUN groupadd -g 500 lunettes && \
+    useradd -u 500 -g lunettes lunettes
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     vim \
