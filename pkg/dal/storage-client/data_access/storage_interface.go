@@ -58,6 +58,10 @@ type PodInfoInterface interface {
 	QueryPodInfoWithPodUid(data interface{}, uid string) error
 }
 
+type PodSummaryFeedbackInterface interface {
+	StorePodSummaryFeedbackWithPodUid(data interface{}, podSummaryFeedback model.PodSummaryFeedback) error
+}
+
 type StorageInterface interface {
 	AuditInterface
 	PodInterface
@@ -67,4 +71,5 @@ type StorageInterface interface {
 	PodLifePhaseInterface
 	SpanInterface
 	PodInfoInterface
+	PodSummaryFeedbackInterface
 }

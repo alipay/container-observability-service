@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 // Take this as Example: https://sriramajeyam.com/grafana-infinity-datasource/wiki/json
 type BizInfoTable struct {
 	ClusterName string `json:"ClusterName,omitempty"`
@@ -165,4 +167,18 @@ type PodSummary struct {
 	ResultCode []string    `json:"ResultCode,omitempty"`
 	Component  interface{} `json:"Component,omitempty"`
 	Summary    interface{} `json:"Summary,omitempty"`
+}
+
+type PodSummaryFeedback struct {
+	ClusterName string    `json:"ClusterName,omitempty" gorm:"column:cluster_name"`
+	Namespace   string    `json:"Namespace,omitempty" gorm:"column:namespace"`
+	PodName     string    `json:"PodName,omitempty" gorm:"column:pod_name"`
+	PodUID      string    `json:"PodUID,omitempty" gorm:"column:pod_uid"`
+	PodIP       string    `json:"PodIP,omitempty" gorm:"column:pod_ip"`
+	NodeName    string    `json:"NodeName,omitempty" gorm:"-"`
+	Feedback    string    `json:"Feedback"`
+	Score       int       `json:"Score"`
+	Comment     string    `json:"Comment"`
+	Summary     string    `json:"Summary"`
+	CreateTime  time.Time `json:"CreateTime"`
 }

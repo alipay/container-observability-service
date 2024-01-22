@@ -1432,3 +1432,42 @@ func (s *StorageEsImpl) QueryResourceYamlWithName(kind, name string) (interface{
 
 	return result, nil
 }
+
+func (s *StorageEsImpl) StorePodSummaryFeedbackWithPodUid(data interface{}, podSummaryFeedback model.PodSummaryFeedback) error {
+
+	if podSummaryFeedback.PodUID == "" {
+		return fmt.Errorf("the params is error, PodUID is nil")
+	}
+
+	_, esTableName, esType, err := utils.GetMetaName(data)
+
+	if err != nil {
+		return err
+	}
+	begin := time.Now()
+	defer func() {
+		cost := utils.TimeSinceInMilliSeconds(begin)
+		metrics.QueryMethodDurationMilliSeconds.WithLabelValues("StorePodSummaryFeedbackWithPodUid").Observe(cost)
+	}()
+
+	doc := map[string]interface{}{
+		"ClusterName": podSummaryFeedback.ClusterName,
+		"Namespace":   podSummaryFeedback.Namespace,
+		"PodName":     podSummaryFeedback.PodName,
+		"PodUID":      podSummaryFeedback.PodUID,
+		"PodIP":       podSummaryFeedback.PodIP,
+		"NodeName":    podSummaryFeedback.NodeName,
+		"Feedback":    podSummaryFeedback.Feedback,
+		"Score":       podSummaryFeedback.Score,
+		"Comment":     podSummaryFeedback.Comment,
+		"Summary":     podSummaryFeedback.Summary,
+		"CreateTime":  podSummaryFeedback.CreateTime,
+	}
+	_, err = s.DB.Index().Index(esTableName).Type(esType).BodyJson(doc).Do(context.Background())
+
+	if err != nil {
+		return fmt.Errorf("error%v", err)
+	}
+
+	return nil
+}

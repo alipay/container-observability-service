@@ -650,6 +650,48 @@ const (
 			}
 		}
 	}`
+
+	podSummaryFeedbackIndexName = "pod_summary_feedback"
+	podSummaryFeedbackTypeName  = "_doc"
+	podSummaryFeedbackMapping   = `{
+		"mappings": {
+			"properties": {
+			  	"ClusterName": {
+					"type": "keyword"
+				},
+				"Namespace": {
+					"type": "keyword"
+				},
+				"PodName": {
+					"type": "keyword"
+				},
+				"PodUID": {
+					"type": "keyword"
+				},
+				"PodIP": {
+					"type": "keyword"
+				},
+				"NodeName": {
+					"type": "keyword"
+				},
+				"Feedback": {
+					"type": "keyword"
+				},
+				"Score": {
+					"type": "keyword"
+				},
+				"Comment": {
+					"type": "keyword"
+				},
+				"Summary": {
+					"type": "keyword"
+				},
+				"CreateTime": {
+					"type": "date"
+				}
+			}
+		}
+	}`
 )
 
 var esClient *elastic.Client
@@ -714,6 +756,13 @@ func InitZsearch(zsearchEndPoint, username, password string, extraInfo interface
 		log.Printf("index: %s, mammping: %s\n", auditStagingName, auditStagingMapping)
 		panic(err)
 	}
+
+	err = EnsureIndex(esClient, podSummaryFeedbackIndexName, podSummaryFeedbackMapping)
+	if err != nil {
+		log.Printf("index: %s, mammping: %s\n", podSummaryFeedbackIndexName, podSummaryFeedbackMapping)
+		panic(err)
+	}
+
 	err = EnsurePipeline(esClient, ztimePipelineName, ztimePipelineMapping)
 	if err != nil {
 		log.Printf("index: %s, mammping: %s\n", ztimePipelineName, ztimePipelineMapping)

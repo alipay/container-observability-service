@@ -65,6 +65,7 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/podyamlgraphedges").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
 		r.Path("/podsummary").HandlerFunc(handlerWrapper(handler.PodSummaryFactory, s.Storage))
+		r.Path("/podsummaryfeedback").HandlerFunc(handlerWrapper(handler.PodSummaryFeedbackFactory, s.Storage))
 
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {
@@ -97,9 +98,8 @@ func handlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface)
 		defer r.Body.Close()
 		p := h(w, r, storage)
 		var (
-			err      error
-			respObj  interface{}
-			respBody []byte
+			err     error
+			respObj interface{}
 		)
 		code := http.StatusOK
 		msg := "query success"
@@ -153,10 +153,6 @@ func handlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface)
 			return
 		}
 
-		if err := json.NewEncoder(w).Encode(respObj); err != nil {
-			log.Printf("json enc: %+v", err)
-		}
-
 		// set header
 		w.Header().Set("Content-Type", "application/json;charset=UTF-8")
 		// set cors header
@@ -165,11 +161,9 @@ func handlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface)
 		// set code
 		w.WriteHeader(code)
 
-		// no errors, write response.
-		bodyLen := len(respBody)
-		if bodyLen > 0 {
-			w.Header().Set("Content-Length", strconv.Itoa(bodyLen))
-			w.Write(respBody)
+		// write result to response
+		if err := json.NewEncoder(w).Encode(respObj); err != nil {
+			log.Printf("json enc: %+v", err)
 		}
 	}
 }

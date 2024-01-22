@@ -688,3 +688,6 @@ func (s *StorageSqlImpl) QueryPodYamlWithParams(data interface{}, debugparams *m
 	return nil
 
 }
+func (s *StorageSqlImpl) StorePodSummaryFeedbackWithPodUid(data interface{}, podSummaryFeedback model.PodSummaryFeedback) error {
+	return nil
+}

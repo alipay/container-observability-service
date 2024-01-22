@@ -1,0 +1,108 @@
+name: End to End Test
+
+on:
+  push:
+  pull_request:
+
+env:
+  LUNETTES_DOCKERHUB_REPO: local/lunettes
+
+jobs:
+  create-cluster:
+    runs-on: ubuntu-latest
+    steps:
+    # git checkout code
+    - name: Checkout
+      uses: actions/checkout@v2
+    # Use the git command to retrieve the current tag information and store it in the environment variable APP_VERSION.
+    - name: Generate App Version
+      run: echo APP_VERSION=`git describe --tags --always` >> $GITHUB_ENV
+    - name: Build lunettes
+      id: docker_build_lunettes
+      uses: docker/build-push-action@v2
+      with:
+        push: false
+        file: build/docker/Dockerfile.lunettes
+        # docker build arg
+        build-args: |
+          GOARCH=$(go env GOARCH)
+        # Generate two Docker tags: ${APP_VERSION}
+        tags: |
+          ${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
+    - name: Create k8s Kind Cluster
+      uses: helm/kind-action@v1.5.0
+      with:
+        config: hack/kind.yaml
+        cluster_name: k8s
+    - name: Test kind
+      run: |
+        kubectl get ns
+    - name: kind load image
+      run: |
+        kind load docker-image --name k8s ${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
+    - uses: azure/setup-helm@v3
+      id: install
+    - name: Deploy lunettes
+      run: |
+        helm upgrade --install lunettes deploy/helm/lunettes/ \
+          --set lunettesImage=${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }} \
+          --set enableAuditApiserver=true \
+          --set lunettesType=NodePort \
+          --set grafanadiType=NodePort \
+          --set grafanaType=NodePort \
+          --set jaegerType=NodePort
+        # waiting for lunettes ready
+        set +e
+        for ((i=0; i<120; i++))
+        do
+          status=$(curl -s -XGET "http://localhost:9094/_cluster/health?pretty" | awk -F'"' '/"status"/{print $4}')
+          echo "status is $status"
+          if [ -n "$status" ] && [ "$status" != "red" ]; then
+              echo "Elasticsearch服务已准备就绪，状态为: $status"
+              break
+          else
+              echo "Elasticsearch服务未准备就绪，当前状态为: $status"
+          fi
+          output=$(kubectl -n lunettes get pods -owide)
+          echo "$output"
+          lunettes_pod_name=$(echo "$output" | awk '$1 ~ /^lunettes-/{print $1}')
+          echo -e "################# log lunettes ......#################\n"
+          kubectl -n lunettes logs $lunettes_pod_name | head -n 100
+          es_pod_name=$(echo "$output" | awk '$1 ~ /^es-single-/{print $1}')
+          echo -e "################# log es-single ...... #################\n"
+          kubectl -n lunettes logs $es_pod_name | head -n 100
+          sleep 1m
+        done
+        set -e
+    - name: Create test pod
+      run: |
+        kubectl run nginx --image=nginx
+        sleep 30
+        kubectl get pods
+        sleep 5m
+        echo "waiting for lunettes process audit"
+    - name: Test podinfo api with curl
+      run: |
+        response=$(curl -X GET "http://localhost:9099/podinfotable?searchkey=name&searchvalue=nginx")
+        if echo "$response" | grep -q "nginx"; then
+          echo "URL test passed"
+        else
+          echo "URL test failed"
+          exit 1
+        fi
+
+        response=$(curl -X GET "http://localhost:9099/podsummary?searchkey=name&searchvalue=nginx")
+        if echo "$response" | grep -q "Summary"; then
+          echo "summary test passed"
+        else
+          echo "summary test failed"
+          exit 1
+        fi
+
+        response=$(curl -X POST -H "Content-Type: application/json" -d '{"Feedback": "negative","Score": 1,"Comment": "Bad experience!","Summary": "Pod deliver successfully!"}' "http://localhost:9099/podsummaryfeedback?searchkey=name&searchvalue=nginx")
+        if echo "$response" | grep -q "Feedback"; then
+          echo "feedback test passed"
+        else
+          echo "feedback test failed"
+          exit 1
+        fi

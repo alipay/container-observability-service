@@ -654,83 +654,24 @@ data:
             "h": 10,
             "w": 13,
             "x": 0,
-            "y": 4
+            "y": 3
           },
           "id": 23,
           "options": {
-            "layout": {
-              "variant": "split",
-              "padding": 0,
-              "orientation": "horizontal",
-              "sections": [
-                {
-                  "id": "summary",
-                  "name": ""
-                },
-                {
-                  "id": "feedback",
-                  "name": ""
-                },
-                {
-                  "id": "",
-                  "name": ""
-                }
-              ]
-            },
-            "initial": {
-              "method": "query",
-              "contentType": "application/json",
-              "code": "console.log(data, response, initial, elements);\n\nreturn;\n\n/**\n * Data Source\n * Requires form elements to be defined\n */\nconst dataQuery = toDataQueryResponse(response);\nconsole.log(dataQuery);",
-              "getPayload": "return {\n  rawSql: '',\n  format: 'table',\n}",
-              "highlight": false,
-              "highlightColor": "red"
-            },
-            "update": {
-              "method": "-",
-              "contentType": "application/json",
-              "code": "// const payload = {};\n// elements.forEach((element) => {\n//   if (!element.value) {\n//     return;\n//   }\n//   payload[element.id] = element.value;\n// })\n// const url = 'http://localhost:9099/podsummaryfeedback?searchkey=name&searchvalue=nginx'\n// const store = {\n//   Feedback: payload.Feedback,\n//   Score: payload.Score,\n//   Comment: payload.Comment\n//   , Summary: payload.Summary\n// };\n\n// console.log(JSON.stringify(store))\n\n// fetch(url, {\n//   method: 'POST',\n//   headers: {\n//     'Content-Type': 'application/json'\n//   },\n//   body: JSON.stringify(store)\n// })\n//   .then(response => response.json())\n//   .then(data => {\n//     console.log(data);\n//   })\n//   .catch(error => {\n//     console.error('error:', error);\n//   }); ",
-              "payloadMode": "all",
-              "getPayload": "const payload = {};\n\nelements.forEach((element) => {\n  if (!element.value) {\n    return;\n  }\n\n  payload[element.id] = element.value;\n})\n\nreturn payload;\n\n/**\n * Data Source payload\n */ \nreturn {\n  rawSql: '',\n  format: 'table',\n};",
-              "confirm": false
-            },
-            "confirmModal": {
-              "title": "Confirm update request",
-              "body": "Please confirm to update changed values",
-              "columns": {
-                "name": "Label",
-                "oldValue": "Old Value",
-                "newValue": "New Value"
-              },
-              "confirm": "Confirm",
-              "cancel": "Cancel"
-            },
             "buttonGroup": {
               "orientation": "center",
               "size": "md"
             },
-            "submit": {
-              "variant": "custom",
-              "foregroundColor": "#fffefd",
-              "backgroundColor": "blue",
-              "icon": "cloud-upload",
-              "text": "Submit Feedback"
-            },
-            "reset": {
-              "variant": "hidden",
-              "foregroundColor": "yellow",
-              "backgroundColor": "purple",
-              "icon": "process",
-              "text": "Reset"
-            },
-            "resetAction": {
-              "mode": "custom",
-              "code": "if (response && response.ok) {\n  notifySuccess(['Update', 'Values updated successfully.']);\n  locationService.reload();\n} else {\n  notifyError(['Update', 'An error occured updating values.']);\n}",
-              "getPayload": "return {\n  rawSql: '',\n  format: 'table',\n}"
-            },
-            "saveDefault": {
-              "variant": "hidden",
-              "icon": "save",
-              "text": "Save Default"
+            "confirmModal": {
+              "body": "Please confirm to update changed values",
+              "cancel": "Cancel",
+              "columns": {
+                "name": "Label",
+                "newValue": "New Value",
+                "oldValue": "Old Value"
+              },
+              "confirm": "Confirm",
+              "title": "Confirm update request"
             },
             "elements": [
               {
@@ -805,7 +746,66 @@ data:
                 "unit": "",
                 "value": ""
               }
-            ]
+            ],
+            "initial": {
+              "code": "console.log(data, response, initial, elements);\n\nreturn;\n\n/**\n * Data Source\n * Requires form elements to be defined\n */\nconst dataQuery = toDataQueryResponse(response);\nconsole.log(dataQuery);",
+              "contentType": "application/json",
+              "getPayload": "return {\n  rawSql: '',\n  format: 'table',\n}",
+              "highlight": false,
+              "highlightColor": "red",
+              "method": "query"
+            },
+            "layout": {
+              "orientation": "horizontal",
+              "padding": 0,
+              "sections": [
+                {
+                  "id": "summary",
+                  "name": ""
+                },
+                {
+                  "id": "feedback",
+                  "name": ""
+                },
+                {
+                  "id": "",
+                  "name": ""
+                }
+              ],
+              "variant": "split"
+            },
+            "reset": {
+              "backgroundColor": "purple",
+              "foregroundColor": "yellow",
+              "icon": "process",
+              "text": "Reset",
+              "variant": "hidden"
+            },
+            "resetAction": {
+              "code": "if (response && response.ok) {\n  notifySuccess(['Update', 'Values updated successfully.']);\n  locationService.reload();\n} else {\n  notifyError(['Update', 'An error occured updating values.']);\n}",
+              "getPayload": "return {\n  rawSql: '',\n  format: 'table',\n}",
+              "mode": "custom"
+            },
+            "saveDefault": {
+              "icon": "save",
+              "text": "Save Default",
+              "variant": "hidden"
+            },
+            "submit": {
+              "backgroundColor": "blue",
+              "foregroundColor": "#fffefd",
+              "icon": "cloud-upload",
+              "text": "Submit Feedback",
+              "variant": "custom"
+            },
+            "update": {
+              "code": "const payload = {};\nelements.forEach((element) => {\n  if (!element.value) {\n    return;\n  }\n  payload[element.id] = element.value;\n})\nconst url = 'http://localhost:9099/podsummaryfeedback?searchkey=$podinfo&searchvalue=$podinfovalue'\nconst store = {\n  Feedback: payload.Feedback,\n  Score: payload.Score,\n  Comment: payload.Comment\n  , Summary: payload.Summary\n};\n\nconsole.log(JSON.stringify(store))\n\nfetch(url, {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json'\n  },\n  body: JSON.stringify(store)\n})\n  .then(response => response.json())\n  .then(data => {\n    console.log(data);\n  })\n  .catch(error => {\n    console.error('error:', error);\n  }); ",
+              "confirm": true,
+              "contentType": "application/json",
+              "getPayload": "const payload = {};\n\nelements.forEach((element) => {\n  if (!element.value) {\n    return;\n  }\n\n  payload[element.id] = element.value;\n})\n\nreturn payload;\n\n/**\n * Data Source payload\n */ \nreturn {\n  rawSql: '',\n  format: 'table',\n};",
+              "method": "-",
+              "payloadMode": "all"
+            }
           },
           "targets": [
             {
