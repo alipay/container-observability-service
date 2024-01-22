@@ -64,6 +64,7 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/podyamlgraphnodes").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/podyamlgraphedges").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
+		r.Path("/podsummary").HandlerFunc(handlerWrapper(handler.PodSummaryFactory, s.Storage))
 
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {

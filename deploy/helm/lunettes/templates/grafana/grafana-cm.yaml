@@ -254,7 +254,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 1,
+      "id": 2,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -319,9 +319,10 @@ data:
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "csvContent": "key\r\n14423345461",
@@ -384,9 +385,10 @@ data:
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "csvContent": "key\r\n34546100",
@@ -422,7 +424,7 @@ data:
             "content": "For more information: [lunettes/help](https://lunettes/blob/opensource_init/README.md)",
             "mode": "markdown"
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "datasource": {
@@ -493,9 +495,10 @@ data:
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "csvContent": "key\r\n481",
@@ -557,9 +560,10 @@ data:
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "csvContent": "key\r\n17503",
@@ -622,9 +626,10 @@ data:
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "csvContent": "key\r\n800.3",
@@ -641,81 +646,292 @@ data:
         },
         {
           "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
           },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "thresholds"
+          "description": "",
+          "gridPos": {
+            "h": 10,
+            "w": 13,
+            "x": 0,
+            "y": 4
+          },
+          "id": 23,
+          "options": {
+            "layout": {
+              "variant": "split",
+              "padding": 0,
+              "orientation": "horizontal",
+              "sections": [
+                {
+                  "id": "summary",
+                  "name": ""
+                },
+                {
+                  "id": "feedback",
+                  "name": ""
+                },
+                {
+                  "id": "",
+                  "name": ""
+                }
+              ]
+            },
+            "initial": {
+              "method": "query",
+              "contentType": "application/json",
+              "code": "console.log(data, response, initial, elements);\n\nreturn;\n\n/**\n * Data Source\n * Requires form elements to be defined\n */\nconst dataQuery = toDataQueryResponse(response);\nconsole.log(dataQuery);",
+              "getPayload": "return {\n  rawSql: '',\n  format: 'table',\n}",
+              "highlight": false,
+              "highlightColor": "red"
+            },
+            "update": {
+              "method": "-",
+              "contentType": "application/json",
+              "code": "// const payload = {};\n// elements.forEach((element) => {\n//   if (!element.value) {\n//     return;\n//   }\n//   payload[element.id] = element.value;\n// })\n// const url = 'http://localhost:9099/podsummaryfeedback?searchkey=name&searchvalue=nginx'\n// const store = {\n//   Feedback: payload.Feedback,\n//   Score: payload.Score,\n//   Comment: payload.Comment\n//   , Summary: payload.Summary\n// };\n\n// console.log(JSON.stringify(store))\n\n// fetch(url, {\n//   method: 'POST',\n//   headers: {\n//     'Content-Type': 'application/json'\n//   },\n//   body: JSON.stringify(store)\n// })\n//   .then(response => response.json())\n//   .then(data => {\n//     console.log(data);\n//   })\n//   .catch(error => {\n//     console.error('error:', error);\n//   }); ",
+              "payloadMode": "all",
+              "getPayload": "const payload = {};\n\nelements.forEach((element) => {\n  if (!element.value) {\n    return;\n  }\n\n  payload[element.id] = element.value;\n})\n\nreturn payload;\n\n/**\n * Data Source payload\n */ \nreturn {\n  rawSql: '',\n  format: 'table',\n};",
+              "confirm": false
+            },
+            "confirmModal": {
+              "title": "Confirm update request",
+              "body": "Please confirm to update changed values",
+              "columns": {
+                "name": "Label",
+                "oldValue": "Old Value",
+                "newValue": "New Value"
               },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
+              "confirm": "Confirm",
+              "cancel": "Cancel"
+            },
+            "buttonGroup": {
+              "orientation": "center",
+              "size": "md"
+            },
+            "submit": {
+              "variant": "custom",
+              "foregroundColor": "#fffefd",
+              "backgroundColor": "blue",
+              "icon": "cloud-upload",
+              "text": "Submit Feedback"
+            },
+            "reset": {
+              "variant": "hidden",
+              "foregroundColor": "yellow",
+              "backgroundColor": "purple",
+              "icon": "process",
+              "text": "Reset"
+            },
+            "resetAction": {
+              "mode": "custom",
+              "code": "if (response && response.ok) {\n  notifySuccess(['Update', 'Values updated successfully.']);\n  locationService.reload();\n} else {\n  notifyError(['Update', 'An error occured updating values.']);\n}",
+              "getPayload": "return {\n  rawSql: '',\n  format: 'table',\n}"
+            },
+            "saveDefault": {
+              "variant": "hidden",
+              "icon": "save",
+              "text": "Save Default"
+            },
+            "elements": [
+              {
+                "id": "Feedback",
+                "labelWidth": 13,
+                "options": [
                   {
-                    "color": "green",
-                    "value": null
+                    "icon": "check",
+                    "id": "good",
+                    "label": "",
+                    "type": "string",
+                    "value": "good"
                   },
                   {
-                    "color": "red",
-                    "value": 1000
+                    "icon": "times",
+                    "id": "bad",
+                    "label": "",
+                    "type": "string",
+                    "value": "bad"
                   }
-                ]
+                ],
+                "optionsSource": "Custom",
+                "section": "feedback",
+                "title": "Your Feedback",
+                "tooltip": "",
+                "type": "radio",
+                "uid": "2cd3098c-247f-47da-bb58-902611438ca7",
+                "unit": "",
+                "value": false,
+                "width": 15
               },
-              "unit": "ms"
-            },
-            "overrides": []
+              {
+                "id": "Score",
+                "labelWidth": 13,
+                "max": 10,
+                "min": 0,
+                "section": "feedback",
+                "step": 1,
+                "title": "Your Score",
+                "tooltip": "",
+                "type": "slider",
+                "uid": "f44adbf2-df1c-4644-9fe8-4d1e90ed0456",
+                "unit": "",
+                "value": 0
+              },
+              {
+                "id": "Comment",
+                "labelWidth": 13,
+                "rows": 7,
+                "section": "feedback",
+                "title": "Your Comment",
+                "tooltip": "",
+                "type": "textarea",
+                "uid": "c0d3015b-479d-4676-98f2-1b365772611a",
+                "unit": "",
+                "value": ""
+              },
+              {
+                "id": "Summary",
+                "labelWidth": 9,
+                "queryField": {
+                  "label": "A:Summary",
+                  "refId": "A",
+                  "value": "Summary"
+                },
+                "rows": 10,
+                "section": "summary",
+                "title": "Summary",
+                "tooltip": "",
+                "type": "textarea",
+                "uid": "9b4adeb2-6f16-4376-9566-fa913a617de1",
+                "unit": "",
+                "value": ""
+              }
+            ]
           },
-          "gridPos": {
-            "h": 2,
-            "w": 3,
-            "x": 21,
-            "y": 1
-          },
-          "id": 8,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
           "targets": [
             {
-              "csvContent": "key\r\n1800.3",
+              "columns": [],
               "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
               },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
               "refId": "A",
-              "scenarioId": "csv_content"
+              "root_selector": "",
+              "source": "url",
+              "type": "json",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/podsummary?searchkey=$podinfo&searchvalue=$podinfovalue",
+              "url_options": {
+                "data": "",
+                "method": "GET"
+              }
             }
           ],
-          "title": "Last 10min Latency",
-          "type": "stat"
+          "title": "Pod状态摘要",
+          "type": "volkovlabs-form-panel"
         },
         {
-          "collapsed": false,
-          "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 3
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
           },
-          "id": 15,
-          "panels": [],
-          "title": "容器信息",
-          "type": "row"
+          "description": "",
+          "gridPos": {
+            "h": 10,
+            "w": 11,
+            "x": 13,
+            "y": 4
+          },
+          "id": 24,
+          "options": {
+            "buttonGroup": {
+              "orientation": "center",
+              "size": "md"
+            },
+            "confirmModal": {
+              "body": "Please confirm to update changed values",
+              "cancel": "Cancel",
+              "columns": {
+                "name": "Label",
+                "newValue": "New Value",
+                "oldValue": "Old Value"
+              },
+              "confirm": "Confirm",
+              "title": "Confirm update request"
+            },
+            "elements": [
+              {
+                "id": "action",
+                "labelWidth": 16,
+                "rows": 10,
+                "section": "action",
+                "title": "Suggested Actions",
+                "tooltip": "",
+                "type": "textarea",
+                "uid": "2f4b2712-9827-4e7b-bc5a-63bb168f182c",
+                "unit": "",
+                "value": ""
+              }
+            ],
+            "initial": {
+              "code": "console.log(data, response, initial, elements);\n\nreturn;\n\n/**\n * Data Source\n * Requires form elements to be defined\n */\nconst dataQuery = toDataQueryResponse(response);\nconsole.log(dataQuery);",
+              "contentType": "application/json",
+              "getPayload": "return {\n  rawSql: '',\n  format: 'table',\n}",
+              "highlight": false,
+              "highlightColor": "red",
+              "method": "-"
+            },
+            "layout": {
+              "orientation": "horizontal",
+              "padding": 0,
+              "sections": [
+                {
+                  "id": "action",
+                  "name": ""
+                },
+                {
+                  "id": "",
+                  "name": ""
+                }
+              ],
+              "variant": "split"
+            },
+            "reset": {
+              "backgroundColor": "purple",
+              "foregroundColor": "yellow",
+              "icon": "process",
+              "text": "Reset",
+              "variant": "hidden"
+            },
+            "resetAction": {
+              "code": "if (response && response.ok) {\n  notifySuccess(['Update', 'Values updated successfully.']);\n  locationService.reload();\n} else {\n  notifyError(['Update', 'An error occured updating values.']);\n}",
+              "getPayload": "return {\n  rawSql: '',\n  format: 'table',\n}",
+              "mode": "initial"
+            },
+            "saveDefault": {
+              "icon": "save",
+              "text": "Save Default",
+              "variant": "hidden"
+            },
+            "submit": {
+              "backgroundColor": "blue",
+              "foregroundColor": "#fefefe",
+              "icon": "bell",
+              "text": "Call for Help",
+              "variant": "custom"
+            },
+            "update": {
+              "code": "if (response && response.ok) {\n  notifySuccess(['Update', 'Values updated successfully.']);\n  locationService.reload();\n} else {\n  notifyError(['Update', 'An error occured updating values.']);\n}",
+              "confirm": false,
+              "contentType": "application/json",
+              "getPayload": "const payload = {};\n\nelements.forEach((element) => {\n  if (!element.value) {\n    return;\n  }\n\n  payload[element.id] = element.value;\n})\n\nreturn payload;\n\n/**\n * Data Source payload\n */ \nreturn {\n  rawSql: '',\n  format: 'table',\n};",
+              "method": "-",
+              "payloadMode": "all"
+            }
+          },
+          "title": "修复建议操作",
+          "type": "volkovlabs-form-panel"
         },
         {
           "datasource": {
@@ -792,7 +1008,7 @@ data:
             "h": 5,
             "w": 7,
             "x": 0,
-            "y": 4
+            "y": 14
           },
           "id": 12,
           "options": {
@@ -807,7 +1023,7 @@ data:
             },
             "showHeader": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "columns": [],
@@ -939,7 +1155,7 @@ data:
             "h": 5,
             "w": 8,
             "x": 7,
-            "y": 4
+            "y": 14
           },
           "id": 14,
           "options": {
@@ -954,7 +1170,7 @@ data:
             },
             "showHeader": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "columns": [],
@@ -1003,7 +1219,7 @@ data:
             "h": 14,
             "w": 9,
             "x": 15,
-            "y": 4
+            "y": 14
           },
           "id": 21,
           "options": {
@@ -1197,7 +1413,7 @@ data:
             "h": 9,
             "w": 15,
             "x": 0,
-            "y": 9
+            "y": 19
           },
           "id": 13,
           "options": {
@@ -1213,7 +1429,7 @@ data:
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "columns": [],
@@ -1332,7 +1548,7 @@ data:
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 18
+            "y": 28
           },
           "id": 2,
           "options": {
@@ -1347,7 +1563,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "columns": [],
@@ -1442,7 +1658,7 @@ data:
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 18
+            "y": 28
           },
           "id": 18,
           "options": {
@@ -1457,7 +1673,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "columns": [],
@@ -1567,7 +1783,7 @@ data:
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 18
+            "y": 28
           },
           "id": 19,
           "options": {
@@ -1583,7 +1799,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.2.2",
           "targets": [
             {
               "columns": [],
@@ -1622,6 +1838,12 @@ data:
               },
               "custom": {
                 "fillOpacity": 38,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
                 "lineWidth": 0,
                 "spanNulls": false
               },
@@ -1661,7 +1883,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "transparent"
+                    "color": "transparent",
+                    "value": null
                   }
                 ]
               }
@@ -1701,7 +1924,7 @@ data:
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 26
+            "y": 36
           },
           "id": 20,
           "options": {
@@ -1755,7 +1978,7 @@ data:
             "h": 14,
             "w": 24,
             "x": 0,
-            "y": 32
+            "y": 42
           },
           "id": 3,
           "options": {
@@ -1802,7 +2025,7 @@ data:
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 46
+            "y": 56
           },
           "id": 4,
           "targets": [
@@ -1830,17 +2053,16 @@ data:
           "type": "traces"
         }
       ],
-      "refresh": "",
+      "refresh": false,
       "schemaVersion": 38,
-      "style": "dark",
       "tags": [],
       "templating": {
         "list": [
           {
             "current": {
-              "selected": false,
-              "text": "uid",
-              "value": "uid"
+              "selected": true,
+              "text": "name",
+              "value": "name"
             },
             "hide": 0,
             "includeAll": false,
@@ -1848,7 +2070,7 @@ data:
             "name": "podinfo",
             "options": [
               {
-                "selected": false,
+                "selected": true,
                 "text": "name",
                 "value": "name"
               },
@@ -1863,7 +2085,7 @@ data:
                 "value": "podip"
               },
               {
-                "selected": true,
+                "selected": false,
                 "text": "uid",
                 "value": "uid"
               }
@@ -1876,33 +2098,33 @@ data:
           {
             "current": {
               "selected": false,
-              "text": "",
-              "value": ""
+              "text": "nginx",
+              "value": "nginx"
             },
             "hide": 0,
             "name": "podinfovalue",
             "options": [
               {
                 "selected": true,
-                "text": "",
-                "value": ""
+                "text": "nginx",
+                "value": "nginx"
               }
             ],
-            "query": "",
+            "query": "nginx",
             "skipUrlSync": false,
             "type": "textbox"
           }
         ]
       },
       "time": {
-        "from": "now-30m",
-        "to": "now"
+        "from": "2023-12-25T07:26:55.000Z",
+        "to": "2023-12-25T07:27:48.000Z"
       },
       "timepicker": {},
       "timezone": "",
       "title": "Lunettes-debugpod",
       "uid": "lunettes-debugpod",
-      "version": 3,
+      "version": 1,
       "weekStart": ""
     }
   lunettes-debugslo.json: |

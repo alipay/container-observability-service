@@ -159,3 +159,10 @@ type ExtraPropertyConfig struct {
 	NeedChange bool   `json:"needChange,omitempty"` //is need change
 	Resource   string `json:"resource,omitempty"`   //resource to extract
 }
+
+type PodSummary struct {
+	DebugStage []string    `json:"DebugStage,omitempty"`
+	ResultCode []string    `json:"ResultCode,omitempty"`
+	Component  interface{} `json:"Component,omitempty"`
+	Summary    interface{} `json:"Summary,omitempty"`
+}
