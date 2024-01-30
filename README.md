@@ -1,3 +1,7 @@
+<p align="center">
+<img src="./statics/lunettes-logo.png" width="30%"/>
+</p>
+
 # Lunettes - Container Lifecycle Observability Service
 
 <strong><p align="center">Observe Your Stack, Energize Your APP</p></strong>
@@ -39,7 +43,7 @@ By recognizing the start and end of each container lifecycle stage, Lunettes is 
 
 ### Quick Start
 
-To get started with [kind](https://kind.sigs.k8s.io/) quickly, see [this guide](./docs/QUICK_START.md).
+To get started with [kind](https://kind.sigs.k8s.io/) quickly, see [this guide](./docs/quick_start.md).
 
 ### Deploy
 Step1: Bootstrap a Kubernetes cluster with Kubeadm/Kind.
@@ -53,12 +57,12 @@ The following method will expose the service through NodePort. Please make sure 
 Step2: Install Lunettes with Helm
 ```bash
 # Use NodePort
-helm install deploy/helm/lunettes \
+helm install lunettes oci://ghcr.io/alipay/lunettes-chart \
   # Setting enableAuditApiserver to true will enable the auditing of the apiserver for you.
   # Please note that this process will restart the apiserver.
-  --set enableAuditApiserver=true
-  --set grafanaType=NodePort
-  --set jaegerType=NodePort
+  --set enableAuditApiserver=true \
+  --set grafanaType=NodePort \
+  --set jaegerType=NodePort 
 ```
 
 Step3: Find the endpoint of Lunettes dashboard service
@@ -68,7 +72,7 @@ export GRAFANA_NODEPORT=$(kubectl -n lunettes get svc grafana -o jsonpath='{.spe
 export JAEGER_NODEPORT=$(kubectl -n lunettes get svc jaeger-collector -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
-Open [http://[LUNETTES_IP]:[LUNETTES_NODEPORT]](http://[LUNETTES_IP]:[LUNETTES_NODEPORT]) in your browser and access debugpod or debugslo endpoint, the default username and password are `admin:admin`.
+Open [http://[LUNETTES_IP]:[GRAFANA_NODEPORT]](http://[LUNETTES_IP]:[GRAFANA_NODEPORT]) in your browser and access debugpod or debugslo endpoint, the default username and password are `admin:admin`.
 
 Open [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?) in your browser and access trace endpoint.
 
@@ -153,5 +157,5 @@ Please visit [docs](/docs)
 ## 💡 Community
 Any questions related to Lunettes please reach us via:
 - Slack
-- DingTalk
-- GitHub Issue
+- [DingTalk](https://qr.dingtalk.com/action/joingroup?code=v1,k1,11giuLFUSQIWJ1Otmzn2egYQnu9p+sNhe1yktypjpz0=&_dt_no_comment=1&origin=11)
+- [GitHub Issue](https://github.com/alipay/container-observability-service/issues)

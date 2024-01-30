@@ -1,3 +1,7 @@
+<p align="center">
+<img src="./statics/lunettes-logo.png" width="30%"/>
+</p>
+
 # Lunettes - 容器生命周期可观测服务
 <strong><p align="center">Observe Your Stack, Energize Your APP</p></strong>
 
@@ -47,12 +51,12 @@ Lunettes 可以识别容器生命周期每个交付阶段的开始和结尾，�
 第二步：通过 Helm 安装 Lunettes
 ```bash
 # Use NodePort 
-helm install deploy/helm/lunettes \
+helm install lunettes oci://ghcr.io/alipay/lunettes-chart \
   # enableAuditApiserver 设置为 true 将会开启 apiserver 的审计能力
   # 注意: 该过程会重启 apiserver
-  --set enableAuditApiserver=true
-  --set grafanaType=NodePort
-  --set jaegerType=NodePort
+  --set enableAuditApiserver=true \
+  --set grafanaType=NodePort \
+  --set jaegerType=NodePort 
 ```
 
 第三步：获取 Lunettes 服务的接口
@@ -62,7 +66,7 @@ export GRAFANA_NODEPORT=$(kubectl -n lunettes get svc grafana -o jsonpath='{.spe
 export JAEGER_NODEPORT=$(kubectl -n lunettes get svc jaeger-collector -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
-在浏览器打开 [http://[LUNETTES_IP]:[LUNETTES_NODEPORT]](http://[LUNETTES_IP]:[LUNETTES_NODEPORT]) 然后访问 debugpod 或者 debugslo 接口。默认的用户名和密码是 `admin:admin`.
+在浏览器打开 [http://[LUNETTES_IP]:[GRAFANA_NODEPORT]](http://[LUNETTES_IP]:[GRAFANA_NODEPORT]) 然后访问 debugpod 或者 debugslo 接口。默认的用户名和密码是 `admin:admin`.
 
 在浏览器打开 [http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?](http://[LUNETTES_IP]:[JAEGER_NODEPORT]/search?) 然后访问 trace 接口。
 
@@ -148,5 +152,5 @@ Lunettes是一个高度可配置化的服务。下面是一个实例，用户可
 ## 💡 社区
 您有任何与 Lunettes 有关的问题可以通过下列方式联系我们：
 - Slack
-- 钉钉
-- Github Issue
+- [钉钉](https://qr.dingtalk.com/action/joingroup?code=v1,k1,11giuLFUSQIWJ1Otmzn2egYQnu9p+sNhe1yktypjpz0=&_dt_no_comment=1&origin=11)
+- [Github Issue](https://github.com/alipay/container-observability-service/issues)

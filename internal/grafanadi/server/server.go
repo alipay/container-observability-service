@@ -96,9 +96,8 @@ func handlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface)
 		defer r.Body.Close()
 		p := h(w, r, storage)
 		var (
-			err      error
-			respObj  interface{}
-			respBody []byte
+			err     error
+			respObj interface{}
 		)
 		code := http.StatusOK
 		msg := "query success"
@@ -152,24 +151,14 @@ func handlerWrapper(h handler.HandlerFunc, storage data_access.StorageInterface)
 			return
 		}
 
-		if err := json.NewEncoder(w).Encode(respObj); err != nil {
-			log.Printf("json enc: %+v", err)
-		}
-
 		// set header
 		w.Header().Set("Content-Type", "application/json;charset=UTF-8")
 		// set cors header
 		corsHeader(r, w)
-
-		// set code
-		w.WriteHeader(code)
-
-		// no errors, write response.
-		bodyLen := len(respBody)
-		if bodyLen > 0 {
-			w.Header().Set("Content-Length", strconv.Itoa(bodyLen))
-			w.Write(respBody)
+		if err := json.NewEncoder(w).Encode(respObj); err != nil {
+			log.Printf("json enc: %+v", err)
 		}
+
 	}
 }
 

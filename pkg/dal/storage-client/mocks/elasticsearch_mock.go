@@ -1,7 +1,7 @@
 package mocks
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -22,10 +22,19 @@ func (c *MockHttpClient) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	recorder.Header().Set("Content-Type", "application/json")
+	// 设置最大读取为 4MB
+	const maxReadSize = 4 << 20 // 4MB
 	var reqContent []byte
 	var err error
+	// 检查请求体是否非空
 	if req.Body != nil {
-		reqContent, err = ioutil.ReadAll(req.Body)
+		defer req.Body.Close() // 确保请求体被关闭
+
+		// 限制读取请求体的大小
+		reader := io.LimitReader(req.Body, maxReadSize)
+
+		// 读取请求体内容
+		reqContent, err = io.ReadAll(reader)
 		if err != nil {
 			return nil, err
 		}
