@@ -12,7 +12,7 @@ import (
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 )
 
 type Util struct {

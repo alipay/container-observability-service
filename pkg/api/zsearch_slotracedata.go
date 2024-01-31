@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/alipay/container-observability-service/pkg/metrics"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"k8s.io/klog/v2"
 )
 
@@ -66,7 +66,7 @@ func querySloTraceDataByPodUID(podUID string) []*sloTraceData {
 
 	for _, hit := range searchResult.Hits.Hits {
 		slo := &sloTraceData{}
-		if er := json.Unmarshal(*hit.Source, slo); er == nil {
+		if er := json.Unmarshal(hit.Source, slo); er == nil {
 			returnResult = append(returnResult, slo)
 		}
 	}

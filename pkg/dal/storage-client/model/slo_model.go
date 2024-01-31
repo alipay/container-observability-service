@@ -151,7 +151,7 @@ func (s *SloTraceData) EsTableName() string {
 }
 
 func (s *SloTraceData) TypeName() string {
-	return "data"
+	return "_doc"
 }
 func (s *Slodata) TableName() string {
 	return "slo_data"
@@ -162,5 +162,5 @@ func (s *Slodata) EsTableName() string {
 }
 
 func (s *Slodata) TypeName() string {
-	return "data"
+	return "_doc"
 }

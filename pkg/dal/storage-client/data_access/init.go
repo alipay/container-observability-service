@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/alipay/container-observability-service/pkg/common"
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v7"
 	"k8s.io/klog"
 )
 

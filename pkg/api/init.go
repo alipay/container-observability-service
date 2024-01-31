@@ -1,6 +1,6 @@
 package api
 
-import "github.com/olivere/elastic"
+import "github.com/olivere/elastic/v7"
 
 var (
 	esClient *elastic.Client

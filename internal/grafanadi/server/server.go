@@ -52,7 +52,7 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/deliverypodcreatetable").HandlerFunc(handlerWrapper(handler.PodDeliveryFactory, s.Storage))
 		r.Path("/deliverypoddeletetable").HandlerFunc(handlerWrapper(handler.PodDeliveryFactory, s.Storage))
 		r.Path("/deliverypodupgradetable").HandlerFunc(handlerWrapper(handler.PodDeliveryUpgradeFactory, s.Storage))
-		r.Path("/containerstatus").HandlerFunc(csvHandlerWrapper(handler.ContainerStatusFactory, s.Storage))
+		r.Path("/containerstatus").HandlerFunc(handlerWrapper(handler.ContainerStatusFactory, s.Storage))
 		r.Path("/keylifecycleevents").HandlerFunc(handlerWrapper(handler.PodPhaseFactory, s.Storage))
 		r.Path("/deliverytrace").HandlerFunc(handlerWrapper(handler.TraceFactory, s.Storage))
 		r.Path("/clusterdistribute").HandlerFunc(handlerWrapper(handler.DebuggingPodsFactory, s.Storage))

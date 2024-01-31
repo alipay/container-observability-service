@@ -4,10 +4,14 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/alipay/container-observability-service/internal/grafanadi/service"
+	interutils "github.com/alipay/container-observability-service/internal/grafanadi/utils"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
+	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
 	storagemodel "github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
+	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/utils"
 )
 
@@ -20,6 +24,21 @@ type ContainerStatusHandler struct {
 
 func (handler *ContainerStatusHandler) GetContainerStatusData(key, value string) (int, interface{}, error) {
 	slolist := make([]*storagemodel.SloTraceData, 0)
+	podYamls := make([]*model.PodYaml, 0)
+	if value == "" {
+		return http.StatusOK, nil, nil
+	}
+
+	begin := time.Now()
+	defer func() {
+		cost := utils.TimeSinceInMilliSeconds(begin)
+		metrics.QueryMethodDurationMilliSeconds.WithLabelValues("GetContainerStatusData").Observe(cost)
+	}()
+	util := interutils.Util{
+		Storage: handler.storage,
+	}
+	util.GetUid(podYamls, key, &value)
+
 	if err := handler.storage.QuerySloTraceDataWithPodUID(&slolist, value); err != nil {
 		return http.StatusOK, nil, fmt.Errorf("QuerySloTraceDataWithPodUID error, error is %s", err)
 	}
