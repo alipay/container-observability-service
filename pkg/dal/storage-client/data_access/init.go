@@ -26,7 +26,7 @@ func NewDBClient(opts *common.DBOptions) (StorageInterface, error) {
 		esStorage, err := ProvideEsStorage(opts.ESOptions)
 
 		if err != nil {
-			klog.Info("read esStorage err", err)
+			klog.Infof("read esStorage err: %s", err.Error())
 			return nil, err
 		}
 		XSearch = esStorage
