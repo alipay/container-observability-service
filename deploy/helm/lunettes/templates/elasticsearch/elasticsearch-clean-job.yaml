@@ -1,0 +1,87 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: delete-es-index
+  namespace: lunettes
+spec:
+  schedule: "0 0 * * *" # 每天凌晨运行
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: delete-es-index
+            image: {{ .Values.lunettesImage }}
+            command:
+            - /bin/bash
+            - -c
+            - |
+              # 这里直接执行ConfigMap中的脚本
+              /scripts/delete_index.sh es-cluster-svc.{{ .Values.namespace }}:9200 \
+              ${{ .Values.esDataKeepDays }} \
+              audit_{{ .Values.cluster }}:@timestamp
+              slo_trace_data_daily:CreatedTime
+              pod_yaml:stageTimestamp
+              pod_life_phase:startTime
+              spans_consuming:TimeStamp
+              node_yaml:stageTimestamp
+              slo_pod_info:startTime
+
+            volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+          volumes:
+          - name: script-volume
+            configMap:
+              name: delete-index-script
+              defaultMode: 0744  # 为脚本文件设置执行权限
+          restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: delete-index-script
+data:
+  delete_index.sh: |
+    #!/bin/bash
+
+    # 参数检查
+    if [ "$#" -lt 3 ]; then
+      echo "Usage: $0 <es_host_with_port> <time_period> <index1>:<timefield1> [<index2>:<timefield2> ...]"
+      exit 1
+    fi
+
+    # 读取脚本参数
+    ES_HOST=$1
+    TIME_PERIOD=$2
+    shift 2 # 移除前两个参数，剩下的是索引名称和时间字段的配对
+
+    echo "Starting Elasticsearch index cleanup..."
+
+    # 循环处理每个索引和时间字段的配对
+    while (( "$#" )); do
+      # 使用内置的IFS（内部字段分隔符）将配对分隔成两部分
+      IFS=':' read -r INDEX_NAME TIME_FIELD <<< "$1"
+
+      echo "Cleaning up index: $INDEX_NAME using time field: $TIME_FIELD"
+
+      # 发送删除请求
+      RESULT=$(curl --request POST \
+        --url "http://$ES_HOST/$INDEX_NAME/_delete_by_query?pretty" \
+        --header 'Content-Type: application/json' \
+        --data '{
+          "query": {
+              "range": {
+                  "'$TIME_FIELD'": {
+                      "lt": "now-'$TIME_PERIOD'd",
+                      "format": "epoch_millis"
+                  }
+              }
+          }
+        }')
+
+      echo "Cleanup result for $INDEX_NAME: $RESULT"
+      
+      # 移到下一个参数（下一个索引和时间字段的配对）
+      shift
+    done

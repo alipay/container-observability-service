@@ -88,6 +88,7 @@ elasticInitImage: busybox:stable
 elastic1NodePort: 30920
 elastic2NodePort: 30930
 esJavaOptions: "-Xms1g -Xmx1g"
+esDataKeepDays: 7
 elasticsearchResources:
   limits:
     cpu: 1
