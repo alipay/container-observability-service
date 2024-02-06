@@ -73,7 +73,7 @@ data:
           "query": {
               "range": {
                   "'$TIME_FIELD'": {
-                      "lt": "now-'$TIME_PERIOD'd",
+                      "lt": "now-'$TIME_PERIOD'",
                       "format": "epoch_millis"
                   }
               }
