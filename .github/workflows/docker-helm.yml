@@ -7,7 +7,7 @@ on:
 
 env:
   DOCKERHUB_REGISTRY: registry-1.docker.io
-  DOCKERHUB_REGISTRY_NAMESPACE: levizebulon
+  DOCKERHUB_REGISTRY_NAMESPACE: lunettes
   DOCKERHUB_LUNETTES_REPO: ${{ env.DOCKERHUB_REGISTRY_NAMESPACE }}/lunettes
   DOCKERHUB_GRAFANA_REPO: ${{ env.DOCKERHUB_REGISTRY_NAMESPACE }}/grafana
   # Plugins to be installed.
