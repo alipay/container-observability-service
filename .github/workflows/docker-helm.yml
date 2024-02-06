@@ -75,15 +75,6 @@ jobs:
             ${{ env.DOCKERHUB_GRAFANA_REPO }}:latest
             ${{ env.DOCKERHUB_GRAFANA_REPO }}:${{ env.APP_VERSION }}
 
-      # - name: Log in to the Container registry
-      #   uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-      #   with:
-      #     registry: ${{ env.REGISTRY }}
-      #     username: ${{ secrets.GITHUB_ACTOR }}
-      #     # Publishing and installing a package with GitHub Actions
-      #     # see: https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions
-      #     password: ${{ secrets.GITHUB_PACKAGE_TOKEN }}
-
       - uses: azure/setup-helm@v3
         id: install
 
