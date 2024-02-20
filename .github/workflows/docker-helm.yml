@@ -3,11 +3,10 @@ name: Build and Push Docker Image and Helm package
 
 on:
   push:
-    tags: "*"
 
 env:
-  LUNETTES_DOCKERHUB_REPO: lunettes/lunettes
-  GRAFANA_DOCKERHUB_REPO: lunettes/grafana
+  LUNETTES_DOCKERHUB_REPO: levizebulon/lunettes
+  GRAFANA_DOCKERHUB_REPO: levizebulon/grafana
   # Plugins to be installed.
   GRAFANA_PLUGINS: yesoreyeram-infinity-datasource marcusolsson-json-datasource volkovlabs-form-panel marcusolsson-dynamictext-panel
   REGISTRY: ghcr.io
