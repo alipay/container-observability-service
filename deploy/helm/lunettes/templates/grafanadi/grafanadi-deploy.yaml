@@ -23,7 +23,7 @@ spec:
         - ./grafanadi
         - --config-file=/app/config-file.yaml
         - --enable-kube-client={{ .Values.grafanadiInitKubeClient }}
-        - --log_dir=/logs
+        - --log_dir={{ .Values.lunettesdiLogsPath }}
         - --logtostderr=false
         - --v=6
         name: grafanadi
@@ -36,7 +36,7 @@ spec:
         resources:
 {{ toYaml .Values.grafanadiResources | indent 10 }}
         volumeMounts:
-        - mountPath: /logs
+        - mountPath: {{ .Values.lunettesdiLogsPath }}
           name: logs
         - mountPath: /var/grafana
           name: grafana-pv

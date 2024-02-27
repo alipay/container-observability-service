@@ -27,6 +27,7 @@ auditLogMaxSize: 200
 # lunettes
 lunettesImage: lunettes/lunettes:latest
 lunettesNodeport: 30880
+lunettesdiLogsPath: /logs
 lunettesType: LoadBalancer
 apiserverEnabled: true
 traceEnable: false
@@ -42,6 +43,7 @@ lunettesResources:
 grafanadiInitKubeClient: false
 grafanadiType: LoadBalancer
 grafanadiNodePort: 30280
+grafanadiLogsPath: /logs
 grafanadiResources:
   limits:
     cpu: 250m
