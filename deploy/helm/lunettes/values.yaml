@@ -29,7 +29,7 @@ lunettesImage: lunettes/lunettes:latest
 lunettesNodeport: 30880
 lunettesLogsPath: /logs
 lunettesLogsHostPath: /home/var/logs/lunettes
-lunettesType: LoadBalancer
+lunettesType: NodePort
 apiserverEnabled: true
 traceEnable: false
 lunettesResources:
@@ -42,7 +42,7 @@ lunettesResources:
 
 # grafanadi
 grafanadiInitKubeClient: false
-grafanadiType: LoadBalancer
+grafanadiType: NodePort
 grafanadiNodePort: 30280
 grafanadiLogsPath: /logs
 grafanadiLogsHostPath: /home/var/logs/grafanadi
@@ -56,7 +56,7 @@ grafanadiResources:
 
 # grafana
 grafanaImage: lunettes/grafana:latest
-grafanaType: LoadBalancer
+grafanaType: NodePort
 grafanaNodePort: 30180
 grafanaResources:
   limits:
@@ -116,7 +116,7 @@ prometheusResources:
 
 # jaejer
 jaegerImage: quay.io/jaegertracing/all-in-one:1.45
-jaegerType: LoadBalancer
+jaegerType: NodePort
 jaegerNodePort: 30686
 jaegerResources:
   limits:
