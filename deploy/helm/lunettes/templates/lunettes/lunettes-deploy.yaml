@@ -22,7 +22,27 @@ spec:
       - command:
         - bash
         - -c
-        - chown -R 500:500 {{ .Values.lunettesLogsPath }}
+        - |
+          chown -R 500:500 {{ .Values.lunettesLogsPath }}
+          echo "Waiting for Elasticsearch cluster to be ready..."
+          wait_time=1
+          # check es cluster health status
+          while true;
+          do
+            status=`curl -s -XGET --connect-timeout 3 --max-time 5 \
+            "http://es-cluster-svc.{{ .Values.namespace }}:9200/_cluster/health?pretty" \
+            | awk -F'"' '/"status"/{print $4}'`
+            if [ -n "${status}" ] && [ "${status}" != "red" ];
+            then
+              echo "Elasticsearch is healthy, status is: ${status}"
+              break
+            else
+              echo "Elasticsearch is unhealthy, status is: ${status}"
+              wait_time=$((wait_time+wait_time))
+              echo "Rechecking the status after ${wait_time}s..."
+              sleep ${wait_time}
+            fi
+          done
         image: {{ .Values.lunettesImage }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         name: init

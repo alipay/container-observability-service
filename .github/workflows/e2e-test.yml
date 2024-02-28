@@ -53,25 +53,38 @@ jobs:
           --set jaegerType=NodePort
         # waiting for lunettes ready
         set +e
+        all_pods=$(kubectl -n lunettes get pods -o jsonpath='{.items[*].metadata.name}')
+        echo "pods are: ${all_pods}"
         for ((i=0; i<120; i++))
         do
-          status=$(curl -s -XGET "http://localhost:9094/_cluster/health?pretty" | awk -F'"' '/"status"/{print $4}')
-          echo "status is $status"
-          if [ -n "$status" ] && [ "$status" != "red" ]; then
-              echo "Elasticsearch服务已准备就绪，状态为: $status"
+          all_pods_running=true
+          for pod in ${all_pods}
+          do
+            status=$(kubectl -n lunettes get pod ${pod} --output=jsonpath="{.status.phase}" )
+            if [ "${status}" != "Running" ]
+            then
+              all_pods_running=false
               break
-          else
-              echo "Elasticsearch服务未准备就绪，当前状态为: $status"
+            fi
+          done
+          if [ ${all_pods_running} = "true" ]
+          then
+            echo "all pods are running"
+            break
           fi
           output=$(kubectl -n lunettes get pods -owide)
           echo "$output"
-          lunettes_pod_name=$(echo "$output" | awk '$1 ~ /^lunettes-/{print $1}')
-          echo -e "################# log lunettes ......#################\n"
-          kubectl -n lunettes logs $lunettes_pod_name | head -n 100
-          es_pod_name=$(echo "$output" | awk '$1 ~ /^es-single-/{print $1}')
+          lunettes_pod_name=$(kubectl -n lunettes get pods | awk '$1 ~ /^lunettes-/{print $1}')
+          echo -e "################# log lunettes init ......#################\n"
+          kubectl -n lunettes logs ${lunettes_pod_name} -c init |head -n 100
+          grafanadi_pod_name=$(kubectl -n lunettes get pods | awk '$1 ~ /^grafanadi-/{print $1}')
+          echo -e "################# log grafanadi init ......#################\n"
+          kubectl -n lunettes logs ${grafanadi_pod_name} -c init |head -n 100
+          es_pod_name=$(kubectl -n lunettes get pods | awk '$1 ~ /^es-single-/{print $1}')
           echo -e "################# log es-single ...... #################\n"
-          kubectl -n lunettes logs $es_pod_name | head -n 100
-          sleep 1m
+          kubectl -n lunettes logs ${es_pod_name} | head -n 100
+          echo "rechecking the pod status after 30s..."
+          sleep 30
         done
         set -e
     - name: Create test pod
