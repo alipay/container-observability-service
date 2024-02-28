@@ -42,6 +42,7 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 	go func() {
 		// router
 		r := mux.NewRouter()
+
 		// containerlifecycle
 		r.Path("/").HandlerFunc(handlerWrapper(handler.RootFactory, s.Storage))
 		r.Path("/containerlifecycle").HandlerFunc(handlerWrapper(handler.ContainerlifecycleFactory, s.Storage))
@@ -65,6 +66,12 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/podyamlgraphedges").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
 
+		// federation api
+		r.PathPrefix("/protected").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.ProtectedHandlerFactory, s.Storage)))
+		r.Path("/debugpodlist").HandlerFunc(handlerWrapper(handler.DebugPodListFactory, s.Storage))
+		r.Path("/fed-debugpodlist").HandlerFunc(handlerWrapper(handler.FedDebugPodListFactory, s.Storage))
+		// federation api
+
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {
 			klog.Errorf("failed to ListenAndServe, err:%s", err.Error())
@@ -74,6 +81,26 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 	<-stopCh
 	klog.Error("apiserver exiting")
 }
+
+func basicAuthWrapper(innerHandler http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		username, password, ok := r.BasicAuth()
+		if ok {
+
+			usernameIsOk := username == "kangde"
+			passwordIsOk := password == "kangde"
+
+			if usernameIsOk && passwordIsOk {
+				innerHandler.ServeHTTP(w, r)
+				return
+			}
+		}
+
+		w.Header().Set("WWW-Authenticate", `Basic realm="restricted", charset="UTF-8"`)
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	})
+}
+
 func corsWrapper(f func(w http.ResponseWriter, r *http.Request, storage data_access.StorageInterface), storage data_access.StorageInterface) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		corsHeader(r, w)
