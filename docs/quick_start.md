@@ -22,13 +22,14 @@ kind create cluster \
 ## Deploy Lunettes with helm
 
 ```bash
-helm install lunettes oci://ghcr.io/alipay/lunettes-chart \
+helm install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] \
   --set enableAuditApiserver=true \
   --set lunettesType=NodePort \
   --set grafanadiType=NodePort \
   --set grafanaType=NodePort \
   --set jaegerType=NodePort
 ```
+see available [version](https://hub.docker.com/r/lunettes/lunettes-chart/tags)
 
 ## Create test pod
 

@@ -5,7 +5,8 @@
 # share
 namespace: lunettes
 imagePullPolicy: IfNotPresent
-kubernetesSvcHost: kubernetes.default
+# kubernetesSvcHost: kubernetes.default
+# kubernetesSvcPort: "6443"
 cluster: staging
 esUser: elastic
 esPassword: changeme
@@ -26,6 +27,8 @@ auditLogMaxSize: 200
 # lunettes
 lunettesImage: lunettes/lunettes:latest
 lunettesNodeport: 30880
+lunettesLogsPath: /logs
+lunettesLogsHostPath: /home/var/logs/lunettes
 lunettesType: LoadBalancer
 apiserverEnabled: true
 traceEnable: false
@@ -41,6 +44,8 @@ lunettesResources:
 grafanadiInitKubeClient: false
 grafanadiType: LoadBalancer
 grafanadiNodePort: 30280
+grafanadiLogsPath: /logs
+grafanadiLogsHostPath: /home/var/logs/grafanadi
 grafanadiResources:
   limits:
     cpu: 250m
@@ -88,6 +93,8 @@ elasticInitImage: busybox:stable
 elastic1NodePort: 30920
 elastic2NodePort: 30930
 esJavaOptions: "-Xms1g -Xmx1g"
+esCleanSchedule: "0 0 * * *"
+esDataKeepDays: 15d
 elasticsearchResources:
   limits:
     cpu: 1
