@@ -50,13 +50,13 @@ Lunettes 可以识别容器生命周期每个交付阶段的开始和结尾，�
 
 第二步：通过 Helm 安装 Lunettes
 ```bash
-# Use NodePort 
-helm install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] \
-  # enableAuditApiserver 设置为 true 将会开启 apiserver 的审计能力
-  # 注意: 该过程会重启 apiserver
-  --set enableAuditApiserver=true \
-  --set grafanaType=NodePort \
-  --set jaegerType=NodePort 
+# install lunettes
+# 该过程开启apiserver的审计功能，apiserver会发生重启
+helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version]
+
+#如果kubernetes版本 < v1.21，需要设置policyVersion的版本
+helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] \
+--set policyVersion=v1beta1
 ```
 
 查看可用的[版本号](https://hub.docker.com/r/lunettes/lunettes-chart/tags)

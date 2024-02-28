@@ -266,452 +266,6 @@ data:
             "x": 0,
             "y": 0
           },
-          "id": 16,
-          "panels": [],
-          "title": "平台数据",
-          "type": "row"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 0,
-            "y": 1
-          },
-          "id": 6,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\r\n14423345461",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "DocNumber",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 2,
-            "y": 1
-          },
-          "id": 10,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\r\n34546100",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "PodNumber",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "marcusolsson-csv-datasource",
-            "uid": "df78cd19-027a-4e66-86b5-16bf35734d5b"
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 11,
-            "x": 4,
-            "y": 1
-          },
-          "id": 22,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "For more information: [lunettes/help](https://lunettes/blob/opensource_init/README.md)",
-            "mode": "markdown"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "datasource": {
-                "type": "marcusolsson-csv-datasource",
-                "uid": "df78cd19-027a-4e66-86b5-16bf35734d5b"
-              },
-              "decimalSeparator": ".",
-              "delimiter": ",",
-              "header": true,
-              "ignoreUnknown": false,
-              "refId": "A",
-              "schema": [
-                {
-                  "name": "",
-                  "type": "string"
-                }
-              ],
-              "skipRows": 0
-            }
-          ],
-          "title": "容器交付可观测服务Lunettes",
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 15,
-            "y": 1
-          },
-          "id": 5,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\r\n481",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "DAU",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 17,
-            "y": 1
-          },
-          "id": 9,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\r\n17503",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "MAU",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 1000
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 19,
-            "y": 1
-          },
-          "id": 7,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\r\n800.3",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "Latency",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 1000
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 3,
-            "x": 21,
-            "y": 1
-          },
-          "id": 8,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\r\n1800.3",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "Last 10min Latency",
-          "type": "stat"
-        },
-        {
-          "collapsed": false,
-          "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 3
-          },
           "id": 15,
           "panels": [],
           "title": "容器信息",
@@ -792,7 +346,7 @@ data:
             "h": 5,
             "w": 7,
             "x": 0,
-            "y": 4
+            "y": 1
           },
           "id": 12,
           "options": {
@@ -807,7 +361,7 @@ data:
             },
             "showHeader": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -939,7 +493,7 @@ data:
             "h": 5,
             "w": 8,
             "x": 7,
-            "y": 4
+            "y": 1
           },
           "id": 14,
           "options": {
@@ -954,7 +508,7 @@ data:
             },
             "showHeader": true
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -1003,7 +557,7 @@ data:
             "h": 14,
             "w": 9,
             "x": 15,
-            "y": 4
+            "y": 1
           },
           "id": 21,
           "options": {
@@ -1020,6 +574,10 @@ data:
                 {
                   "color": "#E02F44",
                   "field": "arc__red"
+                },
+                {
+                  "color": "#56A64B",
+                  "field": "arc__green"
                 }
               ]
             }
@@ -1197,7 +755,7 @@ data:
             "h": 9,
             "w": 15,
             "x": 0,
-            "y": 9
+            "y": 6
           },
           "id": 13,
           "options": {
@@ -1213,7 +771,7 @@ data:
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -1332,7 +890,7 @@ data:
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 18
+            "y": 15
           },
           "id": 2,
           "options": {
@@ -1347,7 +905,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -1442,7 +1000,7 @@ data:
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 18
+            "y": 15
           },
           "id": 18,
           "options": {
@@ -1457,7 +1015,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -1567,7 +1125,7 @@ data:
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 18
+            "y": 15
           },
           "id": 19,
           "options": {
@@ -1583,7 +1141,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -1622,6 +1180,12 @@ data:
               },
               "custom": {
                 "fillOpacity": 38,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
                 "lineWidth": 0,
                 "spanNulls": false
               },
@@ -1661,7 +1225,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "transparent"
+                    "color": "transparent",
+                    "value": null
                   }
                 ]
               }
@@ -1701,7 +1266,7 @@ data:
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 26
+            "y": 23
           },
           "id": 20,
           "options": {
@@ -1755,7 +1320,7 @@ data:
             "h": 14,
             "w": 24,
             "x": 0,
-            "y": 32
+            "y": 29
           },
           "id": 3,
           "options": {
@@ -1802,7 +1367,7 @@ data:
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 46
+            "y": 43
           },
           "id": 4,
           "targets": [
@@ -1839,8 +1404,8 @@ data:
           {
             "current": {
               "selected": false,
-              "text": "uid",
-              "value": "uid"
+              "text": "name",
+              "value": "name"
             },
             "hide": 0,
             "includeAll": false,
@@ -1848,7 +1413,7 @@ data:
             "name": "podinfo",
             "options": [
               {
-                "selected": false,
+                "selected": true,
                 "text": "name",
                 "value": "name"
               },
@@ -1863,7 +1428,7 @@ data:
                 "value": "podip"
               },
               {
-                "selected": true,
+                "selected": false,
                 "text": "uid",
                 "value": "uid"
               }
@@ -1876,19 +1441,19 @@ data:
           {
             "current": {
               "selected": false,
-              "text": "",
-              "value": ""
+              "text": "nginx",
+              "value": "nginx"
             },
             "hide": 0,
             "name": "podinfovalue",
             "options": [
               {
                 "selected": true,
-                "text": "",
-                "value": ""
+                "text": "nginx",
+                "value": "nginx"
               }
             ],
-            "query": "",
+            "query": "nginx",
             "skipUrlSync": false,
             "type": "textbox"
           }
@@ -1902,7 +1467,7 @@ data:
       "timezone": "",
       "title": "Lunettes-debugpod",
       "uid": "lunettes-debugpod",
-      "version": 3,
+      "version": 2,
       "weekStart": ""
     }
   lunettes-debugslo.json: |
@@ -1944,452 +1509,6 @@ data:
             "x": 0,
             "y": 0
           },
-          "id": 7,
-          "panels": [],
-          "title": "平台信息",
-          "type": "row"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 0,
-            "y": 1
-          },
-          "id": 8,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\n14423345461",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "DocNumber",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 2,
-            "y": 1
-          },
-          "id": 9,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\n34546100",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "PodNumber",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "marcusolsson-csv-datasource",
-            "uid": "df78cd19-027a-4e66-86b5-16bf35734d5b"
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 11,
-            "x": 4,
-            "y": 1
-          },
-          "id": 10,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "For more information: [lunettes/help](https://lunettes/blob/opensource_init/README.md)",
-            "mode": "markdown"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "datasource": {
-                "type": "marcusolsson-csv-datasource",
-                "uid": "df78cd19-027a-4e66-86b5-16bf35734d5b"
-              },
-              "decimalSeparator": ".",
-              "delimiter": ",",
-              "header": true,
-              "ignoreUnknown": false,
-              "refId": "A",
-              "schema": [
-                {
-                  "name": "",
-                  "type": "string"
-                }
-              ],
-              "skipRows": 0
-            }
-          ],
-          "title": "容器交付可观测服务Lunettes",
-          "type": "text"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 15,
-            "y": 1
-          },
-          "id": 11,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\n481",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "DAU",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 17,
-            "y": 1
-          },
-          "id": 12,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\n17503",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "MAU",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 1000
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 19,
-            "y": 1
-          },
-          "id": 13,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\n800.3",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "Latency",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "testdata",
-            "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 1000
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 3,
-            "x": 21,
-            "y": 1
-          },
-          "id": 14,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.1",
-          "targets": [
-            {
-              "csvContent": "key\n1800.3",
-              "datasource": {
-                "type": "testdata",
-                "uid": "ba23b400-4b53-4ba8-abc5-9753d89165b3"
-              },
-              "refId": "A",
-              "scenarioId": "csv_content"
-            }
-          ],
-          "title": "Last 10min Latency",
-          "type": "stat"
-        },
-        {
-          "collapsed": false,
-          "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 3
-          },
           "id": 15,
           "panels": [],
           "title": "交付SLO信息",
@@ -2420,7 +1539,7 @@ data:
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 4
+            "y": 1
           },
           "id": 16,
           "options": {
@@ -2527,7 +1646,7 @@ data:
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 4
+            "y": 1
           },
           "id": 19,
           "options": {
@@ -2612,7 +1731,7 @@ data:
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 4
+            "y": 1
           },
           "id": 20,
           "options": {
@@ -2630,7 +1749,7 @@ data:
             "showUnfilled": true,
             "valueMode": "color"
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -2679,6 +1798,7 @@ data:
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -2717,7 +1837,7 @@ data:
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 11
+            "y": 8
           },
           "id": 17,
           "options": {
@@ -2780,6 +1900,7 @@ data:
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -2817,7 +1938,7 @@ data:
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 11
+            "y": 8
           },
           "id": 23,
           "options": {
@@ -2880,6 +2001,7 @@ data:
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 5,
@@ -2918,7 +2040,7 @@ data:
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 11
+            "y": 8
           },
           "id": 21,
           "options": {
@@ -2963,7 +2085,7 @@ data:
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 18
+            "y": 15
           },
           "id": 6,
           "panels": [],
@@ -3040,7 +2162,7 @@ data:
             "h": 12,
             "w": 5,
             "x": 0,
-            "y": 19
+            "y": 16
           },
           "id": 1,
           "options": {
@@ -3062,7 +2184,7 @@ data:
               }
             ]
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -3157,7 +2279,7 @@ data:
             "h": 12,
             "w": 6,
             "x": 5,
-            "y": 19
+            "y": 16
           },
           "id": 2,
           "options": {
@@ -3179,7 +2301,7 @@ data:
               }
             ]
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -3274,7 +2396,7 @@ data:
             "h": 12,
             "w": 6,
             "x": 11,
-            "y": 19
+            "y": 16
           },
           "id": 3,
           "options": {
@@ -3296,7 +2418,7 @@ data:
               }
             ]
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -3391,7 +2513,7 @@ data:
             "h": 12,
             "w": 7,
             "x": 17,
-            "y": 19
+            "y": 16
           },
           "id": 4,
           "options": {
@@ -3413,7 +2535,7 @@ data:
               }
             ]
           },
-          "pluginVersion": "10.0.1",
+          "pluginVersion": "10.1.5",
           "targets": [
             {
               "columns": [],
@@ -3470,8 +2592,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "#fbf6f600",
-                    "value": null
+                    "color": "#fbf6f600"
                   }
                 ]
               }
@@ -3501,7 +2622,7 @@ data:
             "h": 12,
             "w": 24,
             "x": 0,
-            "y": 31
+            "y": 28
           },
           "id": 5,
           "options": {
@@ -3674,7 +2795,7 @@ data:
       "timezone": "",
       "title": "Lunettes DebugSLO",
       "uid": "lunettes-debugslo",
-      "version": 7,
+      "version": 3,
       "weekStart": ""
     }
 
@@ -4691,7 +3812,7 @@ data:
     ;enable_alpha = false
     ;app_tls_skip_verify_insecure = false
     # Enter a comma-separated list of plugin identifiers to identify plugins to load even if they are unsigned. Plugins with modified signatures are never loaded.
-    ;allow_loading_unsigned_plugins =
+    allow_loading_unsigned_plugins = antgroup-yaml-panel
     # Enable or disable installing / uninstalling / updating plugins directly from within Grafana.
     ;plugin_admin_enabled = false
     ;plugin_admin_external_manage_enabled = false
