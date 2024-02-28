@@ -12,7 +12,7 @@ networking:
   kubeProxyMode: "ipvs"
 nodes:
 - role: control-plane
-  image: kindest/node:v1.22.0
+  image: kindest/node:v1.22.0 
   extraPortMappings:
   # port forward 9090 on the host to 31090 on this node
   - containerPort: 30190 # 可用于 nodeport, prometheus
@@ -43,4 +43,4 @@ nodes:
   labels:
     kubernetes.io/hostname: master
 - role: worker
-  image: kindest/node:v1.22.0
+  image: kindest/node:v1.22.0 

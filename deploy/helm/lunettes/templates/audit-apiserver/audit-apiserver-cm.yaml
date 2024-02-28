@@ -1,8 +1,8 @@
 {{- if .Values.enableAuditApiserver }}
 apiVersion: v1
 data:
-  audit-policy.yaml: |
-    apiVersion: audit.k8s.io/v1beta1
+  audit-policy.yaml: |-
+    apiVersion: audit.k8s.io/{{ .Values.policyVersion }}
     kind: Policy
     omitStages:
      - RequestReceived
