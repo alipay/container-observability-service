@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"sync"
 	"time"
+
+	"k8s.io/klog/v2"
 
 	"github.com/alipay/container-observability-service/pkg/common"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
@@ -76,19 +77,19 @@ func (handler *FedDebugPodListHandler) QueryFedDebugPodListWithPodUid(key, value
 				fmt.Println("无法解析 URL:", err)
 				return http.StatusOK, nil, nil
 			}
-			log.Printf("parsedURL is %+v\n", parsedURL.Host)
+			klog.Infof("parsedURL is %+v", parsedURL.Host)
 			// 替换 host
 			hostParts := strings.Split(parsedURL.Host, ":")
 			hostParts[0] = "localhost"
 			parsedURL.Host = strings.Join(hostParts, ":")
 			// 生成新的 URL
 			diUrl = parsedURL.String()
-			log.Printf("newURL is %s\n", diUrl)
+			klog.Infof("newURL is %s", diUrl)
 		}
 
 		// 请求各个站点的 lunettesdi server
 		reqUrl := fmt.Sprintf("%s/debugpodlist?searchkey=%s&searchvalue=%s", diUrl, key, value)
-		log.Printf("reqUrl is %s\n", reqUrl)
+		klog.Infof("reqUrl is %s", reqUrl)
 
 		wg.Add(1)
 		sem <- struct{}{} // 获取信号量
@@ -100,7 +101,7 @@ func (handler *FedDebugPodListHandler) QueryFedDebugPodListWithPodUid(key, value
 			resp, err := http.Get(reqUrl)
 			if err != nil {
 				// 错误先跳过
-				log.Printf("get url: %s error: %s\n", diUrl, err)
+				klog.Infof("get url: %s error: %s", diUrl, err)
 				return
 			}
 			defer resp.Body.Close()
@@ -108,17 +109,17 @@ func (handler *FedDebugPodListHandler) QueryFedDebugPodListWithPodUid(key, value
 			// 读取响应内容
 			body, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
-				log.Printf("ReadAll req %s body error: %s\n", diUrl, err)
+				klog.Infof("ReadAll req %s body error: %s", diUrl, err)
 				return
 			}
 
 			err = json.Unmarshal(body, &podlist)
 			if err != nil {
-				log.Printf("Unmarshal req %s body error: %s\n", diUrl, err)
+				klog.Infof("Unmarshal req %s body error: %s", diUrl, err)
 				return
 			}
 			for _, v := range podlist {
-				log.Printf("v.podname is %+v\n", v.Podname)
+				klog.Infof("v.podname is %+v", v.Podname)
 				copyV := &model.DebugPodListTable{
 					Podname:    v.Podname,
 					PodIP:      v.PodIP,

@@ -67,9 +67,8 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
 
 		// federation api
-		r.PathPrefix("/protected").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.ProtectedHandlerFactory, s.Storage)))
-		r.Path("/debugpodlist").HandlerFunc(handlerWrapper(handler.DebugPodListFactory, s.Storage))
-		r.Path("/fed-debugpodlist").HandlerFunc(handlerWrapper(handler.FedDebugPodListFactory, s.Storage))
+		r.Path("/debugpodlist").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.DebugPodListFactory, s.Storage)))
+		r.Path("/fed-debugpodlist").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.FedDebugPodListFactory, s.Storage)))
 		// federation api
 
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
@@ -87,10 +86,11 @@ func basicAuthWrapper(innerHandler http.HandlerFunc) http.HandlerFunc {
 		username, password, ok := r.BasicAuth()
 		if ok {
 
-			usernameIsOk := username == "kangde"
-			passwordIsOk := password == "kangde"
+			// use basic auth and admin/admin for now, will be updated later.
+			isUsernameOK := username == "admin"
+			isPasswordOK := password == "admin"
 
-			if usernameIsOk && passwordIsOk {
+			if isUsernameOK && isPasswordOK {
 				innerHandler.ServeHTTP(w, r)
 				return
 			}

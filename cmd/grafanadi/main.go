@@ -25,6 +25,7 @@ var (
 func newRootCmd() *cobra.Command {
 	config := &server.ServerConfig{}
 	var cfgFile, kubeConfigFile string
+	var fedCfgFile string
 
 	cmd := &cobra.Command{
 		Use:   "grafanadi",
@@ -41,6 +42,9 @@ func newRootCmd() *cobra.Command {
 				klog.Errorf("failed to new DBClient [%s] err:%s", cfgFile, err.Error())
 				panic(err.Error())
 			}
+
+			fedOptions, err := common.InitFedConfig(fedCfgFile)
+			common.GSiteOptions = *fedOptions
 
 			err = utils.InitKube(kubeConfigFile)
 			if err != nil {
@@ -68,6 +72,9 @@ func newRootCmd() *cobra.Command {
 
 	// for storage
 	cmd.PersistentFlags().StringVarP(&cfgFile, "config-file", "", "/app/storage-config.yaml", "storage config file")
+
+	// for federation API config file
+	cmd.PersistentFlags().StringVarP(&fedCfgFile, "fed-config-file", "", "/app/fed-config.yaml", "federation config file")
 
 	// kubeconfig for k8s client
 	cmd.PersistentFlags().StringVarP(&kubeConfigFile, "kubeconfig", "", "/etc/kubernetes/kubeconfig/admin.kubeconfig", "Path to kubeconfig file with authorization and apiserver information.")
