@@ -131,7 +131,7 @@ func (handler *FedDebugPodListHandler) QueryFedDebugPodListWithPodUid(key, value
 					State:      v.State,
 					PodPhase:   v.PodPhase,
 					Site:       siteName,
-					DebugUrl:   fmt.Sprintf("%s/d/eavesdropping-debugpod/eavesdropping-debugpod?orgId=1&var-podinfo=uid&var-podinfovalue=%s", dashboardUrl, v.PodUID),
+					DebugUrl:   fmt.Sprintf("%s/d/lunettes-debugpod/lunettes-debugpod?orgId=1&var-podinfo=uid&var-podinfovalue=%s", dashboardUrl, v.PodUID),
 					Dignosis:   "诊断",
 				}
 				ch <- copyV
