@@ -18,9 +18,10 @@ import (
 )
 
 type ServerConfig struct {
-	MetricsAddr string
-	ListenAddr  string
-	Storage     data_access.StorageInterface
+	MetricsAddr    string
+	ListenAddr     string
+	ListenAuthAddr string
+	Storage        data_access.StorageInterface
 }
 
 // Server is server to query trace stats
@@ -66,17 +67,29 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/podyamlgraphedges").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
 
-		// federation api
-		r.Path("/debugpodlist").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.DebugPodListFactory, s.Storage)))
-		r.Path("/fed-debugpodlist").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.FedDebugPodListFactory, s.Storage)))
-		// federation api
-
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {
-			klog.Errorf("failed to ListenAndServe, err:%s", err.Error())
+			klog.Errorf("failed to ListenAndServe at ListenAddr %s, err:%s", s.Config.ListenAddr, err.Error())
 			panic(err.Error())
 		}
 	}()
+
+	go func() {
+		// router
+		r := mux.NewRouter()
+
+		// federation api
+		r.Path("/apis/v1/debugpodlist").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.DebugPodListFactory, s.Storage)))
+		r.Path("/apis/v1/fed-debugpodlist").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.FedDebugPodListFactory, s.Storage)))
+		// federation api
+
+		err := http.ListenAndServe(s.Config.ListenAuthAddr, r)
+		if err != nil {
+			klog.Errorf("failed to ListenAndServe at ListenAuthAddr %s, err:%s", s.Config.ListenAuthAddr, err.Error())
+			panic(err.Error())
+		}
+	}()
+
 	<-stopCh
 	klog.Error("apiserver exiting")
 }

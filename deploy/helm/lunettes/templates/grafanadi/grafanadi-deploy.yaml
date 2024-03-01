@@ -34,6 +34,9 @@ spec:
         - containerPort: 8080
           name: http-grafanadi
           protocol: TCP
+        - containerPort: 8081
+          name: http-auth
+          protocol: TCP
         resources:
 {{ toYaml .Values.grafanadiResources | indent 10 }}
         volumeMounts:

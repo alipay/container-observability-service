@@ -44,6 +44,7 @@ lunettesResources:
 grafanadiInitKubeClient: false
 grafanadiType: LoadBalancer
 grafanadiNodePort: 30280
+grafanadiAuthNodePort: 30281
 grafanadiLogsPath: /logs
 grafanadiLogsHostPath: /home/var/logs/grafanadi
 grafanadiResources:

@@ -98,10 +98,19 @@ func (handler *FedDebugPodListHandler) QueryFedDebugPodListWithPodUid(key, value
 			defer func() { <-sem }() // 释放信号量
 
 			podlist := make([]*model.DebugPodListTable, 0)
-			resp, err := http.Get(reqUrl)
+
+			req, err := http.NewRequest(http.MethodGet, reqUrl, nil)
+			if err != nil {
+				klog.Infof("failed to create http request for %s error: %s", reqUrl, err)
+				return
+			}
+			req.SetBasicAuth("admin", "admin")
+
+			client := http.Client{}
+			resp, err := client.Do(req)
 			if err != nil {
 				// 错误先跳过
-				klog.Infof("get url: %s error: %s", diUrl, err)
+				klog.Infof("failed to issue http request for %s error: %s", reqUrl, err)
 				return
 			}
 			defer resp.Body.Close()
