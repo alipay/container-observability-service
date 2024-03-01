@@ -35,7 +35,6 @@ import downloadFile from '../util/download';
 const yaml = require('json2yaml')
 const size: SizeType = 'middle'
 const searchParams = new URLSearchParams(window.location.search)
-const warningDescription = 'Insufficient parameters.'
 const JsonModel = {
   name: "javascript",
   json: true
@@ -85,6 +84,14 @@ export const SimplePanel: React.FC<Props> = ({options, data}) => {
   useEffect(() => {
     const resource = searchParams.get('resource');
     let [paramType, paramValue] = ['', '']
+    
+    const setValue = (result: string) => {
+      if (model === 'yaml') {
+        setYamlString(yaml.stringify(result).replace(/\\"/g, '"'))
+      } else {
+        setYamlString(JSON.stringify(result, null, 4).replace(/\\"/g, '"'))
+      }
+    }
 
     for(let param of ParamsKind) {
       if(searchParams.get(param)){
@@ -108,12 +115,7 @@ export const SimplePanel: React.FC<Props> = ({options, data}) => {
               description: `No yaml responsed.`
             })
           }
-          if (model === 'yaml') {
-            setYamlString(yaml.stringify(result).replace(/\\"/g, '"'))
-          } else {
-            setYamlString(JSON.stringify(result, null, 4).replace(/\\"/g, '"'))
-          }
-
+          setValue(result)
         })
         .catch((error) => {
           setAlertState({
@@ -124,12 +126,10 @@ export const SimplePanel: React.FC<Props> = ({options, data}) => {
           })
         })
     } else {
-      setAlertState({
-        visible: true,
-        type: 'warning',
-        message: 'Warning',
-        description: `${warningDescription} resource = ${resource}  ${paramType} = ${paramValue}`
-      })
+      if (data.state === "Done") {
+        const result = data.series[0].meta?.custom?.data
+        setValue(result)
+      }
     }
   },[options, data, model])
 
