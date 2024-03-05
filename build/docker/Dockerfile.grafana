@@ -3,7 +3,7 @@ FROM node as node
 # 在镜像中创建工作目录
 WORKDIR /app
 # 将代码拷贝到镜像中的工作目录
-COPY ./grafana_lugin/yaml_panel /app
+COPY ./grafana_plugin/yaml_panel /app
 # 安装依赖并编译
 RUN npm install \
     && npm run build
