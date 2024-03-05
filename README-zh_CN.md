@@ -55,8 +55,6 @@ helm install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --versi
   # enableAuditApiserver 设置为 true 将会开启 apiserver 的审计能力
   # 注意: 该过程会重启 apiserver
   --set enableAuditApiserver=true \
-  --set grafanaType=NodePort \
-  --set jaegerType=NodePort 
 ```
 
 查看可用的[版本号](https://hub.docker.com/r/lunettes/lunettes-chart/tags)
