@@ -22,7 +22,7 @@ kind create cluster \
 ## Deploy Lunettes with helm
 
 ```bash
-helm install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] --set enableAuditApiserver=true
+helm install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version]
   
 ```
 see available [version](https://hub.docker.com/r/lunettes/lunettes-chart/tags)

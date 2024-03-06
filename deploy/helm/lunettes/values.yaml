@@ -12,7 +12,7 @@ esUser: elastic
 esPassword: changeme
 
 # audit-apiserver
-enableAuditApiserver: false
+enableAuditApiserver: true
 auditResources:
   limits:
     cpu: 100m
