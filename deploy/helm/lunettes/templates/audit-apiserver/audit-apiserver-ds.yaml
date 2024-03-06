@@ -20,8 +20,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: node-role.kubernetes.io/master
-                operator: Exists
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - master
       tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
