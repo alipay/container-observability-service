@@ -23,7 +23,10 @@ kind create cluster \
 
 ```bash
 helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version]
-  
+ 
+#if kubernetes version < 1.21,you should set policyVersion=v1beta1
+helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] \
+--set policyVersion=v1beta1
 ```
 see available [version](https://hub.docker.com/r/lunettes/lunettes-chart/tags)
 
