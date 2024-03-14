@@ -1,0 +1,7 @@
+apiVersion: 1
+
+providers:
+  - name: 'custom-log'
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards
