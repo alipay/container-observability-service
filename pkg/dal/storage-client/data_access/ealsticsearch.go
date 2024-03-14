@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/alipay/container-observability-service/pkg/common"
+	customerrors "github.com/alipay/container-observability-service/pkg/custom-errors"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
 	"github.com/alipay/container-observability-service/pkg/metrics"
 	"github.com/alipay/container-observability-service/pkg/utils"
@@ -824,7 +825,7 @@ func (s *StorageEsImpl) QuerySloTraceDataWithPodUID(data interface{}, podUid str
 }
 func (s *StorageEsImpl) QueryCreateSloWithResult(data interface{}, requestParams *model.SloOptions) error {
 	if requestParams == nil || requestParams.Result == "" {
-		return fmt.Errorf("the params is error")
+		return customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 	_, esTableName, esType, err := utils.GetMetaName(data)
 	if err != nil {
@@ -926,7 +927,7 @@ func (s *StorageEsImpl) QueryCreateSloWithResult(data interface{}, requestParams
 }
 func (s *StorageEsImpl) QueryUpgradeSloWithResult(data interface{}, requestParams *model.SloOptions) error {
 	if requestParams == nil || requestParams.Result == "" {
-		return fmt.Errorf("the params is error")
+		return customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 	_, esTableName, esType, err := utils.GetMetaName(data)
 	if err != nil {
@@ -996,7 +997,7 @@ func (s *StorageEsImpl) QueryUpgradeSloWithResult(data interface{}, requestParam
 }
 func (s *StorageEsImpl) QueryDeleteSloWithResult(data interface{}, requestParams *model.SloOptions) error {
 	if requestParams == nil || requestParams.Result == "" {
-		return fmt.Errorf("the params is error")
+		return customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 	_, esTableName, esType, err := utils.GetMetaName(data)
 	if err != nil {
