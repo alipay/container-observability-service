@@ -31,6 +31,7 @@ import 'codemirror/addon/fold/comment-fold.js';
 import 'codemirror/addon/edit/closebrackets';
 import './YamlPanel.css';
 import downloadFile from '../util/download';
+import {DisplayModel, Theme} from '../types';
 
 const yaml = require('json2yaml')
 const size: SizeType = 'middle'
@@ -57,17 +58,17 @@ interface Props extends PanelProps<SimpleOptions> { }
 export const SimplePanel: React.FC<Props> = ({options, data}) => {
   const cmRef = useRef(null);
   const [yamlString, setYamlString] = useState('')
-  const [theme, setTheme] = useState('idea')
+  const [theme, setTheme] = useState(options.theme)
   const [alertState, setAlertState] = useState<AlertState>({ visible: false, type: 'warning', message: 'Warning', description: '' })
-  const [model, setModel] = useState('yaml')
+  const [model, setModel] = useState(options.displayModel)
   const [params, setParams] = useState({resourece: '', type: '', value: ''})
 
-  const changeTheme = (theme: string) => {
+  const changeTheme = (theme: Theme) => {
     setTheme(theme)
   }
   
 
-  const changeModel = (newModel: string) => {
+  const changeModel = (newModel: DisplayModel) => {
       //@ts-ignore
       const cm = cmRef.current.editor
       if (newModel === model) {
@@ -86,6 +87,10 @@ export const SimplePanel: React.FC<Props> = ({options, data}) => {
     let [paramType, paramValue] = ['', '']
     
     const setValue = (result: string) => {
+      if (!result) {
+        setYamlString('null');
+        return  
+      }
       if (model === 'yaml') {
         setYamlString(yaml.stringify(result).replace(/\\"/g, '"'))
       } else {

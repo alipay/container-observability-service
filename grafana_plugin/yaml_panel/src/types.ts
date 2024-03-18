@@ -1,7 +1,7 @@
-type SeriesSize = 'sm' | 'md' | 'lg';
+export type DisplayModel = 'yaml' | 'json';
+export type Theme = 'idea' | 'base16-dark';
 
 export interface SimpleOptions {
-  text: string;
-  showSeriesCount: boolean;
-  seriesCountSize: SeriesSize;
+  displayModel: DisplayModel;
+  theme: Theme;
 }
