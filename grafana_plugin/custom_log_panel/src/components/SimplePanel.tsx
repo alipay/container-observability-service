@@ -100,10 +100,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   sceneItem.state.body?.addActivationHandler(() => {
     setTimeout(() => {
-      const divElement = document.querySelectorAll('div');
-      divElement.forEach(element => {
-        element.scrollTo(0, 0)
-      });
       const tableElement = document.querySelectorAll('tbody');
       tableElement.forEach(element => {
         // 创建一个观察者对象，并传入回调函数

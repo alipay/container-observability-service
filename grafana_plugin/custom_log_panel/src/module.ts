@@ -4,7 +4,6 @@ import { SimplePanel } from './components/SimplePanel';
 import { SimpleEditor } from './components/SimpleEditor';
 
 export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOptions((builder) => {
-  console.log("111111")
 
   return builder
     .addBooleanSwitch({
