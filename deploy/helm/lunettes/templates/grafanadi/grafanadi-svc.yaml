@@ -5,12 +5,20 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   ports:
-  - port: 8080
+  - name: common-port
+    port: 8080
     protocol: TCP
     targetPort: http-grafanadi
-{{- if eq .Values.grafanadiType "NodePort" }}
+    {{- if eq .Values.grafanadiType "NodePort" }}
     nodePort: {{ .Values.grafanadiNodePort }}
-{{- end }}
+    {{- end }}
+  - name: auth-port
+    port: 8081
+    protocol: TCP
+    targetPort: http-auth
+    {{- if eq .Values.grafanadiType "NodePort" }}
+    nodePort: {{ .Values.grafanadiAuthNodePort }}
+    {{- end }}
   selector:
     app: grafanadi
   type: {{ .Values.grafanadiType }}
