@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/alipay/container-observability-service/internal/grafanadi/service"
+	customerrors "github.com/alipay/container-observability-service/pkg/custom-errors"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
 	"github.com/alipay/container-observability-service/pkg/metrics"
@@ -119,7 +120,7 @@ func (handler *DebuggingPodsHandler) queryDeleteSloByResult(requestParams *model
 	returnResult := make([]*model.Slodata, 0)
 
 	if requestParams == nil || requestParams.Result == "" {
-		return http.StatusOK, nil, fmt.Errorf("the params is error")
+		return http.StatusOK, nil, customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 
 	begin := time.Now()
@@ -151,7 +152,7 @@ func (handler *DebuggingPodsHandler) queryUpgradeSloByResult(requestParams *mode
 	returnResult := make([]*model.Slodata, 0)
 
 	if requestParams == nil || requestParams.Result == "" {
-		return http.StatusOK, nil, fmt.Errorf("the params is error")
+		return http.StatusOK, nil, customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 
 	begin := time.Now()
@@ -180,7 +181,7 @@ func (handler *DebuggingPodsHandler) querySloByResult(requestParams *model.SloOp
 	// return http.StatusOK, result, nil
 	returnResult := make([]*model.Slodata, 0)
 	if requestParams == nil || requestParams.Result == "" {
-		return http.StatusOK, nil, fmt.Errorf("the params is error")
+		return http.StatusOK, nil, customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 
 	begin := time.Now()
