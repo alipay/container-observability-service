@@ -17,4 +17,5 @@ export interface SimpleOptions {
   sortOrder: common.LogsSortOrder;
   wrapLogMessage: boolean;
   label: FieldConfig[];
+  params: string[]
 }

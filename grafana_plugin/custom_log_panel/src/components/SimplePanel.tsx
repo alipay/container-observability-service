@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { SceneFlexLayout, EmbeddedScene, SceneFlexItem, PanelBuilders, SceneQueryRunner } from '@grafana/scenes';
 import { PanelProps } from '@grafana/data';
 import { SimpleOptions } from 'types';
@@ -14,6 +14,7 @@ function getSceneItem(query: SceneQueryRunner, options: SimpleOptions): SceneFle
     //@ts-ignore
     body: PanelBuilders.logs()
       .setData(query)
+      .setOption("dedupStrategy", options.dedupStrategy)
       .setOption("showTime", options.showTime)
       .setOption("enableLogDetails", options.enableLogDetails)
       .setOption("prettifyLogMessage", options.prettifyLogMessage)
@@ -23,6 +24,11 @@ function getSceneItem(query: SceneQueryRunner, options: SimpleOptions): SceneFle
       .setOption("wrapLogMessage", options.wrapLogMessage)
       .build(),
   })
+}
+
+function formatUrl(urlStr: string, paramKey: string, paramValue: string): string {
+  paramKey = paramKey.replace('var-', '');
+  return urlStr.replace(`$${paramKey}`, paramValue)
 }
 
 function getUrl(urlUser: string, urlPanel: string): string {
@@ -36,7 +42,7 @@ function getUrl(urlUser: string, urlPanel: string): string {
   }
 }
 
-//
+//Function stabilization
 function debounce(fn: any, wait: number) {
   let timer: any = null;
   return function () {
@@ -47,20 +53,49 @@ function debounce(fn: any, wait: number) {
   }
 }
 
-export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) => {
-  const query = data.request?.targets
-  const queryRunner = new SceneQueryRunner({
+export const SimplePanel: React.FC<Props> = ({ options, data, width, height, replaceVariables }) => {
+  const params: any = {}
+  options.params.map(param =>{
+    if (document.getElementById(`var-${param}`)?.innerText) {
+      params[param] = document.getElementById(`var-${param}`)?.innerText
+    } else {
+      //@ts-ignore
+      params[param] = document.getElementById(`var-${param}`)?.value
+    }
+  })
+
+  data.request?.targets.map(target => {
+    if (target.datasource?.type === 'yesoreyeram-infinity-datasource') {
+      //@ts-ignore
+      let url: string = target.url
+      Object.keys(params).map(key => {
+        //@ts-ignore
+        url = formatUrl(url, key, params[key])
+      })
+      //@ts-ignore
+      target.url = url
+      return target
+    } else {
+      return target
+    }
+  })
+
+  const query = new SceneQueryRunner({
     //@ts-ignore
-    queries: query
-  });
-  const sceneItem = getSceneItem(queryRunner, options)
-  const scene = new EmbeddedScene({
-    body: new SceneFlexLayout({
-      children: [
-        sceneItem
-      ],
-    }),
-  });
+    queries: data.request?.targets,
+  })
+
+  const sceneItem = getSceneItem(query, options)
+  const scene = useMemo(() => {
+    return new EmbeddedScene({
+      body: new SceneFlexLayout({
+        children: [
+          sceneItem
+        ],
+      }),
+    })
+  }, [sceneItem])
+
   // observer DOM which han been changed.
   function callback(mutationsList: any, observer: any) {
     const tdElement = document.querySelectorAll('td')

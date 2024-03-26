@@ -6,6 +6,11 @@ import { SimpleEditor } from './components/SimpleEditor';
 export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOptions((builder) => {
 
   return builder
+    .addStringArray({
+      path: 'params',
+      name: 'Variables',
+      defaultValue: ['podinfo', 'podinfovalue'],
+    })
     .addBooleanSwitch({
       path: 'showTime',
       name: 'Time',
@@ -55,7 +60,7 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
     })
     .addRadio({
       path: 'dedupStrategy',
-      defaultValue: 'none',
+      defaultValue: 'signature',
       name: 'Deduplication',
       settings: {
         options: [
