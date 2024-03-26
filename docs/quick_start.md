@@ -21,6 +21,8 @@ kind create cluster \
 
 ## Deploy Lunettes with helm
 
+Note: Beginning in Helm v3.8.0, OCI support is enabled by default, and it graduated from experimental to general availability. So you‘d better choose Helm v3.8.0 or above.
+
 ```bash
 helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version]
   
