@@ -41,20 +41,33 @@ func ConverSpan2Frame(spans []*storagemodel.Span) model.DataFrame {
 		durationAry = []int64{int64(rootEnd.Sub(rootBegin) / 1000 / 1000)}
 	}
 
+	var opsType string
+	m1 := make(map[string]string, 0)
 	for _, sp := range spans {
 		if sp.Begin.Before(rootBegin) {
 			continue
 		}
 
 		traceAry = append(traceAry, rootTraceID)
-		spanAry = append(spanAry, uuid.New().String())
-		pspanAry = append(pspanAry, rootSpanID)
-		opsAry = append(opsAry, sp.Type)
+		spanId := uuid.New().String()
+		spanAry = append(spanAry, spanId)
+		opsType = sp.Type
+		if sp.Type != sp.Name {
+			opsType = sp.Type + ":" + sp.Name
+		}
+		opsAry = append(opsAry, opsType)
 		serviceAry = append(serviceAry, sp.ActionType)
 		serviceTagAry = append(serviceTagAry, nil)
 		startTimeAry = append(startTimeAry, sp.Begin.UnixNano()/1e6)
 		elapsedDur := sp.Elapsed
-		durationAry = append(durationAry, int64(elapsedDur))
+		durationAry = append(durationAry, elapsedDur)
+		value, ok := m1[sp.ActionType]
+		if !ok {
+			m1[sp.ActionType] = spanId
+			pspanAry = append(pspanAry, rootSpanID)
+		} else {
+			pspanAry = append(pspanAry, value)
+		}
 	}
 
 	return model.DataFrame{
