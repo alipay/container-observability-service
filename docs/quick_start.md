@@ -23,6 +23,8 @@ kind create cluster \
 
 Note: Beginning in Helm v3.8.0, OCI support is enabled by default, and it graduated from experimental to general availability. So you‘d better choose Helm v3.8.0 or above.
 
+We can use 'helm upgrade --install' to upgrade or install
+
 ```bash
 helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version]
   
@@ -47,3 +49,9 @@ Open broswer to visit
 - jaejer: [http://localhost:9095/search](http://localhost:9095/search)
 - kibana: [http://localhost:9092](http://localhost:9092)
 - prometheus: [http://localhost:9091/graph?](http://localhost:9091/graph?)
+
+## Uninstall Lunettes with helm
+```bash
+helm uninstall lunettes
+```
+
