@@ -20,12 +20,9 @@ COPY --from=node /app/yaml_panel/dist /var/lib/grafana/plugins/antgroup-yaml-pan
 COPY --from=node /app/custom_log_panel/dist /var/lib/grafana/plugins/antgroup-customlog-panel
 
 # Define the list of plugins to install, separated by spaces.
-ARG PLUGINS=""
+ARG PLUGINS="" IFS=','
 
 # Install each plugin.
 RUN for plugin in $PLUGINS; do \
       grafana-cli plugins install $plugin; \
     done
-
-# Install each plugin with custom version
-RUN grafana cli plugins install volkovlabs-form-panel 3.1.0 
