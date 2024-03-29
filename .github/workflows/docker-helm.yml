@@ -11,7 +11,7 @@ env:
   DOCKERHUB_LUNETTES_REPO: lunettes/lunettes
   DOCKERHUB_GRAFANA_REPO: lunettes/grafana
   # Plugins to be installed.
-  GRAFANA_PLUGINS: yesoreyeram-infinity-datasource marcusolsson-json-datasource volkovlabs-form-panel marcusolsson-dynamictext-panel
+  GRAFANA_PLUGINS: yesoreyeram-infinity-datasource,marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-form-panel 3.1.0
 
 
 jobs:
