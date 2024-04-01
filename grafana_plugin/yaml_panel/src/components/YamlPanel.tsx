@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import { DownloadOutlined } from '@ant-design/icons';
-import { Button, ConfigProviderProps, Alert } from 'antd';
+import { Button, ConfigProviderProps } from 'antd';
 import { PanelProps } from '@grafana/data';
 import { SimpleOptions } from 'types';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
@@ -31,11 +30,10 @@ import 'codemirror/addon/fold/comment-fold.js';
 import 'codemirror/addon/edit/closebrackets';
 import './YamlPanel.css';
 import downloadFile from '../util/download';
-import {DisplayModel, Theme} from '../types';
+import { DisplayModel, Theme } from '../types';
 
 const yaml = require('json2yaml')
 const size: SizeType = 'middle'
-const searchParams = new URLSearchParams(window.location.search)
 const JsonModel = {
   name: "javascript",
   json: true
@@ -43,111 +41,57 @@ const JsonModel = {
 const YamlModel = {
   name: 'text/x-yaml'
 }
-const ParamsKind = ['uid', 'name', 'hostname', 'podip']
 
 type SizeType = ConfigProviderProps['componentSize'];
-interface AlertState {
-  visible: boolean;
-  type: 'warning' | 'error';
-  message: 'Warning' | 'Error';
-  description: string;
-}
-
 interface Props extends PanelProps<SimpleOptions> { }
-
-export const SimplePanel: React.FC<Props> = ({options, data}) => {
+export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) => {
   const cmRef = useRef(null);
   const [yamlString, setYamlString] = useState('')
   const [theme, setTheme] = useState(options.theme)
-  const [alertState, setAlertState] = useState<AlertState>({ visible: false, type: 'warning', message: 'Warning', description: '' })
   const [model, setModel] = useState(options.displayModel)
-  const [params, setParams] = useState({resourece: '', type: '', value: ''})
 
   const changeTheme = (theme: Theme) => {
     setTheme(theme)
   }
-  
 
   const changeModel = (newModel: DisplayModel) => {
-      //@ts-ignore
-      const cm = cmRef.current.editor
-      if (newModel === model) {
-        return
-      }
-      if(newModel === 'yaml') {
-        cm.setOption("mode", YamlModel)
-      } else {
-        cm.setOption("mode", JsonModel)
-      }
-      setModel(newModel)
+    //@ts-ignore
+    const cm = cmRef.current.editor
+    if (newModel === model) {
+      return
+    }
+    if (newModel === 'yaml') {
+      cm.setOption("mode", YamlModel)
+    } else {
+      cm.setOption("mode", JsonModel)
+    }
+    setModel(newModel)
   }
 
   useEffect(() => {
-    const resource = searchParams.get('resource');
-    let [paramType, paramValue] = ['', '']
-    
     const setValue = (result: string) => {
-      if (!result) {
-        setYamlString('null');
-        return  
-      }
       if (model === 'yaml') {
-        setYamlString(yaml.stringify(result).replace(/\\"/g, '"'))
+        setYamlString(yaml.stringify(result))
       } else {
-        setYamlString(JSON.stringify(result, null, 4).replace(/\\"/g, '"'))
+        setYamlString(JSON.stringify(result, null, 4))
       }
     }
-
-    for(let param of ParamsKind) {
-      if(searchParams.get(param)){
-        paramType = param
-        paramValue = searchParams.get(param) as string
-        setParams({resourece: resource as string, type: paramType, value: paramValue})
-      }
+    //@ts-ignore
+    const cm = cmRef.current.editor
+    cm.setSize(null, height - 30);
+    if (data.state === "Done") {
+      const result = data.series[0].meta?.custom?.data
+      setValue(result)
     }
-    
-    if (resource && paramValue) {
-      axios.get(`http://lunettesdi.hcs.svc.alipay.net:18883/queryyamls?resource=${resource}&${paramType}=${paramValue}`)
-        .then((response) => {
-          let result = ''
-          if (response && response.data) {
-            result = JSON.parse(response.data.split("var data = ")[1]?.split("var tree = ")[0])
-          } else {
-            setAlertState({
-              visible: true,
-              type: 'warning',
-              message: 'Warning',
-              description: `No yaml responsed.`
-            })
-          }
-          setValue(result)
-        })
-        .catch((error) => {
-          setAlertState({
-            visible: true,
-            type: 'error',
-            message: 'Error',
-            description: error.toString()
-          })
-        })
-    } else {
-      if (data.state === "Done") {
-        const result = data.series[0].meta?.custom?.data
-        setValue(result)
-      }
-    }
-  },[options, data, model])
+  }, [options, data, model, height])
 
   return (
     <div className='main'>
-      {alertState.visible && (
-        <Alert message={alertState.message} type={alertState.type} description={alertState.description} closable />
-      )}
       <Button type={theme === "idea" ? "primary" : "default"} size={size} onClick={() => changeTheme("idea")}>Light</Button>
       <Button type={theme === "base16-dark" ? "primary" : "default"} size={size} onClick={() => changeTheme("base16-dark")}>Dark</Button>
       <Button type={model === "json" ? "primary" : "default"} size={size} onClick={() => changeModel('json')}>Json</Button>
       <Button type={model === "yaml" ? "primary" : "default"} size={size} onClick={() => changeModel('yaml')}>Yaml</Button>
-      <Button type="default" icon={<DownloadOutlined />} size={size} onClick={() => { downloadFile(yamlString, `${params.resourece}_${params.type}_${params.value}`, `.${model}`) }}>
+      <Button type="default" icon={<DownloadOutlined />} size={size} onClick={() => { downloadFile(yamlString, `${new Date().toLocaleDateString()}`, `.${model}`) }}>
         Download
       </Button>
 
@@ -161,10 +105,9 @@ export const SimplePanel: React.FC<Props> = ({options, data}) => {
           mode: {
             name: 'text/x-yaml', // "text/css" ...
           },
-          extraKeys: { "Ctrl-Q": function (cm: any) { cm.foldCode(cm.getCursor()); } },
-
           // (以下三行)设置支持代码折叠
           lineWrapping: true,
+          viewportMargin: 5000,
           foldGutter: true,
           gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
         }}
