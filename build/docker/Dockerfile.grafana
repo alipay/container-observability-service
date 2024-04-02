@@ -20,9 +20,10 @@ COPY --from=node /app/yaml_panel/dist /var/lib/grafana/plugins/antgroup-yaml-pan
 COPY --from=node /app/custom_log_panel/dist /var/lib/grafana/plugins/antgroup-customlog-panel
 
 # Define the list of plugins to install, separated by spaces.
-ARG PLUGINS="" IFS=','
+ARG PLUGINS="" 
 
 # Install each plugin.
+ARG IFS=','
 RUN for plugin in $PLUGINS; do \
       grafana-cli plugins install $plugin; \
     done
