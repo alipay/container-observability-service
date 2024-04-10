@@ -673,6 +673,9 @@ func (s *StorageSqlImpl) QueryEventWithTimeRange(data interface{}, from, to time
 	return nil
 
 }
+func (s *StorageSqlImpl) QueryPodLifePhaseByID(data interface{}, uid string) error {
+	return nil
+}
 func (s *StorageSqlImpl) QueryPodYamlWithParams(data interface{}, debugparams *model.PodParams) error {
 	var resultOB *gorm.DB
 

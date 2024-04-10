@@ -61,9 +61,11 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/podtypedistribute").HandlerFunc(handlerWrapper(handler.DebuggingPodsFactory, s.Storage))
 		r.Path("/podlist").HandlerFunc(handlerWrapper(handler.PodlistFactory, s.Storage))
 		r.Path("/podnumber").HandlerFunc(handlerWrapper(handler.PodlistFactory, s.Storage))
+		r.Path("/showyamls").HandlerFunc(handlerWrapper(handler.YamlFactory, s.Storage))
 		r.Path("/podyamlgraphnodes").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/podyamlgraphedges").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
+		r.Path("/rawdata").HandlerFunc(handlerWrapper(handler.RawdataFactory, s.Storage))
 
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {

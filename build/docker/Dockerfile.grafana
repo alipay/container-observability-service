@@ -2,14 +2,9 @@
 FROM node as node
 # 将代码拷贝到镜像中的工作目录
 COPY ./grafana_plugin/yaml_panel /app/yaml_panel
-COPY ./grafana_plugin/custom_log_panel /app/custom_log_panel
 # 在镜像中创建工作目录
 WORKDIR /app/yaml_panel
-# 安装依赖并编译
-RUN npm install \
-    && npm run build
-# 在镜像中创建工作目录
-WORKDIR /app/custom_log_panel
+
 # 安装依赖并编译
 RUN npm install \
     && npm run build
@@ -17,7 +12,6 @@ RUN npm install \
 FROM grafana/grafana:latest
 
 COPY --from=node /app/yaml_panel/dist /var/lib/grafana/plugins/antgroup-yaml-panel
-COPY --from=node /app/custom_log_panel/dist /var/lib/grafana/plugins/antgroup-customlog-panel
 
 # Define the list of plugins to install, separated by spaces.
 ARG PLUGINS="" 
