@@ -48,6 +48,7 @@ type SloTraceDataInterface interface {
 
 type PodLifePhaseInterface interface {
 	QueryLifePhaseWithPodUid(data interface{}, uid string) error
+	QueryPodLifePhaseByID(data interface{}, uid string) error
 }
 
 type SpanInterface interface {

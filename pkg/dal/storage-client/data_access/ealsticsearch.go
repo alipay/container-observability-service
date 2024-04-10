@@ -1269,6 +1269,44 @@ func (s *StorageEsImpl) QueryEventWithTimeRange(data interface{}, from, to time.
 
 	return nil
 }
+func (s *StorageEsImpl) QueryPodLifePhaseByID(data interface{}, uid string) error {
+	if uid == "" {
+		return fmt.Errorf("the params is error, uid is nil")
+	}
+	_, esTableName, esType, err := utils.GetMetaName(data)
+	if err != nil {
+		return err
+	}
+
+	begin := time.Now()
+	defer func() {
+		cost := utils.TimeSinceInMilliSeconds(begin)
+		metrics.QueryMethodDurationMilliSeconds.WithLabelValues("QueryLifePhase").Observe(cost)
+	}()
+
+	stringQuery := elastic.NewQueryStringQuery(fmt.Sprintf("_id: \"%s\"", uid))
+	query := elastic.NewBoolQuery().Must(stringQuery)
+
+	searchResult, err := s.DB.Search().Index(esTableName).Type(esType).Query(query).Size(200).
+		Sort("startTime", false).Do(context.Background())
+	if err != nil {
+		return fmt.Errorf("error%v", err)
+	}
+	var hits []*json.RawMessage
+	for _, hit := range searchResult.Hits.Hits {
+		hits = append(hits, &hit.Source)
+	}
+	hitsStr, err := json.Marshal(hits)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(hitsStr, data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 func (s *StorageEsImpl) QueryPodYamlWithParams(data interface{}, params *model.PodParams) error {
 
 	if params == nil {

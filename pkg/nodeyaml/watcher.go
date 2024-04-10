@@ -69,7 +69,6 @@ func processAuditEvent(v interface{}) {
 	if auditEvent.ResponseStatus.Code >= 300 {
 		return
 	}
-
 	if auditEvent.ResponseRuntimeObj == nil {
 		return
 	}

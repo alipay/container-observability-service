@@ -1,5 +1,11 @@
 package model
 
+import (
+	"time"
+
+	v1 "k8s.io/api/core/v1"
+)
+
 // Take this as Example: https://sriramajeyam.com/grafana-infinity-datasource/wiki/json
 type BizInfoTable struct {
 	ClusterName string `json:"ClusterName,omitempty"`
@@ -24,6 +30,40 @@ type PodInfoTable struct {
 	NodeName    string `json:"NodeName,omitempty"`
 	NodeIP      string `json:"NodeIP,omitempty"`
 	NodeYaml    string `json:"NodeYaml,omitempty"`
+}
+type PodYamlTable struct {
+	AuditID        string    `json:"AuditID,omitempty"`
+	ClusterName    string    `json:"ClusterName,omitempty"`
+	HostIP         string    `json:"HostIP,omitempty"`
+	IsBeginDelete  string    `json:"IsBeginDelete,omitempty"`
+	IsDeleted      string    `json:"IsDeleted,omitempty"`
+	Pod            *v1.Pod   `json:"pod,omitempty"`
+	PodIP          string    `json:"PodIP,omitempty"`
+	PodName        string    `json:"PodName,omitempty"`
+	PodUid         string    `json:"PodUid,omitempty"`
+	StageTimestamp time.Time `json:"stageTimestamp,omitempty"`
+}
+type PhaseTable struct {
+	EndTime       time.Time   `json:"endTime,omitempty"`
+	ClusterName   string      `json:"clusterName,omitempty"`
+	DataSourceId  string      `json:"dataSourceId,omitempty"`
+	HasErr        bool        `json:"hasErr"`
+	Namespace     string      `json:"namespace,omitempty" `
+	OperationName string      `json:"operationName,omitempty" `
+	PodUID        string      `json:"podUid,omitempty"`
+	PodName       string      `json:"podName,omitempty" `
+	StartTime     time.Time   `json:"startTime,omitempty" `
+	ExtraInfo     interface{} `json:"extraInfo,omitempty"`
+	TraceStage    string      `json:"traceStage"`
+}
+type NodeYamlTable struct {
+	AuditID        string    `json:"AuditID,omitempty"`
+	NodeName       string    `json:"NodeName,omitempty"`
+	NodeIp         string    `json:"NodeIp,omitempty"`
+	UID            string    `json:"UID,omitempty"`
+	ClusterName    string    `json:"ClusterName,omitempty"`
+	Node           *v1.Node  `json:"Node,omitempty"`
+	StageTimeStamp time.Time `json:"StageTimeStamp,omitempty"`
 }
 type PodListTable struct {
 	DeliveryTime       string `json:"交付时间,omitempty"`
