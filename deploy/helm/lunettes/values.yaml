@@ -65,6 +65,7 @@ grafanaResources:
   requests:
     cpu: 250m
     memory: 500Mi
+grafanaUrl: localhost:9097
 
 # kibana
 kibanaImage: kibana:7.17.13
