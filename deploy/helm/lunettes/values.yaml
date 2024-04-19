@@ -3,125 +3,151 @@
 # Declare variables to be passed into your templates.
 
 # share
-namespace: lunettes
-imagePullPolicy: IfNotPresent
-# kubernetesSvcHost: kubernetes.default
-# kubernetesSvcPort: "6443"
-cluster: staging
-esUser: elastic
-esPassword: changeme
+global:
+  registry: docker.io
+  namespace: lunettes
+  imagePullPolicy: IfNotPresent
+  cluster: staging
+  esUser: elastic
+  esPassword: changeme
 
 # audit-apiserver
-enableAuditApiserver: true
-auditResources:
-  limits:
-    cpu: 100m
-    memory: 200Mi
-  requests:
-    cpu: 100m
-    memory: 200Mi
-auditLogMaxAge: 1
-auditLogMaxBackup: 2
-auditLogMaxSize: 200
+auditApierver:
+  enableAuditApiserver: true
+  resources:
+    limits:
+      cpu: 100m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+  auditLogMaxAge: 1
+  auditLogMaxBackup: 2
+  auditLogMaxSize: 200
 
 # lunettes
-lunettesImage: lunettes/lunettes:latest
-lunettesNodeport: 30880
-lunettesLogsPath: /logs
-lunettesLogsHostPath: /home/var/logs/lunettes
-lunettesType: NodePort
-apiserverEnabled: true
-traceEnable: false
-lunettesResources:
-  limits:
-    cpu: 4
-    memory: 10Gi
-  requests:
-    cpu: 1
-    memory: 500Mi
+lunettes:
+  image:
+    repository: lunettes/lunettes
+    tag: version
+  nodeport: 30880
+  logsPath: /logs
+  logsHostPath: /home/var/logs/lunettes
+  serviceType: NodePort
+  apiserverEnabled: true
+  traceEnable: false
+  resources:
+    limits:
+      cpu: 4
+      memory: 10Gi
+    requests:
+      cpu: 1
+      memory: 500Mi
 
 # grafanadi
-grafanadiInitKubeClient: false
-grafanadiType: NodePort
-grafanadiNodePort: 30280
-grafanadiLogsPath: /logs
-grafanadiLogsHostPath: /home/var/logs/grafanadi
-grafanadiResources:
-  limits:
-    cpu: 250m
-    memory: 500Mi
-  requests:
-    cpu: 250m
-    memory: 500Mi
+grafanadi:
+  initKubeClient: false
+  serviceType: NodePort
+  nodePort: 30280
+  logsPath: /logs
+  logsHostPath: /home/var/logs/grafanadi
+  resources:
+    limits:
+      cpu: 250m
+      memory: 500Mi
+    requests:
+      cpu: 250m
+      memory: 500Mi
 
 # grafana
-grafanaImage: lunettes/grafana:latest
-grafanaType: NodePort
-grafanaNodePort: 30180
-grafanaResources:
-  limits:
-    cpu: 250m
-    memory: 500Mi
-  requests:
-    cpu: 250m
-    memory: 500Mi
+grafana:
+  image:
+    repository: lunettes/grafana
+    tag: version
+  serviceType: NodePort
+  nodePort: 30180
+  resources:
+    limits:
+      cpu: 250m
+      memory: 500Mi
+    requests:
+      cpu: 250m
+      memory: 500Mi
 
 # kibana
-kibanaImage: kibana:7.17.13
-kibanaNodePort: 30610
-kibanaResources:
-  limits:
-    cpu: 250m
-    memory: 500Mi
-  requests:
-    cpu: 250m
-    memory: 500Mi
+kibana:
+  image:
+    repository: lunettes/kibana
+    tag: 7.17.13
+  nodePort: 30610
+  resources:
+    limits:
+      cpu: 250m
+      memory: 500Mi
+    requests:
+      cpu: 250m
+      memory: 500Mi
 
 # filebeat
-filebeatImage: elastic/filebeat:7.17.14
-filebeatResources:
-  limits:
-    cpu: 100m
-    memory: 200Mi
-  requests:
-    cpu: 100m
-    memory: 200Mi
+filebeat:
+  image:
+    repository: lunettes/filebeat
+    tag: 7.17.13
+  resources:
+    limits:
+      cpu: 100m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
 
 # elasticsearch
-elasticImage: elasticsearch:7.17.13
-elasticInitImage: busybox:stable
-elastic1NodePort: 30920
-elastic2NodePort: 30930
-esJavaOptions: "-Xms1g -Xmx1g"
-esCleanSchedule: "0 0 * * *"
-esDataKeepDays: 15d
-elasticsearchResources:
-  limits:
-    cpu: 1
-    memory: 2G
-  requests:
-    cpu: 1
-    memory: 2G
+elasticsearch:
+  image:
+    repository: lunettes/elasticsearch
+    tag: 7.17.13
+  init:
+    image:
+      repository: lunettes/busybox
+      tag: stable
+  elastic1NodePort: 30920
+  elastic2NodePort: 30930
+  javaOptions: "-Xms1g -Xmx1g"
+  cleanSchedule: "0 0 * * *"
+  dataKeepDays: 15d
+  resources:
+    limits:
+      cpu: 1
+      memory: 2G
+    requests:
+      cpu: 1
+      memory: 2G
 
 # prometheus
-promImage: prom/prometheus
-prometheusNodePort: 30190
-prometheusResources:
-  limits:
-    cpu: 100m
-    memory: 512Mi
-  requests:
-    cpu: 100m
-    memory: 512Mi
+prometheus:
+  image:
+    repository: lunettes/prometheus
+    tag: v2.51.2
+  nodePort: 30190
+  resources:
+    limits:
+      cpu: 100m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 512Mi
 
-# jaejer
-jaegerImage: quay.io/jaegertracing/all-in-one:1.45
-jaegerType: NodePort
-jaegerNodePort: 30686
-jaegerResources:
-  limits:
-    cpu: 100m
-    memory: 512Mi
-  requests:
-    cpu: 100m
-    memory: 512Mi
+# jaeger
+jaeger:
+  image:
+    repository: lunettes/all-in-one
+    tag: 1.45
+  serviceType: NodePort
+  nodePort: 30686
+  resources:
+    limits:
+      cpu: 100m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 512Mi

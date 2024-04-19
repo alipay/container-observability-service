@@ -8,4 +8,4 @@ data:
 kind: ConfigMap
 metadata:
   name: lunettes-config
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}

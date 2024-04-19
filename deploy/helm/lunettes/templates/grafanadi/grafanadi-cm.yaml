@@ -5,10 +5,10 @@ data:
     mysqloptions:
       host: "sqlhost"
     esoptions:
-      endpoint: "http://es-cluster-svc.{{ .Values.namespace }}:9200"
-      username: {{ .Values.esUser }}
-      password: {{ .Values.esPassword }}
+      endpoint: "http://es-cluster-svc.{{ .Values.global.namespace }}:9200"
+      username: {{ .Values.global.esUser }}
+      password: {{ .Values.global.esPassword }}
 kind: ConfigMap
 metadata:
   name: grafanadi-cm
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}

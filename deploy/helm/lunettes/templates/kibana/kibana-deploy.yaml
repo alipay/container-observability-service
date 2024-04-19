@@ -4,7 +4,7 @@ metadata:
   labels:
     app: es-kibana
   name: es-kibana
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   replicas: 1
   selector:
@@ -16,15 +16,15 @@ spec:
         app: es-kibana
     spec:
       containers:
-      - image: {{ .Values.kibanaImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+      - image: {{ .Values.global.registry }}/{{ .Values.kibana.image.repository }}:{{ .Values.kibana.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         name: kibana
         volumeMounts:
         - name: kibana-config
           mountPath: /usr/share/kibana/config/kibana.yml
           subPath: kibana.yml
         resources:
-{{ toYaml .Values.kibanaResources | indent 10 }}          
+{{ toYaml .Values.kibana.resources | indent 10 }}          
       volumes:
       - name: kibana-config
         configMap:

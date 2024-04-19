@@ -4,8 +4,8 @@ data:
   kibana.yml: |
     server.port: 5601
     server.host: "0.0.0.0"
-    elasticsearch.hosts: "http://es-cluster-svc.{{ .Values.namespace }}:9200"
+    elasticsearch.hosts: "http://es-cluster-svc.{{ .Values.global.namespace }}:9200"
 kind: ConfigMap
 metadata:
   name: kibana-config
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}

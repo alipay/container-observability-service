@@ -1,4 +1,4 @@
-{{- if .Values.enableAuditApiserver }}
+{{- if .Values.auditApierver.enableAuditApiserver }}
 apiVersion: v1
 data:
   audit-policy.yaml: |
@@ -47,5 +47,5 @@ data:
 kind: ConfigMap
 metadata:
   name: apiserver-audit-config
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 {{- end }}

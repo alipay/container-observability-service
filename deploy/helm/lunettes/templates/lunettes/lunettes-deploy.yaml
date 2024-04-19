@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "lunettes.fullname" . }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: {{ template "lunettes.fullname" . }}
     app.kubernetes.io/instance: "{{ .Chart.Name }}-{{ .Chart.Version }}"
@@ -23,14 +23,14 @@ spec:
         - bash
         - -c
         - |
-          chown -R 500:500 {{ .Values.lunettesLogsPath }}
+          chown -R 500:500 {{ .Values.lunettes.logsPath }}
           echo "Waiting for Elasticsearch cluster to be ready..."
           wait_time=1
           # check es cluster health status
           while true;
           do
             status=`curl -s -XGET --connect-timeout 3 --max-time 5 \
-            "http://es-cluster-svc.{{ .Values.namespace }}:9200/_cluster/health?pretty" \
+            "http://es-cluster-svc.{{ .Values.global.namespace }}:9200/_cluster/health?pretty" \
             | awk -F'"' '/"status"/{print $4}'`
             if [ -n "${status}" ] && [ "${status}" != "red" ];
             then
@@ -43,8 +43,8 @@ spec:
               sleep ${wait_time}
             fi
           done
-        image: {{ .Values.lunettesImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.lunettes.image.repository }}:{{ .Values.lunettes.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         name: init
         securityContext:
           procMount: Default
@@ -52,30 +52,30 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
-        - mountPath: {{ .Values.lunettesLogsPath }}
+        - mountPath: {{ .Values.lunettes.logsPath }}
           name: logs
       containers:
       - name: {{ template "lunettes.fullname" . }}
-        image: {{ .Values.lunettesImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.lunettes.image.repository }}:{{ .Values.lunettes.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         command:
         - /aggregator
-        - --cluster={{ .Values.cluster }}
+        - --cluster={{ .Values.global.cluster }}
         - --trace-timeout=540s
-        - --jaeger-collector=jaeger-collector.{{ .Values.namespace }}:4317
-        - --otlp-collector=jaeger-collector.{{ .Values.namespace }}:4317
+        - --jaeger-collector=jaeger-collector.{{ .Values.global.namespace }}:4317
+        - --otlp-collector=jaeger-collector.{{ .Values.global.namespace }}:4317
         - --v=6
-        - --apiserver-enabled={{ .Values.apiserverEnabled }}
-        - --log_dir={{ .Values.lunettesLogsPath }}
+        - --apiserver-enabled={{ .Values.lunettes.apiserverEnabled }}
+        - --log_dir={{ .Values.lunettes.logsPath }}
         - --logtostderr=false
         - --es-buffer-duration=10s
         - --es-fetch-interval=1s
-        - --es-endpoint=http://es-cluster-svc.{{ .Values.namespace }}:9200
-        - --es-user={{ .Values.esUser }}
-        - --es-password={{ .Values.esPassword }}
-        - --es-index=audit_{{ .Values.cluster }}
+        - --es-endpoint=http://es-cluster-svc.{{ .Values.global.namespace }}:9200
+        - --es-user={{ .Values.global.esUser }}
+        - --es-password={{ .Values.global.esPassword }}
+        - --es-index=audit_{{ .Values.global.cluster }}
         - --feature-gates=SpanAnalysisFeature,JaegerFeature
-        - --trace-enable={{ .Values.traceEnable }}
+        - --trace-enable={{ .Values.lunettes.traceEnable }}
         - --pod_info_cache_size=100000
         - --doc_num_peer_query=200
         - --num_scroll_slice=8
@@ -103,13 +103,13 @@ spec:
           runAsNonRoot: true
           runAsUser: 500          
         volumeMounts:
-        - mountPath: {{ .Values.lunettesLogsPath }}
+        - mountPath: {{ .Values.lunettes.logsPath }}
           name: logs
         resources: 
-{{ toYaml .Values.lunettesResources | indent 10 }}
+{{ toYaml .Values.lunettes.resource | indent 10 }}
       serviceAccountName: lunettes-sa
       volumes:
       - hostPath:
-          path: {{ .Values.lunettesLogsHostPath }}
+          path: {{ .Values.lunettes.logsHostPath }}
           type: DirectoryOrCreate
         name: logs

@@ -4,7 +4,7 @@ metadata:
   labels:
     app: grafana
   name: grafana
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   replicas: 1
   strategy:
@@ -23,14 +23,14 @@ spec:
           - 0
       containers:
       - name: grafana
-        image: {{ .Values.grafanaImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.grafana.image.repository }}:{{ .Values.grafana.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         ports:
           - containerPort: 3000
             name: http-grafana
             protocol: TCP
         resources:
-{{ toYaml .Values.grafanaResources | indent 10 }}
+{{ toYaml .Values.grafana.resources | indent 10 }}
         volumeMounts:
         - name: grafana-datasoruce
           mountPath: /etc/grafana/provisioning/datasources/

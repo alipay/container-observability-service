@@ -4,16 +4,16 @@ metadata:
   labels:
     app: {{ template "lunettes.fullname" . }}
   name: {{ template "lunettes.fullname" . }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   ports:
   - name: lunettes-node
     protocol: TCP
     port: 8080
     targetPort: 8080
-{{- if eq .Values.lunettesType "NodePort" }}
-    nodePort: {{ .Values.lunettesNodeport }}
+{{- if eq .Values.lunettes.serviceType "NodePort" }}
+    nodePort: {{ .Values.lunettes.nodeport }}
 {{- end }}
   selector:
     app: {{ template "lunettes.fullname" . }}
-  type: {{ .Values.lunettesType }}
+  type: {{ .Values.lunettes.serviceType }}

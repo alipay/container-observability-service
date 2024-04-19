@@ -54,11 +54,28 @@ Lunettes 可以识别容器生命周期每个交付阶段的开始和结尾，�
 
 ```bash
 # install lunettes
-# 该过程开启apiserver的审计功能，apiserver会发生重启
-helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] 
+export VERSION=$(curl -s https://api.github.com/repos/alipay/container-observability-service/releases/releases/latest | grep tag_name | cut -d'"' -f4)
+
+helm upgrade \
+  --cleanup-on-fail \
+  --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version ${VERSION} \
+  --namespace lunettes \
+  --create-namespace
 ```
 
-查看可用的[版本号](https://hub.docker.com/r/lunettes/lunettes-chart/tags)
+国内部署使用阿里云镜像加速
+```bash
+export VERSION=$(curl -s https://api.github.com/repos/alipay/container-observability-service/releases/releases/latest | grep tag_name | cut -d'"' -f4)
+
+helm upgrade \
+  --cleanup-on-fail \
+  --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version ${VERSION} \
+  --namespace lunettes \
+  --create-namespace \
+  --set global.registry=registry.cn-hangzhou.aliyuncs.com
+```
+
+查看历史的[版本号](https://hub.docker.com/r/lunettes/lunettes-chart/tags)
 
 第三步：获取 Lunettes 服务的接口
 ```bash

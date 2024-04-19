@@ -1,8 +1,8 @@
-{{- if .Values.enableAuditApiserver }}
+{{- if .Values.auditApierver.enableAuditApiserver }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
   name: audit-configmap-reader
 rules:
 - apiGroups: [""]
@@ -11,16 +11,16 @@ rules:
 {{- end }}
 
 ---
-{{- if .Values.enableAuditApiserver }}
+{{- if .Values.auditApierver.enableAuditApiserver }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: audit-configmap-reader
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 roleRef:
   kind: Role
   name: audit-configmap-reader

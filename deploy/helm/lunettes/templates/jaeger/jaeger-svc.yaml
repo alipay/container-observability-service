@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: jaeger-collector
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: jaeger
 spec:
@@ -11,8 +11,8 @@ spec:
       port: 16686
       protocol: TCP
       targetPort: 16686
-{{- if eq .Values.jaegerType "NodePort" }}
-      nodePort: {{ .Values.jaegerNodePort }}
+{{- if eq .Values.jaeger.serviceType "NodePort" }}
+      nodePort: {{ .Values.jaeger.nodePort }}
 {{- end }}
     - name: service-http
       port: 4317
@@ -20,4 +20,4 @@ spec:
       targetPort: 4317
   selector:
     app: jaeger
-  type: {{ .Values.jaegerType }}
+  type: {{ .Values.jaeger.serviceType }}
