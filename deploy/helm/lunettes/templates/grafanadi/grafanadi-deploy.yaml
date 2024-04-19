@@ -52,6 +52,7 @@ spec:
         - --enable-kube-client={{ .Values.grafanadiInitKubeClient }}
         - --log_dir={{ .Values.grafanadiLogsPath }}
         - --logtostderr=false
+        - --grafana-url=localhost:9097
         - --v=6
         name: grafanadi
         image: {{ .Values.lunettesImage }}
