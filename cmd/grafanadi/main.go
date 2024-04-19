@@ -69,7 +69,7 @@ func newRootCmd() *cobra.Command {
 
 	// for storage
 	cmd.PersistentFlags().StringVarP(&cfgFile, "config-file", "", "/app/storage-config.yaml", "storage config file")
-	cmd.PersistentFlags().StringVarP(&service.GrafanaUrl, "grafana-url", "", "localhost:9097", "grafana url")
+	cmd.PersistentFlags().StringVarP(&service.GrafanaUrl, "grafana-url", "", "", "grafana url")
 
 	// kubeconfig for k8s client
 	cmd.PersistentFlags().StringVarP(&kubeConfigFile, "kubeconfig", "", "/etc/kubernetes/kubeconfig/admin.kubeconfig", "Path to kubeconfig file with authorization and apiserver information.")

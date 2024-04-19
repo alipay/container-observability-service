@@ -672,7 +672,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "yaml",
-                        "url": "http://{{ .Values.grafanaUrl }}/d/podyamllinks/podyaml?orgId=1&var-uid=${__data.fields[\"PodUID\"]}"
+                        "url": "/d/podyamllinks/podyaml?orgId=1&var-uid=${__data.fields[\"PodUID\"]}"
                       }
                     ]
                   },
@@ -697,7 +697,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "NodeYaml",
-                        "url": "http://{{ .Values.grafanaUrl }}/d/nodeyamllinks/nodeyaml?orgId=1&var-nodeName=${__data.fields[\"NodeName\"]}"
+                        "url": "/d/nodeyamllinks/nodeyaml?orgId=1&var-nodeName=${__data.fields[\"NodeName\"]}"
                       }
                     ]
                   },
