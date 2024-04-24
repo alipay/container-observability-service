@@ -45,12 +45,7 @@ jobs:
     - name: Deploy lunettes
       run: |
         helm upgrade --install lunettes deploy/helm/lunettes/ \
-          --set lunettesImage=${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }} \
-          --set enableAuditApiserver=true \
-          --set lunettesType=NodePort \
-          --set grafanadiType=NodePort \
-          --set grafanaType=NodePort \
-          --set jaegerType=NodePort
+          --set lunettesImage=${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }} 
         # waiting for lunettes ready
         set +e
         all_pods=$(kubectl -n lunettes get pods -o jsonpath='{.items[*].metadata.name}')
