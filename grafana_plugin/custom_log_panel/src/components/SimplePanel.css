@@ -1,0 +1,26 @@
+.css-5fhvl0:hover {
+    cursor: pointer;
+    
+}
+.css-996l8t-logs-stats-row__value:hover {
+    cursor: pointer;
+}
+.css-19gv2o1-panel-header{
+    display: none;
+}
+.grid-drag-handle{
+    display: flex !important;
+}
+.highlight {
+    text-decoration: underline;
+    color: lightskyblue;
+}
+.link {
+    color:rgba(25,72,216,1);
+    font-weight: bold;
+
+}
+.link:hover {
+    text-decoration-line: underline;
+    color:rgba(25,72,216,1);
+}

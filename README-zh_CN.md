@@ -49,14 +49,21 @@ Lunettes 可以识别容器生命周期每个交付阶段的开始和结尾，�
 以下方式将通过 NodePort 暴露服务, 请确保您当前的操作环境可以访问 Kubernetes nodeIP
 
 第二步：通过 Helm 安装 Lunettes
+
+注意：从 Helm v3.8.0 开始，默认启用 OCI 支持，并且从实验性升级为通用性。所以你最好选择Helm v3.8.0或以上版本。
+
 ```bash
 # install lunettes
 # 该过程开启apiserver的审计功能，apiserver会发生重启
+<<<<<<< HEAD
 helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version]
 
 #如果kubernetes版本 < v1.21，需要设置policyVersion的版本
 helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] \
 --set policyVersion=v1beta1
+=======
+helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] 
+>>>>>>> main
 ```
 
 查看可用的[版本号](https://hub.docker.com/r/lunettes/lunettes-chart/tags)

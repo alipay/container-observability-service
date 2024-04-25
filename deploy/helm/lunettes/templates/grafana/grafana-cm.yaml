@@ -361,7 +361,7 @@ data:
             },
             "showHeader": true
           },
-          "pluginVersion": "10.1.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "columns": [],
@@ -508,7 +508,7 @@ data:
             },
             "showHeader": true
           },
-          "pluginVersion": "10.1.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "columns": [],
@@ -561,6 +561,7 @@ data:
           },
           "id": 21,
           "options": {
+            "edges": {},
             "nodes": {
               "arcs": [
                 {
@@ -671,7 +672,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "yaml",
-                        "url": "http://lunettes.lunettes.svc.cluster.local:8080/api/v1/debugpodyaml?uid=${__data.fields[\"PodUID\"]}"
+                        "url": "/d/podyamllinks/podyaml?orgId=1&var-uid=${__data.fields[\"PodUID\"]}"
                       }
                     ]
                   },
@@ -696,7 +697,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "NodeYaml",
-                        "url": "http://lunettes.lunettes.svc.cluster.local:8080/api/v1/debugpodyaml?name=${__data.fields[\"NodeName\"]}"
+                        "url": "/d/nodeyamllinks/nodeyaml?orgId=1&var-nodeName=${__data.fields[\"NodeName\"]}"
                       }
                     ]
                   },
@@ -771,7 +772,7 @@ data:
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "10.1.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "columns": [],
@@ -905,7 +906,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.1.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "columns": [],
@@ -1015,7 +1016,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.1.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "columns": [],
@@ -1141,7 +1142,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "10.1.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "columns": [],
@@ -1396,8 +1397,7 @@ data:
         }
       ],
       "refresh": "",
-      "schemaVersion": 38,
-      "style": "dark",
+      "schemaVersion": 39,
       "tags": [],
       "templating": {
         "list": [
@@ -2796,9 +2796,322 @@ data:
       "title": "Lunettes DebugSLO",
       "uid": "lunettes-debugslo",
       "version": 3,
+<<<<<<< HEAD
+=======
       "weekStart": ""
     }
-
+  podyaml.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 3,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 1,
+          "options": {
+            "displayModel": "json",
+            "seriesCountSize": "sm",
+            "showSeriesCount": false,
+            "text": "Default value of text input option",
+            "theme": "idea"
+          },
+          "targets": [
+            {
+              "columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+              },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
+              "refId": "A",
+              "root_selector": "",
+              "source": "url",
+              "type": "json",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/showyamls?resource=pod&uid=$uid",
+              "url_options": {
+                "data": "",
+                "method": "GET"
+              }
+            }
+          ],
+          "title": "PodYaml",
+          "type": "antgroup-yaml-panel"
+        }
+      ],
+      "refresh": "",
+      "schemaVersion": 39,
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": false,
+              "text": "",
+              "value": ""
+            },
+            "hide": 0,
+            "label": "uid",
+            "name": "uid",
+            "options": [
+              {
+                "selected": true,
+                "text": "",
+                "value": ""
+              }
+            ],
+            "query": "",
+            "skipUrlSync": false,
+            "type": "textbox"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "podyaml",
+      "uid": "podyamllinks",
+      "version": 3,
+      "weekStart": ""
+    }
+  nodeyaml.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 4,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 1,
+          "options": {
+            "displayModel": "json",
+            "seriesCountSize": "sm",
+            "showSeriesCount": false,
+            "text": "Default value of text input option",
+            "theme": "idea"
+          },
+          "targets": [
+            {
+              "columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+              },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
+              "refId": "A",
+              "root_selector": "",
+              "source": "url",
+              "type": "json",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/showyamls?resource=node&name=$nodeName",
+              "url_options": {
+                "data": "",
+                "method": "GET"
+              }
+            }
+          ],
+          "title": "NodeYaml",
+          "type": "antgroup-yaml-panel"
+        }
+      ],
+      "refresh": "",
+      "schemaVersion": 39,
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": false,
+              "text": "",
+              "value": ""
+            },
+            "hide": 0,
+            "label": "nodeName",
+            "name": "nodeName",
+            "options": [
+              {
+                "selected": true,
+                "text": "",
+                "value": ""
+              }
+            ],
+            "query": "i-f8zh6micauwfcdncl6ty",
+            "skipUrlSync": false,
+            "type": "textbox"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "nodeyaml",
+      "uid": "nodeyamllinks",
+      "version": 3,
+      "weekStart": ""
+    }
+  rawdata.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 5,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 1,
+          "options": {
+            "displayModel": "json",
+            "seriesCountSize": "sm",
+            "showSeriesCount": false,
+            "text": "Default value of text input option",
+            "theme": "idea"
+          },
+          "targets": [
+            {
+              "columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+              },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
+              "refId": "A",
+              "root_selector": "",
+              "source": "url",
+              "type": "json",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/rawdata?plfid=$plfid",
+              "url_options": {
+                "data": "",
+                "method": "GET"
+              }
+            }
+          ],
+          "title": "审计信息",
+          "type": "antgroup-yaml-panel"
+        }
+      ],
+      "refresh": "",
+      "schemaVersion": 39,
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {},
+            "hide": 0,
+            "label": "plfid",
+            "name": "plfid",
+            "options": [],
+            "query": "",
+            "skipUrlSync": false,
+            "type": "textbox"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "rawdata",
+      "uid": "rawdatalinks",
+      "version": 3,
+>>>>>>> main
+      "weekStart": ""
+    }
 ---
 apiVersion: v1
 kind: ConfigMap

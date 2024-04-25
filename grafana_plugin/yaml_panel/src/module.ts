@@ -5,6 +5,7 @@ import { SimplePanel } from './components/YamlPanel';
 
 export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOptions((builder) => {
   return builder
+<<<<<<< HEAD
     .addTextInput({
       path: 'text',
       name: 'Simple text option',
@@ -37,5 +38,40 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
         ],
       },
       showIf: (config) => config.showSeriesCount,
+=======
+    .addRadio({
+      path: 'displayModel',
+      defaultValue: 'json',
+      name: 'Display Model',
+      settings: {
+        options: [
+          {
+            value: 'json',
+            label: 'JSON',
+          },
+          {
+            value: 'yaml',
+            label: 'YAML',
+          }
+        ],
+      }
+    })
+    .addRadio({
+      path: 'theme',
+      defaultValue: 'idea',
+      name: 'Default Theme',
+      settings: {
+        options: [
+          {
+            value: 'idea',
+            label: 'Light',
+          },
+          {
+            value: 'base16-dark',
+            label: 'Dark',
+          }
+        ],
+      }
+>>>>>>> main
     });
 });

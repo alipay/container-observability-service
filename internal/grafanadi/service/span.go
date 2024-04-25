@@ -15,6 +15,9 @@ func ConverSpan2Frame(spans []*storagemodel.Span) model.DataFrame {
 		return model.DataFrame{}
 
 	}
+
+	minBegin := time.Now()
+	maxEnd := time.Unix(0, 0)
 	for _, e := range spans {
 		if e.Begin.Before(rootBegin) && e.Begin.After(time.Unix(0, 0)) {
 			rootBegin = e.Begin
@@ -23,13 +26,21 @@ func ConverSpan2Frame(spans []*storagemodel.Span) model.DataFrame {
 		if e.End.After(rootEnd) {
 			rootEnd = e.End
 		}
+		if e.ActionType == "PodCreate" {
+			if e.Begin.Before(minBegin) && e.Begin.After(time.Unix(0, 0)) {
+				minBegin = e.Begin
+			}
+			if e.End.After(maxEnd) {
+				maxEnd = e.End
+			}
+		}
 	}
 	rootTraceID := uuid.New().String()
 	rootSpanID := uuid.New().String()
 
 	traceAry := []string{rootTraceID}
 	spanAry := []string{rootSpanID}
-	pspanAry := []interface{}{nil}
+	parentSpanAry := []interface{}{nil}
 	opsAry := []string{"PodDelivery"}
 	serviceAry := []string{"PodDelivery"}
 	serviceTagAry := []interface{}{nil}
@@ -41,20 +52,48 @@ func ConverSpan2Frame(spans []*storagemodel.Span) model.DataFrame {
 		durationAry = []int64{int64(rootEnd.Sub(rootBegin) / 1000 / 1000)}
 	}
 
+	var opsType string
+	deduplicateMap := make(map[string]string, 0)
 	for _, sp := range spans {
 		if sp.Begin.Before(rootBegin) {
 			continue
 		}
-
 		traceAry = append(traceAry, rootTraceID)
-		spanAry = append(spanAry, uuid.New().String())
-		pspanAry = append(pspanAry, rootSpanID)
-		opsAry = append(opsAry, sp.Type)
+		spanId := uuid.New().String()
+		spanAry = append(spanAry, spanId)
+
+		opsType = sp.Type
+		if sp.Type != sp.Name {
+			opsType = sp.Type + ":" + sp.Name
+		}
+		opsAry = append(opsAry, opsType)
 		serviceAry = append(serviceAry, sp.ActionType)
 		serviceTagAry = append(serviceTagAry, nil)
 		startTimeAry = append(startTimeAry, sp.Begin.UnixNano()/1e6)
 		elapsedDur := sp.Elapsed
-		durationAry = append(durationAry, int64(elapsedDur))
+		durationAry = append(durationAry, elapsedDur)
+
+		value, ok := deduplicateMap[sp.ActionType]
+		if !ok {
+			deduplicateMap[sp.ActionType] = spanId
+			parentSpanAry = append(parentSpanAry, rootSpanID)
+			if opsType != "pod_ready_span" && sp.ActionType == "PodCreate" {
+				opsAry[1] = ""
+				durationAry[1] = int64(maxEnd.Sub(minBegin) / 1000 / 1000)
+				startTimeAry[1] = minBegin.UnixNano() / 1e6
+				traceAry = append(traceAry, rootTraceID)
+				spanAry = append(spanAry, spanId)
+
+				parentSpanAry = append(parentSpanAry, spanId)
+				opsAry = append(opsAry, opsType)
+				serviceAry = append(serviceAry, sp.ActionType)
+				serviceTagAry = append(serviceTagAry, nil)
+				startTimeAry = append(startTimeAry, sp.Begin.UnixNano()/1e6)
+				durationAry = append(durationAry, elapsedDur)
+			}
+		} else {
+			parentSpanAry = append(parentSpanAry, value)
+		}
 	}
 
 	return model.DataFrame{
@@ -72,7 +111,7 @@ func ConverSpan2Frame(spans []*storagemodel.Span) model.DataFrame {
 		},
 		Data: model.DataType{
 			Values: []interface{}{
-				traceAry, spanAry, pspanAry, opsAry, serviceAry, serviceTagAry, startTimeAry, durationAry,
+				traceAry, spanAry, parentSpanAry, opsAry, serviceAry, serviceTagAry, startTimeAry, durationAry,
 			},
 		},
 	}

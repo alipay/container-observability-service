@@ -1,22 +1,23 @@
 # 拉取node镜像用于打包
 FROM node as node
-# 在镜像中创建工作目录
-WORKDIR /app
 # 将代码拷贝到镜像中的工作目录
-COPY ./grafana_plugin/yaml_panel /app
+COPY ./grafana_plugin/yaml_panel /app/yaml_panel
+# 在镜像中创建工作目录
+WORKDIR /app/yaml_panel
+
 # 安装依赖并编译
 RUN npm install \
     && npm run build
-
 # Use the official Grafana image as the base image.
 FROM grafana/grafana:latest
 
-COPY --from=node /app/dist /var/lib/grafana/plugins/antgroup-yaml-panel
+COPY --from=node /app/yaml_panel/dist /var/lib/grafana/plugins/antgroup-yaml-panel
 
 # Define the list of plugins to install, separated by spaces.
-ARG PLUGINS=""
+ARG PLUGINS="" 
 
 # Install each plugin.
+ARG IFS=','
 RUN for plugin in $PLUGINS; do \
       grafana-cli plugins install $plugin; \
     done

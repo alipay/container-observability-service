@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/alipay/container-observability-service/pkg/common"
+	customerrors "github.com/alipay/container-observability-service/pkg/custom-errors"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -460,7 +461,7 @@ func (s *StorageSqlImpl) QuerySloTraceDataWithPodUID(data interface{}, podUid st
 func (s *StorageSqlImpl) QueryCreateSloWithResult(data interface{}, requestParams *model.SloOptions) error {
 
 	if requestParams == nil || requestParams.Result == "" {
-		return fmt.Errorf("the params is error")
+		return customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 
 	env := DELIVERY_ENV_PROD
@@ -537,7 +538,7 @@ func (s *StorageSqlImpl) QueryCreateSloWithResult(data interface{}, requestParam
 func (s *StorageSqlImpl) QueryUpgradeSloWithResult(data interface{}, requestParams *model.SloOptions) error {
 
 	if requestParams == nil || requestParams.Result == "" {
-		return fmt.Errorf("the params is error")
+		return customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 	tx := s.DB.Where("upgrade_result =?", requestParams.Result)
 
@@ -580,7 +581,7 @@ func (s *StorageSqlImpl) QueryUpgradeSloWithResult(data interface{}, requestPara
 }
 func (s *StorageSqlImpl) QueryDeleteSloWithResult(data interface{}, requestParams *model.SloOptions) error {
 	if requestParams == nil || requestParams.Result == "" {
-		return fmt.Errorf("the params is error")
+		return customerrors.Error(customerrors.ErrParams, customerrors.NoDeliveryResult)
 	}
 	tx := s.DB.Where("delete_result =?", requestParams.Result)
 	if requestParams.Cluster != "" {
@@ -671,6 +672,9 @@ func (s *StorageSqlImpl) QueryEventWithTimeRange(data interface{}, from, to time
 
 	return nil
 
+}
+func (s *StorageSqlImpl) QueryPodLifePhaseByID(data interface{}, uid string) error {
+	return nil
 }
 func (s *StorageSqlImpl) QueryPodYamlWithParams(data interface{}, debugparams *model.PodParams) error {
 	var resultOB *gorm.DB

@@ -55,6 +55,9 @@ Step1: Bootstrap a Kubernetes cluster with Kubeadm/Kind.
 The following method will expose the service through NodePort. Please make sure that your current operating environment can access the Kubernetes nodeIP.
 
 Step2: Install Lunettes with Helm
+
+Note: Beginning in Helm v3.8.0, OCI support is enabled by default, and it graduated from experimental to general availability. So you‘d better choose Helm v3.8.0 or above.
+
 ```bash
 # Use NodePort
 helm install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] \
