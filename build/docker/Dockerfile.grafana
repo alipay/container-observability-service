@@ -8,8 +8,9 @@ WORKDIR /app/yaml_panel
 # 安装依赖并编译
 RUN npm install \
     && npm run build
+
 # Use the official Grafana image as the base image.
-FROM grafana/grafana:latest
+FROM grafana/grafana:10.4.2-ubuntu
 
 COPY --from=node /app/yaml_panel/dist /var/lib/grafana/plugins/antgroup-yaml-panel
 
@@ -17,7 +18,18 @@ COPY --from=node /app/yaml_panel/dist /var/lib/grafana/plugins/antgroup-yaml-pan
 ARG PLUGINS="" 
 
 # Install each plugin.
-ARG IFS=','
-RUN for plugin in $PLUGINS; do \
+RUN set -e; \
+    ORIG_IFS=${IFS}; \
+    IFS=','; \
+    for plugin in $PLUGINS; do \
+    if echo "$plugin" | grep -q ':'; then \
+      plugin_name=$(echo $plugin | cut -d ':' -f1); \
+      plugin_version=$(echo $plugin | cut -d ':' -f2); \
+      echo "Installing plugin $plugin_name version $plugin_version"; \
+      grafana-cli plugins install $plugin_name $plugin_version; \
+    else \
+      echo "Installing plugin $plugin"; \
       grafana-cli plugins install $plugin; \
-    done
+    fi \
+    done; \
+    IFS=${ORIG_IFS};
