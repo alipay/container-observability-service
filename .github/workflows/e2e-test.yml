@@ -29,6 +29,17 @@ jobs:
         # Generate two Docker tags: ${APP_VERSION}
         tags: |
           ${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
+    - name: Test Build grafana
+      id: docker_build_grafana
+      uses: docker/build-push-action@v2
+      with:
+        push: false
+        file: build/docker/Dockerfile.grafana
+        # docker build arg
+        build-args: |
+            GRAFANA_PLUGINS="yesoreyeram-infinity-datasource,marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-form-panel:3.1.0"
+        tags: |
+          grafana:${{ env.APP_VERSION }}
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.5.0
       with:
