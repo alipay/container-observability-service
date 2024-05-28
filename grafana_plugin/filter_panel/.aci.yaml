@@ -1,0 +1,43 @@
+version: "2.0"
+
+
+only:
+  triggerType:
+    - pullRequest
+    - push
+    - tagPush
+
+
+stages:
+  - image-build
+  - show-artifact
+
+jobs:
+  x86_64镜像构建:
+    stage: image-build
+    id: build
+    component: docker-image-build
+    inputs:
+      imageName: reg.docker.alibaba-inc.com/anthcs/antgroup-fiter-panel # 构建产物镜像名称(不含tag), 如: reg.docker.alibaba-inc.com/antcodebuild/test-image-build
+      imageTag: ${{vcs.commitShortSha}}
+      dockerfile: ./antgroup-fiter-panel/Dockerfile # dockerfile 路径，不传默认为 ./Dockerfile (即: ${ACB_BUILD_DIR}/code-repo/Dockerfile)
+      contextDir: ./antgroup-fiter-panel/ # docker build 的 context 目录，不传默认为 ./ (即: ${ACB_BUILD_DIR}/code-repo 目录)
+      buildArgs: null # docker build 的 args 参数，格式为 key1=value1,key2=value2，注意key/value的格式，不能有空格等特殊字符
+      registryUsername: null # 镜像 registry 用户名，建议使用 aci secrets 方式传递，避免泄露 (reg.docker.alibaba-inc.com、acs-reg.alipay.com 不传时默认使用平台公共账号 admin.for.antb)
+      registryPassword: null # 镜像 registry 密码，建议使用 aci secrets 方式传递，避免泄露 (不传使用平台公共账号)
+      skipWhenImageExists: null # true | false, 如果镜像已存在，是否跳过镜像构建，默认 false
+      errWhenImageExists: null # true | false, 如果镜像已存在，是否直接失败，默认 true
+      beforeScript: null # 前置脚本，按需传递 (在 ${ACB_BUILD_DIR}/code-repo 下执行)
+      beforeScriptImage: null  # 指定前置脚本运行环境镜像，beforeScript 不为空时需要传值(不传使用默认基础alios镜像)
+      afterScript: null # 后置脚本，按需传递 (在 ${ACB_BUILD_DIR}/code-repo 下执行)
+      afterScriptImage: null  # 指定后置脚本运行环境镜像，afterScript 不为空时需要传值(不传使用默认基础alios镜像)
+      nydusSwitch: false # nudys 镜像加速开关 true|false 默认为false
+      cacheStrategy: always # 镜像构建是否使用缓存，默认 always
+      extraTags: null # 可指定多个 (当前最多支持5个) 额外的构建镜像Tag, 格式参考下方文档描述 (如需推送到其他镜像中心，还需要配置对应的账密)
+      timeoutInSec: 600 # 构建任务执行超时时间，单位(秒)
+  pipeline下一阶段节点使用镜像sample:
+    stage: show-artifact
+    component: shell
+    inputs:
+      script: |
+              echo "x86_64 image: ${{jobs.build.outputs.image}}, sha256: ${{jobs.build.outputs.imageSha256}}"
