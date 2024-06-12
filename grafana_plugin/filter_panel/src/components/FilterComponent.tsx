@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { locationService } from '@grafana/runtime';
-import { Flex, Input, Tag, theme, Tooltip, InputRef, Space, Select } from 'antd';
+import { Flex, Input, Tag, theme, Tooltip, InputRef, Space, Select, TourProps, Tour } from 'antd';
 import { SimpleOptions } from 'types';
 
 const tagInputStyle: React.CSSProperties = {
@@ -27,8 +27,8 @@ interface PanelState {
 
 function isOptionInCurrentConfig(str: string, options: any[], config: string): boolean {
     const result = options.filter(option => option.value === str)
-    if(result.length > 0) {
-       return  result[0].belongTo.filter((item: any) => item.value === config).length > 0
+    if (result.length > 0) {
+        return result[0].belongTo.filter((item: any) => item.value === config).length > 0
     }
     return false
 }
@@ -36,8 +36,8 @@ function isOptionInCurrentConfig(str: string, options: any[], config: string): b
 function getFilterList(options: SimpleOptions, replaceVariables: Function, valueConnect: string): string[] {
     const resultList: string[] = []
     options.filterConfig.map(config => {
-        if(!replaceVariables(`$${config.filterKey}`)) {
-            return 
+        if (!replaceVariables(`$${config.filterKey}`)) {
+            return
         }
         const variable = replaceVariables(`$${config.filterKey}`).split(config.optionConnectMark)
         variable.map((item: string) => {
@@ -46,12 +46,13 @@ function getFilterList(options: SimpleOptions, replaceVariables: Function, value
             const value = str.split(config.valueConnectMark)[1]
             resultList.push(key + valueConnect + value)
         })
-    }) 
+    })
     return resultList
 }
 
-const FilterPanel: React.FC<PanelState> = ({ options, data, width, height, replaceVariables }) => {    
+const FilterPanel: React.FC<PanelState> = ({ options, data, width, height, replaceVariables }) => {
     const valueConnect = '='
+    const refTag = useRef(null)
     const { token } = theme.useToken();
     const [tags, setTags] = useState<string[]>(getFilterList(options, replaceVariables, valueConnect));
     const [inputVisible, setInputVisible] = useState(false);
@@ -60,8 +61,25 @@ const FilterPanel: React.FC<PanelState> = ({ options, data, width, height, repla
     const [editInputIndex, setEditInputIndex] = useState(-1);
     const [editInputValue, setEditInputValue] = useState('');
     const [editInputPrefix, setEditInputPrefix] = useState('');
+    const [open, setOpen] = useState(false)
     const inputRef = useRef<InputRef>(null);
     const editInputRef = useRef<InputRef>(null);
+    const steps: TourProps['steps'] = [
+        {
+            title: '输入查询条件',
+            description: '请点击此处添加查询选项，选择查询条件并输入查询内容。',
+            target: () => refTag.current,
+        },
+    ];
+
+    // 检查localStorage中是否已经存储了标志
+    if (!localStorage.getItem('hasSeenIntro')) {
+        // 如果没有这个标志，则假设这是用户第一次访问
+        // 在这里启动你的漫游式引导
+        setOpen(true)
+        // 在启动引导后，设置一个标志表示用户已经看过引导
+        localStorage.setItem('hasSeenIntro', 'true');
+    }
     useEffect(() => {
         if (inputVisible) {
             inputRef.current?.focus();
@@ -78,11 +96,11 @@ const FilterPanel: React.FC<PanelState> = ({ options, data, width, height, repla
             tags.map((tag: string) => {
                 const prefix = tag.split(valueConnect)[0]
                 const value = tag.split(valueConnect)[1]
-                if(isOptionInCurrentConfig(prefix, options.options, config.filterKey)) {
+                if (isOptionInCurrentConfig(prefix, options.options, config.filterKey)) {
                     newList.push(config.keyPrefix + prefix + config.keySuffix + config.valueConnectMark + config.valuePrefix + value + config.valueSuffix)
                 }
             })
-            locationService.partial({[`var-${config.filterKey}`]: newList.join(config.optionConnectMark)}, true)
+            locationService.partial({ [`var-${config.filterKey}`]: newList.join(config.optionConnectMark) }, true)
         })
     }
 
@@ -126,7 +144,7 @@ const FilterPanel: React.FC<PanelState> = ({ options, data, width, height, repla
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
     const changeTagKey = (tag: string): string => {
-        if(tag) {
+        if (tag) {
             const tagKey = tag.split(valueConnect)[0]
             const tagValue = tag.split(valueConnect)[1]
             const tagKetStr = options.options.filter(option => option.value === tagKey)
@@ -230,10 +248,11 @@ const FilterPanel: React.FC<PanelState> = ({ options, data, width, height, repla
                         onPressEnter={handleInputConfirm} />
                 </Space.Compact>
             ) : (
-                <Tag style={tagPlusStyle} icon={<PlusOutlined />} onClick={showInput}>
-                    New Tag
+                <Tag style={tagPlusStyle} icon={<PlusOutlined />} onClick={showInput} ref={refTag}>
+                    添加查询条件
                 </Tag>
             )}
+            <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
         </Flex>
     );
 };
