@@ -19,7 +19,7 @@ RUN npm install \
 FROM grafana/grafana:10.4.2-ubuntu
 
 COPY --from=node /app/yaml_panel/dist /var/lib/grafana/plugins/antgroup-yaml-panel
-COPY --from=node /app/filter_panel/dist /var/lib/grafana/plugins/antgroup-filter_panel
+COPY --from=node /app/filter_panel/dist /var/lib/grafana/plugins/antgroup-filter-panel
 
 # Define the list of plugins to install, separated by spaces.
 ARG PLUGINS="" 
