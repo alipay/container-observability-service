@@ -34,6 +34,7 @@ var (
 
 		"pod phase: Running": "完成交付",
 	}
+	GrafanaUrl string
 )
 
 func ConvertPodPhase2Frame(podPhases []*storagemodel.LifePhase) model.DataFrame {
@@ -135,7 +136,7 @@ func ConvertPodPhase2Frame(podPhases []*storagemodel.LifePhase) model.DataFrame 
 		uaAry = append(uaAry, convertNil(userAgent))
 		hashCodeStr := fmt.Sprintf("%d", utils.StringHashcode(phase.OperationName))
 		plfId := phase.ClusterName + "_" + phase.Namespace + "_" + phase.PodUID + "_" + phase.DataSourceId + "_" + hashCodeStr
-		plfUrl := fmt.Sprintf("http://localhost:9097/d/rawdatalinks/rawdata?orgId=1&var-plfid=%s", plfId)
+		plfUrl := fmt.Sprintf("http://%s/d/rawdatalinks/rawdata?orgId=1&var-plfid=%s", GrafanaUrl, plfId)
 		plfAry = append(plfAry, convertNil(plfUrl))
 		reasonAry = append(reasonAry, convertNil(phaseReason))
 		messageAry = append(messageAry, convertNil(phaseMessage))
