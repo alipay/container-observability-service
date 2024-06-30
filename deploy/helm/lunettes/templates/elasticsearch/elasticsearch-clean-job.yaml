@@ -17,7 +17,7 @@ spec:
             - -c
             - |
               # 这里直接执行ConfigMap中的脚本
-              /scripts/delete_index.sh es-cluster-svc.{{ .Values.namespace }}:9200 \
+              /scripts/purge_index.sh es-cluster-svc.{{ .Values.namespace }}:9200 \
               ${{ .Values.esDataKeepDays }} \
               audit_{{ .Values.cluster }}:@timestamp \
               slo_trace_data_daily:CreatedTime \
@@ -33,17 +33,17 @@ spec:
           volumes:
           - name: script-volume
             configMap:
-              name: delete-index-script
+              name: purge-index-script
               defaultMode: 0744  # 为脚本文件设置执行权限
           restartPolicy: OnFailure
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: delete-index-script
+  name: purge-index-script
   namespace: {{ .Values.namespace }}
 data:
-  delete_index.sh: |
+  purge_index.sh: |
     #!/bin/bash
 
     # 参数检查
