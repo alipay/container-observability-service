@@ -8,6 +8,11 @@ data:
       endpoint: "http://es-cluster-svc.{{ .Values.namespace }}:9200"
       username: {{ .Values.esUser }}
       password: {{ .Values.esPassword }}
+  fed-config-file.yaml: |
+    site-infos:
+    - dashboard-url: "http://{{ template "lunettes.fullname" . }}.{{ .Values.namespace }}:9097"
+      di-url: "http://grafanadi.{{ .Values.namespace }}:9099"
+      site-name: "mainsite"
 kind: ConfigMap
 metadata:
   name: grafanadi-cm

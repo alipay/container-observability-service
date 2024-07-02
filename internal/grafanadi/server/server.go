@@ -18,9 +18,10 @@ import (
 )
 
 type ServerConfig struct {
-	MetricsAddr string
-	ListenAddr  string
-	Storage     data_access.StorageInterface
+	MetricsAddr    string
+	ListenAddr     string
+	ListenAuthAddr string
+	Storage        data_access.StorageInterface
 }
 
 // Server is server to query trace stats
@@ -42,6 +43,7 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 	go func() {
 		// router
 		r := mux.NewRouter()
+
 		// containerlifecycle
 		r.Path("/").HandlerFunc(handlerWrapper(handler.RootFactory, s.Storage))
 		r.Path("/containerlifecycle").HandlerFunc(handlerWrapper(handler.ContainerlifecycleFactory, s.Storage))
@@ -69,13 +71,51 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {
-			klog.Errorf("failed to ListenAndServe, err:%s", err.Error())
+			klog.Errorf("failed to ListenAndServe at ListenAddr %s, err:%s", s.Config.ListenAddr, err.Error())
 			panic(err.Error())
 		}
 	}()
+
+	go func() {
+		// router
+		r := mux.NewRouter()
+
+		// federation api
+		r.Path("/apis/v1/debugpodlist").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.DebugPodListFactory, s.Storage)))
+		r.Path("/apis/v1/fed-debugpodlist").HandlerFunc(basicAuthWrapper(handlerWrapper(handler.FedDebugPodListFactory, s.Storage)))
+		// federation api
+
+		err := http.ListenAndServe(s.Config.ListenAuthAddr, r)
+		if err != nil {
+			klog.Errorf("failed to ListenAndServe at ListenAuthAddr %s, err:%s", s.Config.ListenAuthAddr, err.Error())
+			panic(err.Error())
+		}
+	}()
+
 	<-stopCh
 	klog.Error("apiserver exiting")
 }
+
+func basicAuthWrapper(innerHandler http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		username, password, ok := r.BasicAuth()
+		if ok {
+
+			// use basic auth and admin/admin for now, will be updated later.
+			isUsernameOK := username == "admin"
+			isPasswordOK := password == "admin"
+
+			if isUsernameOK && isPasswordOK {
+				innerHandler.ServeHTTP(w, r)
+				return
+			}
+		}
+
+		w.Header().Set("WWW-Authenticate", `Basic realm="restricted", charset="UTF-8"`)
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	})
+}
+
 func corsWrapper(f func(w http.ResponseWriter, r *http.Request, storage data_access.StorageInterface), storage data_access.StorageInterface) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		corsHeader(r, w)

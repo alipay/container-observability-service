@@ -26,6 +26,7 @@ var (
 func newRootCmd() *cobra.Command {
 	config := &server.ServerConfig{}
 	var cfgFile, kubeConfigFile string
+	var fedCfgFile string
 
 	cmd := &cobra.Command{
 		Use:   "grafanadi",
@@ -43,6 +44,9 @@ func newRootCmd() *cobra.Command {
 				panic(err.Error())
 			}
 
+			fedOptions, err := common.InitFedConfig(fedCfgFile)
+			common.GSiteOptions = *fedOptions
+
 			err = utils.InitKube(kubeConfigFile)
 			if err != nil {
 				klog.Errorf("failed to init kube client [%s], err:%s", kubeConfigFile, err.Error())
@@ -50,8 +54,9 @@ func newRootCmd() *cobra.Command {
 			}
 
 			serverConfig := &server.ServerConfig{
-				ListenAddr: config.ListenAddr,
-				Storage:    storage,
+				ListenAddr:     config.ListenAddr,
+				ListenAuthAddr: config.ListenAuthAddr,
+				Storage:        storage,
 			}
 			hcsServer, err := server.NewAPIServer(serverConfig)
 			if err != nil {
@@ -66,10 +71,14 @@ func newRootCmd() *cobra.Command {
 	// for server listen port
 	cmd.PersistentFlags().StringVarP(&config.MetricsAddr, "metrics-addr", "", ":9091", "metrics listen address (default :9091)")
 	cmd.PersistentFlags().StringVarP(&config.ListenAddr, "listen-addr", "", ":8080", "api server listen address (default :8080)")
+	cmd.PersistentFlags().StringVarP(&config.ListenAuthAddr, "listen-auth-addr", "", ":8081", "api server listen address (default :8081)")
 
 	// for storage
 	cmd.PersistentFlags().StringVarP(&cfgFile, "config-file", "", "/app/storage-config.yaml", "storage config file")
 	cmd.PersistentFlags().StringVarP(&service.GrafanaUrl, "grafana-url", "", "", "grafana url")
+
+	// for federation API config file
+	cmd.PersistentFlags().StringVarP(&fedCfgFile, "fed-config-file", "", "/app/fed-config.yaml", "federation config file")
 
 	// kubeconfig for k8s client
 	cmd.PersistentFlags().StringVarP(&kubeConfigFile, "kubeconfig", "", "/etc/kubernetes/kubeconfig/admin.kubeconfig", "Path to kubeconfig file with authorization and apiserver information.")

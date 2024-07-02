@@ -49,6 +49,7 @@ spec:
       - command:
         - ./grafanadi
         - --config-file=/app/config-file.yaml
+        - --fed-config-file=/app/fed-config-file.yaml
         - --enable-kube-client={{ .Values.grafanadiInitKubeClient }}
         - --log_dir={{ .Values.grafanadiLogsPath }}
         - --logtostderr=false
@@ -61,6 +62,9 @@ spec:
         - containerPort: 8080
           name: http-grafanadi
           protocol: TCP
+        - containerPort: 8081
+          name: http-auth
+          protocol: TCP
         resources:
 {{ toYaml .Values.grafanadiResources | indent 10 }}
         volumeMounts:
@@ -68,10 +72,9 @@ spec:
           name: logs
         - mountPath: /var/grafana
           name: grafana-pv
-        - mountPath: /app/config-file.yaml
+        - mountPath: /app
           name: cm-vol
           readOnly: true
-          subPath: config-file.yaml
       volumes:
       - name: grafana-pv
         hostPath:

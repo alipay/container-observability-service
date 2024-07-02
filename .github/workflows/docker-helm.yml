@@ -7,9 +7,9 @@ on:
 
 env:
   DOCKERHUB_REGISTRY: registry-1.docker.io
-  DOCKERHUB_REGISTRY_NAMESPACE: lunettes
-  DOCKERHUB_LUNETTES_REPO: lunettes/lunettes
-  DOCKERHUB_GRAFANA_REPO: lunettes/grafana
+  DOCKERHUB_REGISTRY_NAMESPACE: d3c3mber
+  DOCKERHUB_LUNETTES_REPO: d3c3mber/lunettes
+  DOCKERHUB_GRAFANA_REPO: d3c3mber/grafana
   # Plugins to be installed.
   GRAFANA_PLUGINS: "yesoreyeram-infinity-datasource,marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-form-panel:3.1.0"
 
