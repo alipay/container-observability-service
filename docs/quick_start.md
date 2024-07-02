@@ -47,3 +47,34 @@ Open broswer to visit
 - jaejer: [http://localhost:9095/search](http://localhost:9095/search)
 - kibana: [http://localhost:9092](http://localhost:9092)
 - prometheus: [http://localhost:9091/graph?](http://localhost:9091/graph?)
+
+
+
+
+If you deploy Kubernetes on minikube. The usage guidelines are as follows 
+
+
+```bash
+git clone https://github.com/alipay/container-observability-service lunettes && cd lunettes
+
+```bash
+helm upgrade --install lunettes deploy/helm/lunettes/ \
+  --set enableAuditApiserver=true \
+  --set lunettesType=NodePort \
+  --set grafanadiType=NodePort \
+  --set grafanaType=NodePort \
+  --set jaegerType=NodePort
+```
+
+
+## Visit
+
+Open broswer to visit
+- grafana:
+    minikube service grafana -n lunettes
+- kibana:
+    minikube service es-kibana-nodeport-svc -n lunettes
+- prometheus:
+    minikube service prometheus -n lunettes
+- jaejer:
+    minikube service jaeger-collector -n lunettes
