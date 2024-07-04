@@ -672,7 +672,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "yaml",
-                        "url": "/d/podyamllinks/podyaml?orgId=1&var-uid=${__data.fields[\"PodUID\"]}"
+                        "url": "/d/podyamllinks/podyaml?var-uid=${__data.fields[\"PodUID\"]}"
                       }
                     ]
                   },
@@ -697,7 +697,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "NodeYaml",
-                        "url": "/d/nodeyamllinks/nodeyaml?orgId=1&var-nodeName=${__data.fields[\"NodeName\"]}"
+                        "url": "/d/nodeyamllinks/nodeyaml?var-nodeName=${__data.fields[\"NodeName\"]}"
                       }
                     ]
                   },
@@ -2609,7 +2609,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "Pod信息",
-                        "url": "\r\nhttp://lunettes.lunettes.svc.cluster.local:8080/api/v1/debugpod?uid=${__data.fields.PodUid}"
+                        "url": "\r\nd/lunettes-debugpod/lunettes-debugpod?var-podinfo=uid&var-podinfovalue=${__data.fields.PodUid}"
                       }
                     ]
                   }
