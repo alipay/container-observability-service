@@ -672,7 +672,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "yaml",
-                        "url": "/d/podyamllinks/podyaml?var-uid=${__data.fields[\"PodUID\"]}"
+                        "url": "/d/podyamllinks/podyaml?var-uid=${__data.fields.PodUID}"
                       }
                     ]
                   },
