@@ -65,6 +65,10 @@ grafanaResources:
   requests:
     cpu: 250m
     memory: 500Mi
+adminUser: admin
+adminPass: admin
+anonymousUser: default
+anonymousPass: default
 
 # kibana
 kibanaImage: kibana:7.17.13
