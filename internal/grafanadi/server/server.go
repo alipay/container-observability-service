@@ -67,6 +67,9 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
 		r.Path("/rawdata").HandlerFunc(handlerWrapper(handler.RawdataFactory, s.Storage))
 
+		// federation api
+		r.Path("/apis/v1/querypodlist").HandlerFunc(handlerWrapper(handler.QueryPodListFactory, s.Storage))
+
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {
 			klog.Errorf("failed to ListenAndServe, err:%s", err.Error())

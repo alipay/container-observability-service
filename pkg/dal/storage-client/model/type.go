@@ -24,4 +24,6 @@ type PodParams struct {
 	Uid      string
 	Hostname string
 	Podip    string
+	From     time.Time
+	To       time.Time
 }

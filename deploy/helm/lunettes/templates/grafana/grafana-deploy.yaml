@@ -25,6 +25,30 @@ spec:
       - name: grafana
         image: {{ .Values.global.registry }}/{{ .Values.grafana.image.repository }}:{{ .Values.grafana.image.tag}}
         imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        lifecycle:
+          postStart:
+            exec: 
+              command:
+                - bash
+                - -c
+                - |
+                  wait_time=1
+                  while true;
+                  do
+                    status=`curl -s -w %{http_code} -o /dev/null \
+                    -X POST -H "Content-Type: application/json" \
+                    -d '{"name":"{{ .Values.grafana.anonymousUser }}","email":"","login":"{{ .Values.grafana.anonymousUser }}","password":"{{ .Values.grafana.anonymousPass }}"}' \
+                    http://{{ .Values.grafana.adminUser }}:{{ .Values.grafana.adminPass }}@localhost:3000/api/admin/users`
+                    if [ -n "${status}" ] && [ "${status}X" == "200X" ];
+                    then
+                      echo "user {{ .Values.grafana.anonymousUser }} has created"
+                      break
+                    else
+                      echo "user {{ .Values.grafana.anonymousUser }} created failed, status is ${status} retrying after ${wait_time}s..."
+                      sleep ${wait_time}
+                      wait_time=$((wait_time+wait_time))
+                    fi
+                  done
         ports:
           - containerPort: 3000
             name: http-grafana

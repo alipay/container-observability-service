@@ -3335,9 +3335,9 @@ data:
     # disable creation of admin user on first start of grafana
     ;disable_initial_admin_creation = false
     # default admin user, created on startup
-    ;admin_user = admin
+    admin_user = {{ .Values.adminUser }}
     # default admin password, can be changed before first start of grafana,  or in profile settings
-    ;admin_password = admin
+    admin_password = {{ .Values.adminPass }}
     # default admin email, created on startup
     ;admin_email = admin@localhost
     # used for signing
