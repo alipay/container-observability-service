@@ -1330,9 +1330,21 @@ func (s *StorageEsImpl) QueryPodYamlWithParams(data interface{}, params *model.P
 		stringQuery = elastic.NewQueryStringQuery(fmt.Sprintf("podName: \"%s\"", params.Name))
 	} else if params.Hostname != "" {
 		stringQuery = elastic.NewQueryStringQuery(fmt.Sprintf("hostname: \"%s\"", params.Hostname))
+	} else if params.Uid != "" {
+		stringQuery = elastic.NewQueryStringQuery(fmt.Sprintf("podUID: \"%s\"", params.Uid))
 	}
 	query := elastic.NewBoolQuery().Must(stringQuery)
-	searchResult, err := s.DB.Search().Index(esTableName).Type(esType).Query(query).Size(10).
+	if !params.From.IsZero() || !params.To.IsZero() {
+		rangeQuery := elastic.NewRangeQuery("stageTimestamp").TimeZone("UTC")
+		if !params.From.IsZero() {
+			rangeQuery.From(params.From)
+		}
+		if !params.To.IsZero() {
+			rangeQuery.To(params.To)
+		}
+		query.Must(rangeQuery)
+	}
+	searchResult, err := s.DB.Search().Index(esTableName).Type(esType).Query(query).Size(5).
 		Sort("stageTimestamp", false).Do(context.Background())
 	if err != nil {
 		return fmt.Errorf("error%v", err)
