@@ -692,3 +692,7 @@ func (s *StorageSqlImpl) QueryPodYamlWithParams(data interface{}, debugparams *m
 	return nil
 
 }
+
+func (s *StorageSqlImpl) QueryLunettesLatency(data interface{}, opts ...model.OptionFunc) error {
+	return nil
+}

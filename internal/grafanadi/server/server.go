@@ -70,6 +70,9 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		// federation api
 		r.Path("/apis/v1/querypodlist").HandlerFunc(handlerWrapper(handler.QueryPodListFactory, s.Storage))
 
+		//lunettes meta api
+		r.Path("/apis/v1/lunettes-meta").HandlerFunc(handlerWrapper(handler.LunettesLatencyFactory, s.Storage))
+
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {
 			klog.Errorf("failed to ListenAndServe, err:%s", err.Error())
