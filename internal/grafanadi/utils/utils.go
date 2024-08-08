@@ -43,6 +43,23 @@ func (u *Util) GetUid(podYamls []*model.PodYaml, key string, value *string) {
 	}
 }
 
+func (u *Util) GetPodYaml(podYamls []*model.PodYaml, key string, value string) ([]*model.PodYaml, error) {
+
+	var err error
+	switch key {
+	case "name":
+		err = u.Storage.QueryPodUIDListByPodName(&podYamls, value)
+	case "hostname":
+		err = u.Storage.QueryPodUIDListByHostname(&podYamls, value)
+	case "podip":
+		err = u.Storage.QueryPodUIDListByPodIP(&podYamls, value)
+	case "uid":
+		err = u.Storage.QueryPodYamlsWithPodUID(&podYamls, value)
+	}
+
+	return podYamls, err
+}
+
 func ServeSLOGrafanaDI(w http.ResponseWriter, r *http.Request, storage data_access.StorageInterface) {
 	switch r.Method {
 	case http.MethodOptions:

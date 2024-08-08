@@ -66,9 +66,15 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/podyamlgraphedges").HandlerFunc(handlerWrapper(handler.NodeGraphParamsFactory, s.Storage))
 		r.Path("/elasticaggregations").HandlerFunc(corsWrapper(interutils.ServeSLOGrafanaDI, s.Storage))
 		r.Path("/rawdata").HandlerFunc(handlerWrapper(handler.RawdataFactory, s.Storage))
+		r.Path("/ownerpodmaps").HandlerFunc(handlerWrapper(handler.OwnerPodMapFactory, s.Storage))
 
 		// federation api
 		r.Path("/apis/v1/querypodlist").HandlerFunc(handlerWrapper(handler.QueryPodListFactory, s.Storage))
+
+		//tkp
+		r.Path("/apis/v1/tkp").HandlerFunc(handlerWrapper(handler.TkpFactory, s.Storage))
+		r.Path("/apis/v1/tkp_detail").HandlerFunc(handlerWrapper(handler.VTkpDetailFactory, s.Storage))
+		r.Path("/apis/v1/tkp_status").HandlerFunc(handlerWrapper(handler.VTkpStatusFactory, s.Storage))
 
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {

@@ -1483,3 +1483,42 @@ func (s *StorageEsImpl) QueryResourceYamlWithName(kind, name string) (interface{
 
 	return result, nil
 }
+
+func (s *StorageEsImpl) QuerySloTraceDataWithOwnerId(data interface{}, ownerid string, opts ...model.OptionFunc) error {
+	options := &model.Options{
+		Limit: 5,
+	}
+	for _, do := range opts {
+		do(options)
+	}
+	if len(ownerid) == 0 {
+		return fmt.Errorf("the params is error, uid is nil")
+	}
+	begin := time.Now()
+	defer func() {
+		metrics.ObserveQueryMethodDuration("QuerySloTraceData", begin)
+	}()
+	_, esTableName, esType, err := utils.GetMetaName(data)
+	if err != nil {
+		return err
+	}
+	stringQuery := elastic.NewQueryStringQuery(fmt.Sprintf("ExtraProperties.ownerref.uid.Value.keyword: \"%s\"", ownerid))
+	query := elastic.NewBoolQuery().Must(stringQuery)
+	searchResult, err := s.DB.Search().Index(esTableName).Type(esType).Query(query).Size(options.Limit).Do(context.Background())
+	if err != nil {
+		return fmt.Errorf("error%v", err)
+	}
+	var hits []json.RawMessage
+	for _, hit := range searchResult.Hits.Hits {
+		hits = append(hits, hit.Source)
+	}
+	hitsStr, err := json.Marshal(hits)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(hitsStr, data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
