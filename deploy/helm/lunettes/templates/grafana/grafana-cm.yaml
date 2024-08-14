@@ -3147,12 +3147,12 @@ tkp.json: |
           "id": 1,
           "options": {
             "debugPodUrl": "d/eavesdropping-debugpod/eavesdropping-debugpod?orgId=1",
-            "searchUrl": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/fed-querypodlist?searchkey=$podinfo&searchvalue=$podinfovalue",
+            "searchUrl": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/querypodlist?searchkey=$podinfo&searchvalue=$podinfovalue",
             "seriesCountSize": "sm",
             "showSeriesCount": false,
             "text": "Default value of text input option",
             "title": "Pod查询",
-            "tkpHosting": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/fed_tkp"
+            "tkpHosting": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp"
           },
           "targets": [
             {
@@ -3222,7 +3222,7 @@ tkp.json: |
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/fed_tkp_detail?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_detail?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -3409,7 +3409,7 @@ tkp.json: |
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/fed_tkp_detail?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_detail?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -3526,7 +3526,7 @@ tkp.json: |
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/fed_tkp_status?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_status?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
               "url_options": {
                 "data": "",
                 "method": "GET"
