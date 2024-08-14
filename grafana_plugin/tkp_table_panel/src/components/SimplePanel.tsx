@@ -113,7 +113,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
   };
 
   const handleTkpHosting = () => {
-    if (!podinfo.workloadInfo.Name) {
+    if (!podinfo.workloadInf?.Name) {
       openNotificationWithIcon('warning', '托管中断', '当前pod没有所属的workload, 无法托管')
       const newList = [...tableData]
       newList.map((item: any) => {
@@ -138,7 +138,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
           if (response.data.data.vtkp) {
             localStorage.setItem('tkpName', response.data.data.vtkp)
             locationService.partial({
-              "var-workloadName": podinfo.workloadInfo.Name,
+              "var-workloadName": podinfo.workloadInfo?.Name,
               'var-tkpName': response.data.data.vtkp,
               'var-cluster': podinfo.cluster,
               'var-namespace': podinfo.namespace,
@@ -281,7 +281,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
       key: 'workloadInfo',
       width: 300,
       render: (_, record) => {
-        return (record.workloadInfo && record.workloadInfo.Name && <p key={record.workloadInfo.Name}>{record.workloadInfo.Name}</p>)
+        return (record.workloadInfo && record.workloadInfo?.Name && <p key={record.workloadInfo?.Name}>{record.workloadInfo?.Name}</p>)
       }
     },
   ];
@@ -337,7 +337,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
         </Row>
         <Row>
           <Col span={4}>workload:</Col>
-          <Col span={20}>{podinfo?.workloadInfo.Name}</Col>
+          <Col span={20}>{podinfo?.workloadInfo?.Name}</Col>
         </Row>
       </Modal>
       <Modal title="确定要重置吗" open={isResetOpen}
