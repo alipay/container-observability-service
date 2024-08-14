@@ -14,12 +14,19 @@ WORKDIR /app/filter_panel
 # 安装依赖并编译
 RUN npm install \
     && npm run build
+# 将tkpTable panel代码拷贝到镜像中的工作目录
+COPY ./grafana_plugin/tkp_table_panel /app/tkp_table_panel
+# 在镜像中创建工作目录
+WORKDIR /app/tkp_table_panel
+# 安装依赖并编译
+RUN npm install && npm run build
 
 # Use the official Grafana image as the base image.
 FROM grafana/grafana:10.4.2-ubuntu
 
 COPY --from=node /app/yaml_panel/dist /var/lib/grafana/plugins/antgroup-yaml-panel
 COPY --from=node /app/filter_panel/dist /var/lib/grafana/plugins/antgroup-filter-panel
+COPY --from=node /app/tkp_table_panel/dist /var/lib/grafana/plugins/antgroup-tkptable-panel
 
 # Define the list of plugins to install, separated by spaces.
 ARG PLUGINS="" 
