@@ -20,6 +20,7 @@ type VTkpDetailHandler struct {
 }
 
 type VTkpDetailParams struct {
+	Cluster       string
 	VtkpNamespace string
 	VtkpName      string
 }
@@ -32,6 +33,7 @@ func (handler *VTkpDetailHandler) ParseRequest() error {
 	params := VTkpDetailParams{}
 	if handler.request.Method == http.MethodGet {
 		klog.Infof("vtkpDetail request params: %+v", handler.request.URL.Query())
+		params.Cluster = handler.request.URL.Query().Get("cluster")
 		params.VtkpNamespace = handler.request.URL.Query().Get("vtkp_namespace")
 		params.VtkpName = handler.request.URL.Query().Get("vtkp_name")
 	}
@@ -84,7 +86,7 @@ func (handler *VTkpDetailHandler) VTkpDetail(params *VTkpDetailParams) (int, int
 		cost := utils.TimeSinceInMilliSeconds(begin)
 		metrics.QueryMethodDurationMilliSeconds.WithLabelValues(" VTkpDetail ").Observe(cost)
 	}()
-	reqUrl := buildReqUrl(tkpSvcName, tkpNamespace, "/apis/v2/turnkeypods/profiles")
+	reqUrl := buildReqUrl(params.Cluster, "/apis/v2/turnkeypods/profiles")
 	tkpDetailReq, err := url.Parse(reqUrl)
 	if err != nil {
 		klog.Errorf("url parse error: %s\n", err)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	tkpReqProvider "github.com/alipay/container-observability-service/pkg/tkp_provider"
 	"os"
 	"os/signal"
 	"syscall"
@@ -19,8 +20,9 @@ import (
 )
 
 var (
-	stopCh       = make(chan struct{})
-	gracefulStop = make(chan os.Signal, 1)
+	stopCh        = make(chan struct{})
+	gracefulStop  = make(chan os.Signal, 1)
+	tkpRefCfgFile string
 )
 
 func newRootCmd() *cobra.Command {
@@ -46,6 +48,12 @@ func newRootCmd() *cobra.Command {
 			err = utils.InitKube(kubeConfigFile)
 			if err != nil {
 				klog.Errorf("failed to init kube client [%s], err:%s", kubeConfigFile, err.Error())
+				panic(err.Error())
+			}
+
+			err = tkpReqProvider.InitTkpReqConfig(tkpRefCfgFile)
+			if err != nil {
+				klog.Errorf("failed to init tkp config [%s] err:%s", tkpRefCfgFile, err.Error())
 				panic(err.Error())
 			}
 

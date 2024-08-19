@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/alipay/container-observability-service/pkg/dal/storage-client/data_access"
 	"github.com/alipay/container-observability-service/pkg/metrics"
+	tkpReqProvider "github.com/alipay/container-observability-service/pkg/tkp_provider"
 	"github.com/alipay/container-observability-service/pkg/utils"
 	"io"
 	"k8s.io/klog"
@@ -27,6 +28,7 @@ type TkpHandler struct {
 }
 
 type TkpParams struct {
+	Cluster   string `json:"cluster"`
 	Namespace string `json:"pod_namespace"`
 	PodName   string `json:"pod_name"`
 }
@@ -66,8 +68,8 @@ type TkpBody struct {
 	Vtkp string `json:"vtkp"`
 }
 
-func buildReqUrl(svc, tkpSNS, uri string) string {
-	return fmt.Sprintf("http://%s.%s.svc.cluster.local:9999%s", svc, tkpSNS, uri)
+func buildReqUrl(cluster, uri string) string {
+	return fmt.Sprintf("%s%s", tkpReqProvider.GetTkpReqUrl(cluster), uri)
 }
 
 func (handler *TkpHandler) Tkp(params *TkpParams) (int, interface{}, error) {
@@ -77,7 +79,7 @@ func (handler *TkpHandler) Tkp(params *TkpParams) (int, interface{}, error) {
 		cost := utils.TimeSinceInMilliSeconds(begin)
 		metrics.QueryMethodDurationMilliSeconds.WithLabelValues(" Tkp").Observe(cost)
 	}()
-	reqUrl := buildReqUrl(tkpSvcName, tkpNamespace, "/apis/v2/turnkeypods/pods")
+	reqUrl := buildReqUrl(params.Cluster, "/apis/v2/turnkeypods/pods")
 	klog.Infof("tkp request url: %s", reqUrl)
 	jsonData, err := json.Marshal(params)
 	if err != nil {

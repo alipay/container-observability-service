@@ -20,6 +20,7 @@ type VTkpStatusHandler struct {
 }
 
 type VTkpStatusParams struct {
+	Cluster       string `json:"cluster"`
 	VtkpNamespace string `json:"vtkpNamespace"`
 	VtkpName      string `json:"vtkpName"`
 }
@@ -31,6 +32,7 @@ func (handler *VTkpStatusHandler) RequestParams() interface{} {
 func (handler *VTkpStatusHandler) ParseRequest() error {
 	params := VTkpStatusParams{}
 	if handler.request.Method == http.MethodGet {
+		params.Cluster = handler.request.URL.Query().Get("cluster")
 		params.VtkpNamespace = handler.request.URL.Query().Get("vtkp_namespace")
 		params.VtkpName = handler.request.URL.Query().Get("vtkp_name")
 	}
@@ -64,7 +66,7 @@ func (handler *VTkpStatusHandler) VTkpStatus(params *VTkpStatusParams) (int, int
 		cost := utils.TimeSinceInMilliSeconds(begin)
 		metrics.QueryMethodDurationMilliSeconds.WithLabelValues(" VTkpStatus ").Observe(cost)
 	}()
-	reqUrl := buildReqUrl(tkpSvcName, tkpNamespace, "/apis/v2/turnkeypods/progress")
+	reqUrl := buildReqUrl(params.Cluster, "/apis/v2/turnkeypods/progress")
 	tkpStatusReq, err := url.Parse(reqUrl)
 	if err != nil {
 		klog.Errorf("url parse error: %s\n", err)
