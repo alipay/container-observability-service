@@ -20,14 +20,13 @@ import (
 )
 
 var (
-	stopCh        = make(chan struct{})
-	gracefulStop  = make(chan os.Signal, 1)
-	tkpRefCfgFile string
+	stopCh       = make(chan struct{})
+	gracefulStop = make(chan os.Signal, 1)
 )
 
 func newRootCmd() *cobra.Command {
 	config := &server.ServerConfig{}
-	var cfgFile, kubeConfigFile string
+	var cfgFile, kubeConfigFile, tkpRefCfgFile string
 
 	cmd := &cobra.Command{
 		Use:   "grafanadi",
@@ -78,6 +77,7 @@ func newRootCmd() *cobra.Command {
 	// for storage
 	cmd.PersistentFlags().StringVarP(&cfgFile, "config-file", "", "/app/storage-config.yaml", "storage config file")
 	cmd.PersistentFlags().StringVarP(&service.GrafanaUrl, "grafana-url", "", "", "grafana url")
+	cmd.PersistentFlags().StringVarP(&tkpRefCfgFile, "tkp-req-config-file", "", "/app/tkp-req-config-file.json", "tkp req config file")
 
 	// kubeconfig for k8s client
 	cmd.PersistentFlags().StringVarP(&kubeConfigFile, "kubeconfig", "", "/etc/kubernetes/kubeconfig/admin.kubeconfig", "Path to kubeconfig file with authorization and apiserver information.")

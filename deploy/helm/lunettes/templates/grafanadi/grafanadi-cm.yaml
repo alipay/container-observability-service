@@ -8,6 +8,10 @@ data:
       endpoint: "http://es-cluster-svc.{{ .Values.namespace }}:9200"
       username: {{ .Values.esUser }}
       password: {{ .Values.esPassword }}
+  tkp-req-config-file.json: |
+    {
+    "staging":"http://alipay-tkp-manager.tkp.svc.cluster.local:9999"
+    }
 kind: ConfigMap
 metadata:
   name: grafanadi-cm
