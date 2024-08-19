@@ -113,7 +113,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
   };
 
   const handleTkpHosting = () => {
-    if (!podinfo.workloadInf?.Name) {
+    if (!podinfo.workloadInfo?.Name) {
       openNotificationWithIcon('warning', '托管中断', '当前pod没有所属的workload, 无法托管')
       const newList = [...tableData]
       newList.map((item: any) => {
@@ -129,9 +129,9 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
     const url = options.tkpHosting;
     axios.post(url, {
       siteName: podinfo.site,
-      namespace: podinfo.namespace,
-      podName: podinfo.podname,
-      cluster: `sigma-${podinfo.cluster}`
+      pod_namespace: podinfo.namespace,
+      pod_name: podinfo.podname,
+      cluster: podinfo.cluster
     })
       .then(response => {
         if (response.data.code === 200 && response.data.data.pod_name && response.data.data.pod_namespace) {
