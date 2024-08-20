@@ -249,7 +249,6 @@ func (lr *logReader) updateLastReadTime() error {
 	x := utils.Dumps(conf)
 	_, err = lr.esClient.Index().
 		Index(metaIndexName).
-		Type(metaTypeName).
 		Id(docID).
 		BodyString(x).
 		Do(context.Background())
@@ -264,7 +263,6 @@ func (lr *logReader) getLastReadTime() time.Time {
 
 	result, err := lr.esClient.Get().
 		Index(metaIndexName).
-		Type(metaTypeName).
 		Id(lr.cluster). // use first cluster is ok. all cluster will have the same time
 		Do(context.Background())
 	if err != nil {
