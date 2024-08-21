@@ -3146,13 +3146,13 @@ data:
           },
           "id": 1,
           "options": {
-            "debugPodUrl": "d/eavesdropping-debugpod/eavesdropping-debugpod?orgId=1",
-            "searchUrl": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/querypodlist?searchkey=$podinfo&searchvalue=$podinfovalue",
+            "debugPodUrl": "d/lunettes-debugpod/lunettes-debugpod?orgId=1",
+            "searchUrl": "http://admin:admin@lunettes-dashboard.aidc-wlcb.alipay.net:30180/api/datasources/proxy/2/apis/v1/querypodlist?searchkey=$podinfo&searchvalue=$podinfovalue",
             "seriesCountSize": "sm",
             "showSeriesCount": false,
             "text": "Default value of text input option",
             "title": "Pod查询",
-            "tkpHosting": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp"
+            "tkpHosting": "http://admin:admin@lunettes-dashboard.aidc-wlcb.alipay.net:30180/api/datasources/proxy/2/apis/v1/tkp"
           },
           "targets": [
             {
@@ -3222,7 +3222,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_detail?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_detail?sitName=$site&cluster=$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -3342,7 +3342,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "",
-                        "url": "d/eavesdropping-debugpod/eavesdropping-debugpod?orgId=1&var-podinfo=name&var-podinfovalue=${__data.fields.name}"
+                        "url": "d/lunettes-debugpod/lunettes-debugpod?orgId=1&var-podinfo=name&var-podinfovalue=${__data.fields.name}"
                       }
                     ]
                   },
@@ -3409,7 +3409,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_detail?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_detail?sitName=$site&cluster=$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -3526,7 +3526,7 @@ data:
               "root_selector": "",
               "source": "url",
               "type": "json",
-              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_status?sitName=$site&cluster=sigma-$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_status?sitName=$site&cluster=$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
               "url_options": {
                 "data": "",
                 "method": "GET"
@@ -3561,7 +3561,7 @@ data:
                 {
                   "targetBlank": true,
                   "title": "Pod诊断",
-                  "url": "d/eavesdropping-debugpod/eavesdropping-debugpod?orgId=1&var-podinfo=name&var-podinfovalue=${__field.name}"
+                  "url": "d/lunettes-debugpod/lunettes-debugpod?orgId=1&var-podinfo=name&var-podinfovalue=${__field.name}"
                 }
               ],
               "mappings": [

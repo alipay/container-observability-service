@@ -148,7 +148,9 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
             openNotificationWithIcon('success', '开始托管', 'TKP已经开始托管您的Pod')
             return
           } else {
-            handleTkpHosting()
+            if(response.data.message.includes('Successfully')){
+              handleTkpHosting()
+            }
           }
         } else if (response.data.code === 400) {
           localStorage.removeItem('tkpName')
