@@ -32,7 +32,6 @@ interface DataType {
   action: string;
   cluster: string;
   namespace: string;
-  state: string;
   createTime: any,
   nodeip: string,
   podip: string,
@@ -237,16 +236,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
       width: 150,
       render: (_, record) => {
         return <Tag color={getTagColor(record.podphase)}>{record.podphase}</Tag>
-      }
-    },
-    {
-      title: '状态',
-      dataIndex: 'state',
-      key: 'state',
-      sorter: true,
-      width: 150,
-      render: (_, record) => {
-        return <Tag color={getTagColor(record.state)}>{record.state}</Tag>
       }
     },
     {
