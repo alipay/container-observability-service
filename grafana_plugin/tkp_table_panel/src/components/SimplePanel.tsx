@@ -51,7 +51,7 @@ function getTagColor(value: string): string {
       return 'success';
     case '已删除': case 'Terminating': case 'Pending': case 'Failed': case 'terminated':
       return 'error';
-    case '发起删除': 
+    case '发起删除':
       return 'warning';
     default:
       return 'default'
@@ -105,13 +105,27 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
       form.setFieldsValue({ podinfo: key, podinfovalue: value })
       onSearch()
     }
-  },[])
+  }, [])
 
   const cancel: PopconfirmProps['onCancel'] = () => {
     message.error('取消操作');
   };
 
-  const handleTkpHosting = () => {
+  const doQuery = () => {
+    let count = 0;
+    const interval = setInterval(() => {
+      handleTkpHosting(count);
+      count += 1;
+  
+      // 当调用次数达到 5 次时，清除定时器
+      if (count >= 5) {
+        clearInterval(interval);
+      }
+    }, 400);
+  }
+
+
+  const handleTkpHosting = (tryTime: number) => {
     if (!podinfo.workloadInfo?.Name) {
       openNotificationWithIcon('warning', '托管中断', '当前pod没有所属的workload, 无法托管')
       const newList = [...tableData]
@@ -144,12 +158,11 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
               'var-site': podinfo.site,
               'refresh': '5s', 'from': 'now-5m', 'to': 'now'
             }, true);
+            tryTime = 5;
             openNotificationWithIcon('success', '开始托管', 'TKP已经开始托管您的Pod')
             return
-          } else if(response.data.message.includes('Successfully')){
-            handleTkpHosting()
-          } else if(response.data.message.includes('has been enabled TKP service')){
-            openNotificationWithIcon('success', '托管成功', '当前Pod已被TKP托管，无需重复托管')
+          } else {
+            openNotificationWithIcon('success', '托管信息', '托管任务创建中,或托管已成功')
           }
         } else if (response.data.code === 400) {
           localStorage.removeItem('tkpName')
@@ -179,7 +192,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
           })
           setTableData(newList)
           return
-        } else{
+        } else {
           openNotificationWithIcon('info', '托管信息', response.data.message)
         }
       })
@@ -313,7 +326,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
         footer={(_, { }) => (
           <>
             <Button type='primary' onClick={() => {
-              handleTkpHosting();
+              doQuery();
               setIsOpen(false)
             }}>开始托管</Button>
             <Button type='default' onClick={() => { cancel(); setIsOpen(false) }}>取消操作</Button>
