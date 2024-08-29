@@ -146,10 +146,10 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
             }, true);
             openNotificationWithIcon('success', '开始托管', 'TKP已经开始托管您的Pod')
             return
-          } else {
-            if(response.data.message.includes('Successfully')){
-              handleTkpHosting()
-            }
+          } else if(response.data.message.includes('Successfully')){
+            handleTkpHosting()
+          } else if(response.data.message.includes('has been enabled TKP service')){
+            openNotificationWithIcon('success', '托管成功', '当前Pod已被TKP托管，无需重复托管')
           }
         } else if (response.data.code === 400) {
           localStorage.removeItem('tkpName')
@@ -179,6 +179,8 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
           })
           setTableData(newList)
           return
+        } else{
+          openNotificationWithIcon('info', '托管信息', response.data.message)
         }
       })
       .catch(error => {
@@ -310,7 +312,10 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
       <Modal title="托管确认" open={isOpen}
         footer={(_, { }) => (
           <>
-            <Button type='primary' onClick={() => { handleTkpHosting(); setIsOpen(false) }}>开始托管</Button>
+            <Button type='primary' onClick={() => {
+              handleTkpHosting();
+              setIsOpen(false)
+            }}>开始托管</Button>
             <Button type='default' onClick={() => { cancel(); setIsOpen(false) }}>取消操作</Button>
           </>
         )}>
