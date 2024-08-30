@@ -68,8 +68,9 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
   const [isResetOpen, setIsResetOpen] = useState(false);
   const [podinfo, setPodinfo] = useState<any>();
 
-  const openNotificationWithIcon = (type: NotificationType, message: string, description: string) => {
+  const openNotificationWithIcon = (key: number, type: NotificationType, message: string, description: string) => {
     api[type]({
+      key: key,
       message: message,
       description: description,
     });
@@ -114,20 +115,19 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
   const doQuery = () => {
     let count = 0;
     const interval = setInterval(() => {
-      handleTkpHosting(count);
-      count += 1;
-  
+      handleTkpHosting(interval);
+      count += 1
       // 当调用次数达到 5 次时，清除定时器
       if (count >= 5) {
         clearInterval(interval);
       }
-    }, 400);
+    }, 500);
   }
 
 
-  const handleTkpHosting = (tryTime: number) => {
+  const handleTkpHosting = (interval: NodeJS.Timeout) => {
     if (!podinfo.workloadInfo?.Name) {
-      openNotificationWithIcon('warning', '托管中断', '当前pod没有所属的workload, 无法托管')
+      openNotificationWithIcon(0, 'warning', '托管中断', '当前pod没有所属的workload, 无法托管')
       const newList = [...tableData]
       newList.map((item: any) => {
         if (item.poduid === podinfo.poduid) {
@@ -137,6 +137,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
         return item
       })
       setTableData(newList)
+      clearInterval(interval)
       return
     }
     const url = options.tkpHosting;
@@ -158,16 +159,17 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
               'var-site': podinfo.site,
               'refresh': '5s', 'from': 'now-5m', 'to': 'now'
             }, true);
-            tryTime = 5;
-            openNotificationWithIcon('success', '开始托管', 'TKP已经开始托管您的Pod')
-            return
+            openNotificationWithIcon(1, 'success', '开始托管', 'TKP已经开始托管您的Pod')
+            clearInterval(interval)
+            return 
           } else {
-            openNotificationWithIcon('success', '托管信息', '托管任务创建中,或托管已成功')
+            openNotificationWithIcon(2, 'success', '托管信息', '托管任务创建中,或托管已成功')
+            return
           }
         } else if (response.data.code === 400) {
           localStorage.removeItem('tkpName')
           locationService.partial({}, true);
-          openNotificationWithIcon('warning', '托管中断', '当前pod所对应的workload还未被TKP托管')
+          openNotificationWithIcon(3, 'warning', '托管中断', '当前pod所对应的workload还未被TKP托管')
           const newList = [...tableData]
           newList.map((item: any) => {
             if (item.poduid === podinfo.poduid) {
@@ -177,11 +179,12 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
             return item
           })
           setTableData(newList)
+          clearInterval(interval)
           return
         } else if (response.data.code === 404) {
           localStorage.removeItem('tkpName')
           locationService.partial({}, true);
-          openNotificationWithIcon('warning', '托管中断', '当前pod已删除')
+          openNotificationWithIcon(4, 'warning', '托管中断', '当前pod已删除')
           const newList = [...tableData]
           newList.map((item: any) => {
             if (item.poduid === podinfo.poduid) {
@@ -191,9 +194,12 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height, fie
             return item
           })
           setTableData(newList)
-          return
+          clearInterval(interval)
+          return 
         } else {
-          openNotificationWithIcon('info', '托管信息', response.data.message)
+          openNotificationWithIcon(5, 'info', '托管信息', response.data.message)
+          clearInterval(interval)
+          return
         }
       })
       .catch(error => {
