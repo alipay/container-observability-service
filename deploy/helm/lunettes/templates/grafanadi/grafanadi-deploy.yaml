@@ -4,7 +4,7 @@ metadata:
   labels:
     app: grafanadi
   name: grafanadi
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
@@ -29,7 +29,7 @@ spec:
           while true;
           do
             status=`curl -s -XGET --connect-timeout 3 --max-time 5 \
-            "http://es-cluster-svc.{{ .Values.namespace }}:9200/_cluster/health?pretty" \
+            "http://es-cluster-svc.{{ .Values.global.namespace }}:9200/_cluster/health?pretty" \
             | awk -F'"' '/"status"/{print $4}'`
             if [ -n "${status}" ] && [ "${status}" != "red" ];
             then
@@ -42,29 +42,29 @@ spec:
               sleep ${wait_time}
             fi
           done
-        image: {{ .Values.lunettesImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.lunettes.image.repository }}:{{ .Values.lunettes.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         name: init
       containers:
       - command:
         - ./grafanadi
         - --config-file=/app/config-file.yaml
-        - --enable-kube-client={{ .Values.grafanadiInitKubeClient }}
-        - --log_dir={{ .Values.grafanadiLogsPath }}
+        - --enable-kube-client={{ .Values.grafanadi.initKubeClient }}
+        - --log_dir={{ .Values.grafanadi.logsPath }}
         - --logtostderr=false
         - --grafana-url=localhost:9097
         - --v=6
         name: grafanadi
-        image: {{ .Values.lunettesImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.lunettes.image.repository }}:{{ .Values.lunettes.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         ports:
         - containerPort: 8080
           name: http-grafanadi
           protocol: TCP
         resources:
-{{ toYaml .Values.grafanadiResources | indent 10 }}
+{{ toYaml .Values.grafanadi.resources | indent 10 }}
         volumeMounts:
-        - mountPath: {{ .Values.grafanadiLogsPath }}
+        - mountPath: {{ .Values.grafanadi.logsPath }}
           name: logs
         - mountPath: /var/grafana
           name: grafana-pv
@@ -78,7 +78,7 @@ spec:
           path: /data/volume/grafana
       - name: logs
         hostPath:
-          path: {{ .Values.grafanadiLogsHostPath }}
+          path: {{ .Values.grafanadi.logsHostPath }}
           type: DirectoryOrCreate
       - configMap:
           defaultMode: 420

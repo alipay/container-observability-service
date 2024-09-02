@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: es-single
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   replicas: 1
   selector:
@@ -18,8 +18,8 @@ spec:
         runAsUser: 1000
       initContainers:
       - name: init-sysctl
-        image: {{ .Values.elasticInitImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.elasticsearch.init.image.repository }}:{{ .Values.elasticsearch.init.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         command: ["sh", "-c", "sysctl -w vm.max_map_count=655360; chown -R 1000:1000 /data"]
         securityContext:
           runAsUser: 0
@@ -29,18 +29,18 @@ spec:
           mountPath: /data
       containers:
       - name: elasticsearch
-        image: {{ .Values.elasticImage }}
+        image: {{ .Values.global.registry }}/{{ .Values.elasticsearch.image.repository }}:{{ .Values.elasticsearch.image.tag}}
         env:
         - name: ES_JAVA_OPTS
-          value: "{{ .Values.esJavaOptions }}"
+          value: "{{ .Values.elasticsearch.javaOptions }}"
         - name: ATTEMPT_SECURITY_AUTO_CONFIG
           value: "false"
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         ports:
         - containerPort: 9200
         - containerPort: 9300
         resources: 
-{{ toYaml .Values.elasticsearchResources | indent 10 }}        
+{{ toYaml .Values.elasticsearch.resources | indent 10 }}        
         volumeMounts:
         - name: es-data
           mountPath: /data

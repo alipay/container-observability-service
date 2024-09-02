@@ -5,18 +5,32 @@ on:
   pull_request:
 
 env:
-  LUNETTES_DOCKERHUB_REPO: local/lunettes
+  REGISTRY: local.io
+  REGISTRY_NAMESPACE: lunettes
 
 jobs:
   create-cluster:
     runs-on: ubuntu-latest
     steps:
+    # Free disk space
+    - name: Free disk space 🧹
+      uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+      with:
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: false
+        docker-images: false
+        swap-storage: false
+
     # git checkout code
     - name: Checkout
       uses: actions/checkout@v2
+
     # Use the git command to retrieve the current tag information and store it in the environment variable APP_VERSION.
     - name: Generate App Version
       run: echo APP_VERSION=`git describe --tags --always` >> $GITHUB_ENV
+
     - name: Build lunettes
       id: docker_build_lunettes
       uses: docker/build-push-action@v2
@@ -26,10 +40,10 @@ jobs:
         # docker build arg
         build-args: |
           GOARCH=$(go env GOARCH)
-        # Generate two Docker tags: ${APP_VERSION}
         tags: |
-          ${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
-    - name: Test Build grafana
+          ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.REGISTRY_NAMESPACE }}:${{ env.APP_VERSION }}
+
+    - name: Build grafana
       id: docker_build_grafana
       uses: docker/build-push-action@v2
       with:
@@ -39,29 +53,45 @@ jobs:
         build-args: |
             GRAFANA_PLUGINS="yesoreyeram-infinity-datasource,marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-form-panel:3.1.0"
         tags: |
-          grafana:${{ env.APP_VERSION }}
+          ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/grafana:${{ env.APP_VERSION }}
+
+    - name: Pull dependcy
+      working-directory: ./hack/images-transfer
+      run: |
+        chmod +x images_transfer.sh
+        ./images_transfer.sh ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }} local
+
+        # 将前面构建的 lunettes 和 grafana 镜像名追加到 /tmp/_out.txt 中，以便于后续统一 load 到 kind 中
+        echo ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.REGISTRY_NAMESPACE }}:${{ env.APP_VERSION }} >> /tmp/_out.txt
+        echo ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/grafana:${{ env.APP_VERSION }} >> /tmp/_out.txt
+        cat /tmp/_out.txt
+
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.5.0
       with:
         config: hack/kind.yaml
         cluster_name: k8s
+
     - name: Test kind
       run: |
         kubectl get ns
+
     - name: kind load image
       run: |
-        kind load docker-image --name k8s ${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
+        # 从 /tmp/_out.txt 加载依赖镜像
+        while IFS= read -r image || [[ -n "$image" ]]; do
+          kind load docker-image --name k8s $image
+          docker rmi $image
+        done < "/tmp/_out.txt"
+
     - uses: azure/setup-helm@v3
       id: install
     - name: Deploy lunettes
       run: |
-        helm upgrade --install lunettes deploy/helm/lunettes/ \
-          --set lunettesImage=${{ env.LUNETTES_DOCKERHUB_REPO }}:${{ env.APP_VERSION }} \
-          --set enableAuditApiserver=true \
-          --set lunettesType=NodePort \
-          --set grafanadiType=NodePort \
-          --set grafanaType=NodePort \
-          --set jaegerType=NodePort
+        sed -i 's/    tag: version/    tag: ${{ env.APP_VERSION }}/g' deploy/helm/lunettes/values.yaml
+        helm upgrade --install lunettes deploy/helm/lunettes \
+          --set global.registry=${{ env.REGISTRY }}
+
         # waiting for lunettes ready
         set +e
         all_pods=$(kubectl -n lunettes get pods -o jsonpath='{.items[*].metadata.name}')
@@ -101,13 +131,15 @@ jobs:
     - name: Create test pod
       run: |
         kubectl run nginx --image=nginx
-        sleep 30
+        sleep 10
         kubectl get pods
-        sleep 5m
+        sleep 1m
         echo "waiting for lunettes process audit"
     - name: Test podinfo api with curl
       run: |
-        response=$(curl -X GET "http://localhost:9099/podinfotable?searchkey=name&searchvalue=nginx")
+        curl -X GET 'http://localhost:9094/_cat/indices?v'
+        response=$(curl -X GET --connect-timeout 3 --max-time 5 "http://localhost:9099/podinfotable?searchkey=name&searchvalue=nginx")
+        echo "response is $response"
         if echo "$response" | grep -q "nginx"; then
           echo "URL test passed"
         else

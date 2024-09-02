@@ -7,12 +7,12 @@ on:
 
 env:
   DOCKERHUB_REGISTRY: registry-1.docker.io
-  DOCKERHUB_REGISTRY_NAMESPACE: lunettes
-  DOCKERHUB_LUNETTES_REPO: lunettes/lunettes
-  DOCKERHUB_GRAFANA_REPO: lunettes/grafana
+  ACR_REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  REGISTRY_NAMESPACE: lunettes
+  LUNETTES_IMAGE_NAME: lunettes
+  GRAFANA_IMAGE_NAME: grafana
   # Plugins to be installed.
   GRAFANA_PLUGINS: "yesoreyeram-infinity-datasource,marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-form-panel:3.1.0,volkovlabs-echarts-panel"
-
 
 jobs:
   main:
@@ -28,6 +28,13 @@ jobs:
       # Set up Docker buildx to facilitate the building of multi-platform images.
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+      # 登录 acr https://cr.console.aliyun.com/cn-hangzhou/instance/repositories
+      - name: Login to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.ACR_REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_TOKEN }}
       # 登录 docker hub
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -55,8 +62,10 @@ jobs:
             GOARCH=$(go env GOARCH)
           # Generate two Docker tags: ${APP_VERSION} 和 latest
           tags: |
-            ${{ env.DOCKERHUB_LUNETTES_REPO }}:latest
-            ${{ env.DOCKERHUB_LUNETTES_REPO }}:${{ env.APP_VERSION }}
+            ${{ env.DOCKERHUB_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.LUNETTES_IMAGE_NAME }}:latest
+            ${{ env.DOCKERHUB_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.LUNETTES_IMAGE_NAME }}:${{ env.APP_VERSION }}
+            ${{ env.ACR_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.LUNETTES_IMAGE_NAME }}:latest
+            ${{ env.ACR_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.LUNETTES_IMAGE_NAME }}:${{ env.APP_VERSION }}
       - name: Build and push grafana
         id: docker_build_grafana
         uses: docker/build-push-action@v2
@@ -72,23 +81,21 @@ jobs:
             PLUGINS=${{ env.GRAFANA_PLUGINS }}
           # Generate two Docker tags: ${APP_VERSION} 和 latest
           tags: |
-            ${{ env.DOCKERHUB_GRAFANA_REPO }}:latest
-            ${{ env.DOCKERHUB_GRAFANA_REPO }}:${{ env.APP_VERSION }}
+            ${{ env.DOCKERHUB_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.GRAFANA_IMAGE_NAME }}:latest
+            ${{ env.DOCKERHUB_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.GRAFANA_IMAGE_NAME }}:${{ env.APP_VERSION }}
+            ${{ env.ACR_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.GRAFANA_IMAGE_NAME }}:latest
+            ${{ env.ACR_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.GRAFANA_IMAGE_NAME }}:${{ env.APP_VERSION }}
 
       - uses: azure/setup-helm@v3
         id: install
 
-      - name: get epository name
-        run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
-
       - name: helm package chart
         run: |
-          sed -i 's/grafanaImage: lunettes\/grafana:latest/grafanaImage: lunettes\/grafana:${{ env.APP_VERSION }}/g' deploy/helm/lunettes/values.yaml
-          sed -i 's/lunettesImage: lunettes\/lunettes:latest/lunettesImage: lunettes\/lunettes:${{ env.APP_VERSION }}/g' deploy/helm/lunettes/values.yaml
+          sed -i 's/    tag: version/    tag: ${{ env.APP_VERSION }}/g' deploy/helm/lunettes/values.yaml
           helm package deploy/helm/lunettes --app-version=${{ env.APP_VERSION }} --version=${{ env.APP_VERSION }} -d _out
 
       - name: helm push chart
         # OCI artifacts on Docker Hub 
         # see: https://docs.docker.com/docker-hub/oci-artifacts/
         run: |
-          helm push _out/lunettes-chart-${{ env.APP_VERSION }}.tgz oci://${{ env.DOCKERHUB_REGISTRY }}/${{ env.DOCKERHUB_REGISTRY_NAMESPACE }}
+          helm push _out/lunettes-chart-${{ env.APP_VERSION }}.tgz oci://${{ env.DOCKERHUB_REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}

@@ -1,0 +1,7 @@
+## source images list
+docker.io/library/kibana:7.17.13
+docker.io/elastic/filebeat:7.17.13
+docker.io/library/elasticsearch:7.17.13
+docker.io/library/busybox:stable
+docker.io/prom/prometheus:v2.51.2
+docker.io/jaegertracing/all-in-one:1.45

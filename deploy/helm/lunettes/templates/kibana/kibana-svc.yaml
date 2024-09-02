@@ -4,14 +4,14 @@ metadata:
   labels:
     app: es-kibana
   name: es-kibana-nodeport-svc
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   ports:
     - name: 5601-5601
       port: 5601
       protocol: TCP
       targetPort: 5601
-      nodePort: {{ .Values.kibanaNodePort }}
+      nodePort: {{ .Values.kibana.nodePort }}
   selector:
     app: es-kibana
   type: NodePort

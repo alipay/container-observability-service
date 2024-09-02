@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: prometheus
 spec:
@@ -17,7 +17,7 @@ spec:
       securityContext:
         runAsUser: 0
       containers:
-      - image: {{ .Values.promImage }}
+      - image: {{ .Values.global.registry }}/{{ .Values.prometheus.image.repository }}:{{ .Values.prometheus.image.tag}}
         name: prometheus
         args:
           - "--config.file=/etc/prometheus/prometheus.yml"
@@ -34,7 +34,7 @@ spec:
           - mountPath: "/prometheus"
             name: data
         resources: 
-{{ toYaml .Values.prometheusResources | indent 10 }}
+{{ toYaml .Values.prometheus.resources | indent 10 }}
       volumes:
       - name: data
         hostPath:

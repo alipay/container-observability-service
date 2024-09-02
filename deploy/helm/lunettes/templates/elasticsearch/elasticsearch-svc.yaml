@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: es-cluster-svc
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     name: es
 spec:
@@ -11,10 +11,10 @@ spec:
     - port: 9200
       targetPort: 9200
       name: es-single1
-      nodePort: {{ .Values.elastic1NodePort }}
+      nodePort: {{ .Values.elasticsearch.elastic1NodePort }}
     - port: 9300
       targetPort: 9300
       name: es-single2
-      nodePort: {{ .Values.elastic2NodePort }}
+      nodePort: {{ .Values.elasticsearch.elastic2NodePort }}
   selector:
     name: es

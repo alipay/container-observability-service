@@ -4,7 +4,7 @@ metadata:
   labels:
     app: grafana
   name: grafana
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   replicas: 1
   strategy:
@@ -23,8 +23,8 @@ spec:
           - 0
       containers:
       - name: grafana
-        image: {{ .Values.grafanaImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.grafana.image.repository }}:{{ .Values.grafana.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         lifecycle:
           postStart:
             exec: 
@@ -37,14 +37,14 @@ spec:
                   do
                     status=`curl -s -w %{http_code} -o /dev/null \
                     -X POST -H "Content-Type: application/json" \
-                    -d '{"name":"{{ .Values.anonymousUser }}","email":"","login":"{{ .Values.anonymousUser }}","password":"{{ .Values.anonymousPass }}"}' \
-                    http://{{ .Values.adminUser }}:{{ .Values.adminPass }}@localhost:3000/api/admin/users`
+                    -d '{"name":"{{ .Values.grafana.anonymousUser }}","email":"","login":"{{ .Values.grafana.anonymousUser }}","password":"{{ .Values.grafana.anonymousPass }}"}' \
+                    http://{{ .Values.grafana.adminUser }}:{{ .Values.grafana.adminPass }}@localhost:3000/api/admin/users`
                     if [ -n "${status}" ] && [ "${status}X" == "200X" ];
                     then
-                      echo "user {{ .Values.anonymousUser }} has created"
+                      echo "user {{ .Values.grafana.anonymousUser }} has created"
                       break
                     else
-                      echo "user {{ .Values.anonymousUser }} created failed, status is ${status} retrying after ${wait_time}s..."
+                      echo "user {{ .Values.grafana.anonymousUser }} created failed, status is ${status} retrying after ${wait_time}s..."
                       sleep ${wait_time}
                       wait_time=$((wait_time+wait_time))
                     fi
@@ -54,7 +54,7 @@ spec:
             name: http-grafana
             protocol: TCP
         resources:
-{{ toYaml .Values.grafanaResources | indent 10 }}
+{{ toYaml .Values.grafana.resources | indent 10 }}
         volumeMounts:
         - name: grafana-datasoruce
           mountPath: /etc/grafana/provisioning/datasources/

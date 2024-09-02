@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: filebeat
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     k8s-app: filebeat
 spec:
@@ -19,8 +19,8 @@ spec:
         - bash
         - -c
         - chown -R 1000:1000 /usr/share/filebeat/data /usr/share/filebeat/logs
-        image: {{ .Values.filebeatImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.filebeat.image.repository }}:{{ .Values.filebeat.image.tag }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         name: init
         resources: {}
         securityContext:
@@ -35,10 +35,10 @@ spec:
           "-c", "/etc/filebeat/filebeat.yml",
           "-e",
         ]
-        image: {{ .Values.filebeatImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.filebeat.image.repository }}:{{ .Values.filebeat.image.tag }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         resources: 
-{{ toYaml .Values.filebeatResources | indent 10 }}        
+{{ toYaml .Values.filebeat.resources | indent 10 }}        
         volumeMounts:
         - mountPath: /etc/filebeat
           name: config

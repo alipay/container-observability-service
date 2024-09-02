@@ -1,9 +1,9 @@
-{{- if .Values.enableAuditApiserver }}
+{{- if .Values.auditApierver.enableAuditApiserver }}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: apiserver-audit-installer
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     k8s-app: apiserver-audit-installer
 spec:
@@ -33,21 +33,21 @@ spec:
         effect: NoSchedule
       containers:
       - name: audit-config-installer
-        image: {{ .Values.lunettesImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.lunettes.image.repository }}:{{ .Values.lunettes.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         command:
         - /auditinstaller
         env:
         - name: NAMESPACE
-          value: {{ .Values.namespace }}
+          value: {{ .Values.global.namespace }}
         - name: AUDIT_LOG_MAX_AGE
-          value: "{{ .Values.auditLogMaxAge }}"
+          value: "{{ .Values.auditApierver.auditLogMaxAge }}"
         - name: AUDIT_LOG_MAX_BACKUP
-          value: "{{ .Values.auditLogMaxBackup }}"
+          value: "{{ .Values.auditApierver.auditLogMaxBackup }}"
         - name: AUDIT_LOG_MAX_SIZE
-          value: "{{ .Values.auditLogMaxSize }}"
+          value: "{{ .Values.auditApierver.auditLogMaxSize }}"
         resources:
-{{ toYaml .Values.auditResources | indent 10 }}
+{{ toYaml .Values.auditApierver.resources | indent 10 }}
         volumeMounts:
         - name: rootdir
           mountPath: /node/root

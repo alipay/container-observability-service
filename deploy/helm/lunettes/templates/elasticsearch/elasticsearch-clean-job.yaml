@@ -2,24 +2,24 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: purge-es-index
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
-  schedule: "{{ .Values.esCleanSchedule }}"
+  schedule: "{{ .Values.elasticsearch.cleanSchedule }}"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: purge-es-index
-            image: {{ .Values.lunettesImage }}
+            image: {{ .Values.global.registry }}/{{ .Values.lunettes.image.repository }}:{{ .Values.lunettes.image.tag}}
             command:
             - /bin/bash
             - -c
             - |
               # 这里直接执行ConfigMap中的脚本
-              /scripts/purge_index.sh es-cluster-svc.{{ .Values.namespace }}:9200 \
-              ${{ .Values.esDataKeepDays }} \
-              audit_{{ .Values.cluster }}:@timestamp \
+              /scripts/purge_index.sh es-cluster-svc.{{ .Values.global.namespace }}:9200 \
+              ${{ .Values.elasticsearch.dataKeepDays }} \
+              audit_{{ .Values.global.cluster }}:@timestamp \
               slo_trace_data_daily:CreatedTime \
               pod_yaml:stageTimestamp \
               pod_life_phase:startTime \
@@ -41,7 +41,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: purge-index-script
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
 data:
   purge_index.sh: |
     #!/bin/bash

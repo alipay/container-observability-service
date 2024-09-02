@@ -59,15 +59,28 @@ Step2: Install Lunettes with Helm
 Note: Beginning in Helm v3.8.0, OCI support is enabled by default, and it graduated from experimental to general availability. So you‘d better choose Helm v3.8.0 or above.
 
 ```bash
-# Use NodePort
-helm install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version] \
-  # Setting enableAuditApiserver to true will enable the auditing of the apiserver for you.
-  # Please note that this process will restart the apiserver.
-  --set enableAuditApiserver=true \
-  --set grafanaType=NodePort \
-  --set jaegerType=NodePort 
+export VERSION=$(curl -s https://api.github.com/repos/alipay/container-observability-service/releases/releases/latest | grep tag_name | cut -d'"' -f4)
+
+helm upgrade \
+  --cleanup-on-fail \
+  --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version ${VERSION} \
+  --namespace lunettes \
+  --create-namespace
 ```
-see available [version](https://hub.docker.com/r/lunettes/lunettes-chart/tags)
+
+If you want to download quickly in China, the configuration can be like:
+```bash
+export VERSION=$(curl -s https://api.github.com/repos/alipay/container-observability-service/releases/releases/latest | grep tag_name | cut -d'"' -f4)
+
+helm upgrade \
+  --cleanup-on-fail \
+  --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version ${VERSION} \
+  --namespace lunettes \
+  --create-namespace \
+  --set global.registry=registry.cn-hangzhou.aliyuncs.com
+```
+
+You can also install previous [versions](https://hub.docker.com/r/lunettes/lunettes-chart/tags) of lunettes
 
 Step3: Find the endpoint of Lunettes dashboard service
 ```bash

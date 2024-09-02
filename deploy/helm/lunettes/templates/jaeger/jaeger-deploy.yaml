@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jaeger
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: jaeger
 spec:
@@ -21,8 +21,8 @@ spec:
       - env:
         - name: COLLECTOR_OTLP_ENABLED
           value: "true"
-        image: {{ .Values.jaegerImage }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: {{ .Values.global.registry }}/{{ .Values.jaeger.image.repository }}:{{ .Values.jaeger.image.tag}}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         name: jaeger
         resources: 
-{{ toYaml .Values.jaegerResources | indent 10 }}        
+{{ toYaml .Values.jaeger.resources | indent 10 }}        
