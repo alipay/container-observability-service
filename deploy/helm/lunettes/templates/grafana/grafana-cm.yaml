@@ -3108,6 +3108,620 @@ data:
       "version": 3,
       "weekStart": ""
     }
+  tkp.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 38,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "testdata",
+            "uid": "e3b3da0b-5fcf-4c2a-8ea8-e3a5bc54fa05"
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 1,
+          "options": {
+            "debugPodUrl": "d/lunettes-debugpod/lunettes-debugpod?orgId=1",
+            "searchUrl": "http://admin:admin@lunettes-dashboard.aidc-wlcb.alipay.net:30180/api/datasources/proxy/2/apis/v1/querypodlist?searchkey=$podinfo&searchvalue=$podinfovalue",
+            "seriesCountSize": "sm",
+            "showSeriesCount": false,
+            "text": "Default value of text input option",
+            "title": "Pod查询",
+            "tkpHosting": "http://admin:admin@lunettes-dashboard.aidc-wlcb.alipay.net:30180/api/datasources/proxy/2/apis/v1/tkp"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "testdata",
+                "uid": "e3b3da0b-5fcf-4c2a-8ea8-e3a5bc54fa05"
+              },
+              "refId": "A",
+              "scenarioId": "random_walk",
+              "seriesCount": 1
+            }
+          ],
+          "type": "antgroup-tkptable-panel"
+        },
+        {
+          "datasource": {},
+          "gridPos": {
+            "h": 19,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "id": 5,
+          "options": {
+            "baidu": {
+              "callback": "bmapReady",
+              "key": ""
+            },
+            "editor": {
+              "format": "auto"
+            },
+            "editorMode": "code",
+            "gaode": {
+              "key": "",
+              "plugin": "AMap.Scale,AMap.ToolBar"
+            },
+            "getOption": "// 获取当前dashboard中声明的变量\nconst cluster = context.grafana.replaceVariables('$cluster');\nconst namespace = context.grafana.replaceVariables('$namespace');\nconst podName = context.grafana.replaceVariables('$podinfovalue');\nconst workloadName = context.grafana.replaceVariables('$workloadName');\nconst tkpName = context.grafana.replaceVariables('$tkpName');\nconst siteName = context.grafana.replaceVariables('$site');\nconst statusError = 'Pending';\nconst statusReady = 'Running';\nconst statusContainerCreating = 'ContainerCreating';\nif (!tkpName) {\n  console.log('cluster:', cluster, 'namespace:', namespace, 'tkpName:', tkpName, 'siteName:', siteName)\n  return\n}\nfunction getCategory(value) {\n  switch (value) {\n    case statusError:\n      return 3;\n    case statusReady:\n      return 1;\n    case statusContainerCreating:\n      return 2;\n    default: return 3;\n  }\n}\n\n\n//workload图标\nconst workloadIcon = 'path://M808 789.995l-21.952-32.896 65.813-38.4V323.904L654.443 208.747l19.2-32.918L890.24 301.973v438.699L808 790.016zM166.379 562.432H128v-257.75L517.333 85.334l87.766 49.344-19.2 35.648-68.544-41.13-350.976 197.418v235.819zM509.12 960L128 743.381V636.46h38.4v84.992L509.12 916.14 731.2 789.995l19.2 32.917L509.141 960z m-24.683-619.67l-84.992-49.365v-30.144l112.427-65.813 109.653 65.813v30.144l-82.24 49.366-2.752 30.165-24.661-16.448-27.435 16.427V340.33z m172.758 197.42v-98.71l-85.014-49.365V359.53l109.675-63.062 112.427 63.062v128.853l-112.427 63.083-24.661-13.718z m-257.75 246.762V658.389l24.683-16.448 84.992 49.344 87.744-49.344 24.683 13.718v128.853L509.12 850.325l-109.653-65.813z m257.75-49.344v-98.71l-27.435-16.447 27.435-13.718v-30.165l24.661 16.448 85.013-49.344 27.414 13.717v128.854l-112.427 63.061-24.661-13.696z m-257.75-148.053V458.24l112.427-63.061 109.653 63.061v128.853L509.12 650.155l-109.653-63.062z m-175.488 98.688l2.752-128.854 24.683-13.717 84.992 49.344 27.413-16.427v30.144l27.435 16.448-27.435 13.718v98.709l-27.413 13.696-112.427-63.061z m0-197.419l2.752-128.853 112.427-63.062 109.653 63.062v30.144l-84.992 49.365v95.957l-27.413 16.47-112.427-63.083z'\n//tkp图标\nconst tkpIcon = 'path://M725.312 74.688a74.688 74.688 0 1 1-3.52 149.248l-66.816 106.688h134.4c38.4 0 70.144 29.184 74.24 66.56l0.384 8.128V480h74.688a32 32 0 0 1 31.488 26.24l0.512 5.76v213.312a32 32 0 0 1-26.24 31.488l-5.76 0.512h-74.752l0.064 117.376c0 38.464-29.12 70.144-66.56 74.24l-8.128 0.384H234.688A74.688 74.688 0 0 1 160 874.688v-117.376H85.248a32 32 0 0 1-31.488-26.24l-0.512-5.76V512a32 32 0 0 1 26.24-31.488l5.76-0.512H160L160 405.312c0-38.464 29.12-70.144 66.56-74.24l8.128-0.384 134.208-0.064-66.816-106.88-3.392 0.256a74.688 74.688 0 0 1-74.24-66.56L224 149.312a74.688 74.688 0 1 1 134.784 44.288l85.504 136.96h135.296l85.632-136.96a74.24 74.24 0 0 1-14.08-36.16l-0.448-8.128c0-41.216 33.408-74.624 74.624-74.624z m64 320H234.688a10.688 10.688 0 0 0-10.688 10.624v469.376c0 5.888 4.8 10.624 10.688 10.624h554.624a10.688 10.688 0 0 0 10.688-10.624V405.312a10.688 10.688 0 0 0-10.688-10.624z m-192 85.312a117.312 117.312 0 1 1 0 234.688H426.688a117.312 117.312 0 0 1 0-234.688z m266.624 213.312h42.688V544h-42.688v149.312zM160 544h-42.624v149.312h42.624V544z m437.376 0H426.688a53.312 53.312 0 1 0 0 106.688h170.624a53.312 53.312 0 0 0 0-106.688'\n\n//计算对应节点的位置\nfunction calculatePosition(count) {\n  const result = []\n  let firstNum = 0\n  if (count % 2 === 0) {\n    firstNum = Math.trunc(count / 2) - 0.5\n  } else {\n    firstNum = Math.trunc(count / 2)\n  }\n  for (let index = 0; index < count; index++) {\n    result.push(firstNum)\n    firstNum -= 1\n  }\n  return result\n}\n\n//定义图例\nconst categories = [\n  {\n    \"name\": \"Workload\"\n  },\n  {\n    \"name\": \"Success\"\n  },\n  {\n    \"name\": \"Creating\"\n  },\n  {\n    \"name\": \"Create Error\"\n  },\n  {\n    \"name\": \"TKP\"\n  },\n  {\n    \"name\": \"Ready Pods\"\n  },\n]\n\n// 定义图例颜色，与图例的顺序一一对应\nconst color = ['#398ee3', '#82ba65', '#ebd375', '#e84c43', '#43b4e8', '#99a1a8']\n\n// 画面上的节点数据\nlet data = []\n// 画面上的连线数据\nlet links = []\n// 接口返回的数据\nlet queryData = {};\n\nif (context.panel.data.series[0]?.meta.custom.data) {\n  queryData = context.panel.data.series[0].meta.custom.data\n} else {\n  return;\n}\n\n// 获取pod节点\n\nif (!(queryData.podList?.length > 0 && queryData.workloadList?.length > 0)) {\n  return\n}\nconst podList = Array.from(new Set(queryData.podList.map(JSON.stringify))).map(JSON.parse);\nlet displayedPods = podList.filter(item => item.detail.status !== statusReady || item.refIds.length > 1)\n\n// 获取workload节点\nlet workload = queryData.workloadList.filter(item => item.name === workloadName)[0]\nif (!workload) {\n  context.grafana.notifyError(['Workload Not Find', '未找到匹配的workload。'])\n  return\n}\nlet tkp = queryData.workloadList.filter(item => item.name === tkpName)[0]\nlet tkpList = queryData.workloadList.filter(item => item.kind === 'VersionedTurnkeyPod' && item.name !== tkpName);\nif (workload) {\n  data.push({\n    x: -200,\n    y: 0,\n    id: workload?.uid,\n    name: workload.name,\n    info: workload,\n    symbolSize: 50,\n    symbol: workloadIcon,\n    category: 0\n  })\n}\n\nlet displayedPodCount = displayedPods.length\nlet displayedPodPosition = calculatePosition(displayedPodCount)\nconsole.log(displayedPods)\ndisplayedPods.map((item, index) => {\n  let belongTkp = tkpList.filter(tkpInfo => item.refIds.includes(tkpInfo.uid))\n  if (belongTkp.length > 0) {\n    data.push({\n      x: 400 * displayedPodPosition[index],\n      y: 2000,\n      id: belongTkp[0].uid,\n      name: `Vtkp(${belongTkp[0].name.slice(-5)})`,\n      symbolSize: 20,\n      symbol: tkpIcon,\n      info: belongTkp[0],\n      category: 5,\n      label: { show: true, fontSize: 8, position: 'bottom' },\n\n    })\n    links.push({\n      target: item.detail.namespace + item.detail.name,\n      source: belongTkp[0].uid,\n      lineStyle: {\n        width: 2,\n        type: 'dashed' // 设置虚线类型\n      }\n    })\n  }\n  data.push({\n    x: 400 * displayedPodPosition[index],\n    y: 1600,\n    id: item.detail.namespace + item.detail.name,\n    name: item.detail.name === podName ? `当前托管的pod(${item.detail.name.slice(-5)})` : `Pod(${item.detail.name.slice(-5)})`,\n    symbolSize: 20,\n    info: item,\n    refIds: item.refIds,\n    category: getCategory(item.detail.status),\n    label: {\n      show: true,\n      formatter: function (params) {\n        console.log(params)\n        return params.name + '\\n' + params.data.info?.detail?.status\n      },\n      position: 'top'\n    },\n    itemStyle: item.detail.name === podName ? {\n      normal: {\n        color: 'white',\n        borderColor: item.detail.status === statusReady ? '#82ba65' : '#e84c43',\n        borderWidth: 2,\n        borderType: 'dashed' // 设置边框为虚线\n      }\n    } : {}\n  })\n  item.refIds.map(refId => {\n    links.push({\n      source: refId,\n      target: item.detail.namespace + item.detail.name,\n      lineStyle: item.detail.name === podName ? {\n        width: 2,\n        type: 'dashed' // 设置虚线类型\n      } : {}\n    })\n  })\n})\n\n\nlet readyPodPosition = calculatePosition(displayedPodCount)\nconst readyPods = podList.filter(pod => !displayedPods.includes(pod))\nif (readyPods.length > 0) {\n  data.push({\n    x: -500 + 500 * readyPodPosition[readyPodPosition.length - 1],\n    y: 1600,\n    id: 'ReadyPods',\n    name: `已经Ready的Pod: ${readyPods.length}个`,\n    symbolSize: 40,\n    value: '',\n    category: 5,\n    label: { show: true, position: 'bottom' },\n    tooltip: {\n      formatter: function (params, elOne, elTwo) {\n        var htmlText\n        htmlText = `\n      <div class='custom-tooltip-style'>已成功创建的pod</div>\n      <div>workload共计${podList.length}个pod</br>\n      <div>TKP${tkpName}托管成功1个pod</br>\n      `\n        // <span style=\"color: red\">出错${errorPods.length}个</br>\n        // </span><span style=\"color: green\">正常${readyPods.length}个</span></div>\n        return htmlText\n      }\n    }\n  })\n  if (workload) {\n    links.push({\n      source: workload.uid,\n      target: 'ReadyPods'\n    })\n  }\n}\n\nif (tkp) {\n  let tkpPosition = calculatePosition(displayedPods.length + 1)\n  data.push({\n    x: 400 + 2 * tkpPosition[0] * 200,\n    y: 0,\n    id: tkp.uid,\n    name: tkp.name,\n    symbolSize: 50,\n    symbol: tkpIcon,\n    info: tkp,\n    category: 4,\n    label: { show: true }\n  })\n}\nif (workload && tkp) {\n  const selectNode = data.filter(node => node.refIds?.includes(workload.uid) && node.refIds?.includes(tkp.uid))\n  if (selectNode?.length > 0) {\n    selectNode[0].itemStyle.normal = normal = {\n      color: '#82ba65',\n      borderColor: '#0078f8',\n      borderWidth: 4,\n      borderType: 'dashed' // 设置边框为虚线\n    }\n    selectNode[0].symbolSize = 50\n  }\n}\n\nconsole.log(data)\n\nreturn {\n  tooltip: {\n    formatter: (params) => {\n      if (params.dataType === 'node') {\n        const tooltipValue = params.data.info?.detail ? params.data.info.detail : params.data.info\n        let result = '<table><tbody>'\n        Object.keys(tooltipValue).map(key => {\n          result += `<tr><td>${key}</td><td>${tooltipValue[key]}</td></tr>`\n        })\n\n        result += '</table></tbody>'\n        return result;\n      } else {\n\n      }\n    }\n  },\n  color: color,\n  legend: [\n    {\n      // selectedMode: 'single',\n      data: categories.map(function (a) {\n        return a.name;\n      })\n    }\n  ],\n  animationDuration: 1000,\n  animationEasingUpdate: 'quinticInOut',\n  series: [\n    {\n      edgeSymbol: ['', 'arrow'],\n      type: 'graph',\n      layout: 'none',\n      data: data,\n      links: links,\n      categories: categories,\n      roam: true,\n      label: {\n        position: 'right',\n        show: true,\n        formatter: '{b}'\n      },\n      lineStyle: {\n        width: 2\n      },\n      // emphasis: {\n      //   focus: 'adjacency',\n      //   lineStyle: {\n      //     width: 3\n      //   }\n      // }\n    },\n  ]\n};",
+            "google": {
+              "callback": "gmapReady",
+              "key": ""
+            },
+            "map": "none",
+            "renderer": "canvas",
+            "themeEditor": {
+              "config": "",
+              "name": "default"
+            },
+            "visualEditor": {
+              "code": "const graph = {\n  \"nodes\": [\n    {\n      \"id\": \"0\",\n      \"name\": \"Workload A\",\n      \"symbolSize\": 60,\n      \"x\": 100,\n      \"y\": 100,\n      \"value\": 28.685715,\n      \"category\": 0\n    },\n    {\n      \"id\": \"1\",\n      \"name\": \"Pod A\",\n      \"symbolSize\": 30,\n      \"x\": 0,\n      \"y\": 200,\n      \"value\": 28.685715,\n      \"category\": 1\n    },\n    {\n      \"id\": \"2\",\n      \"name\": \"Pod B\",\n      \"symbolSize\": 30,\n      \"x\": 100,\n      \"y\": 200,\n      \"value\": 30,\n      \"category\": 1\n    },\n    {\n      \"id\": \"3\",\n      \"name\": \"Pod C\",\n      \"symbolSize\": 30,\n      \"x\": 200,\n      \"y\": 200,\n      \"value\": 28.685715,\n      \"category\": 2\n    },\n    {\n      \"id\": \"4\",\n      \"name\": \"Pod D\",\n      \"symbolSize\": 30,\n      \"x\": 200,\n      \"y\": 100,\n      \"value\": 28.685715,\n      \"category\": 0\n    },\n    {\n      \"id\": \"5\",\n      \"name\": \"VTKP\",\n      \"symbolSize\": 60,\n      \"x\": 200,\n      \"y\": 100,\n      \"value\": 28.685715,\n      \"category\": 4\n    },\n  ],\n  \"links\": [\n    {\n      source: '0',\n      target: '1'\n    },\n    {\n      source: '0',\n      target: '2'\n    },\n    {\n      source: '0',\n      target: '3'\n    },\n    {\n      source: '5',\n      target: '3'\n    }\n\n  ],\n  \"categories\": [\n    {\n      \"name\": \"Workload\"\n    },\n    {\n      \"name\": \"Success\"\n    },\n    {\n      \"name\": \"Creating\"\n    },\n    {\n      \"name\": \"Create Error\"\n    },\n    {\n      \"name\": \"TKP\"\n    },\n  ]\n}\n\nreturn {\n  tooltip: {},\n  legend: [\n    {\n      data: graph.categories.map(function (a) {\n        return a.name;\n      })\n    }\n  ],\n  series: [\n    {\n      name: 'Les Miserables',\n      type: 'graph',\n      layout: 'none',\n      data: graph.nodes,\n      links: graph.links,\n      categories: graph.categories,\n      roam: true,\n      label: {\n        show: true,\n        position: 'right',\n        formatter: '{b}'\n      },\n      labelLayout: {\n        hideOverlap: true\n      },\n      scaleLimit: {\n        min: 0.4,\n        max: 2\n      },\n      lineStyle: {\n        color: 'source',\n      }\n    }\n  ]\n};",
+              "dataset": [],
+              "series": []
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "targets": [
+            {
+              "columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+              },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
+              "hide": false,
+              "refId": "A",
+              "root_selector": "",
+              "source": "url",
+              "type": "json",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_detail?sitName=$site&cluster=$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url_options": {
+                "data": "",
+                "method": "GET"
+              }
+            }
+          ],
+          "title": "托管实时动态",
+          "type": "volkovlabs-echarts-panel"
+        },
+        {
+          "datasource": {},
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false,
+                "minWidth": 80
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "ContainerCreating": {
+                            "color": "light-yellow",
+                            "index": 3
+                          },
+                          "Pending": {
+                            "color": "red",
+                            "index": 0
+                          },
+                          "Running": {
+                            "color": "green",
+                            "index": 1
+                          },
+                          "Terminating": {
+                            "color": "light-red",
+                            "index": 2
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "操作"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "0": {
+                            "index": 0,
+                            "text": "诊断"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "",
+                        "url": "d/lunettes-debugpod/lunettes-debugpod?orgId=1&var-podinfo=name&var-podinfovalue=${__data.fields.name}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 60
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "node"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 190
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": 0,
+            "y": 12
+          },
+          "hideTimeOverride": true,
+          "id": 4,
+          "interval": "3s",
+          "maxDataPoints": 1000,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "age"
+              }
+            ]
+          },
+          "pluginVersion": "10.1.5",
+          "targets": [
+            {
+              "columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+              },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
+              "refId": "A",
+              "root_selector": "",
+              "source": "url",
+              "type": "json",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_detail?sitName=$site&cluster=$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url_options": {
+                "data": "",
+                "method": "GET"
+              }
+            }
+          ],
+          "timeFrom": "3s",
+          "title": "托管Pod列表",
+          "transformations": [
+            {
+              "id": "extractFields",
+              "options": {
+                "source": "detail"
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "操作",
+                "mode": "reduceRow",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "code": false,
+                  "data": false,
+                  "detail": true,
+                  "message": false,
+                  "ownerRefs": true,
+                  "refIds": true,
+                  "status": false,
+                  "操作": false
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "age": 4,
+                  "detail": 2,
+                  "ip": 5,
+                  "name": 1,
+                  "namespace": 6,
+                  "node": 7,
+                  "ownerRefs": 8,
+                  "ready": 9,
+                  "refIds": 3,
+                  "restarts": 10,
+                  "status": 11,
+                  "操作": 0
+                },
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 12,
+            "x": 12,
+            "y": 19
+          },
+          "id": 8,
+          "options": {
+            "baidu": {
+              "callback": "bmapReady",
+              "key": ""
+            },
+            "editor": {
+              "format": "auto"
+            },
+            "editorMode": "code",
+            "gaode": {
+              "key": "",
+              "plugin": "AMap.Scale,AMap.ToolBar"
+            },
+            "getOption": "function getstatusColor(status) {\n  switch (status) {\n    case 'running': return '#1677ff';\n    case 'success': return '#c4e3fd';\n    case 'failed': return 'red';\n    default: return '#f0f0f0';\n  }\n}\nconst links = [\n  {\n    source: 'start_node_id',\n    target: 'single_retry_id'\n  },\n  {\n    source: 'single_retry_id',\n    target: 'hedging_retry_id'\n  },\n  {\n    source: 'hedging_retry_id',\n    target: 'end_retry_id'\n  }\n];\nconst data = [\n  {\n    name: '开始',\n    id: 'start_node_id',\n    x: 300,\n    y: 300,\n    itemStyle: {\n      color: '#f0f0f0'\n    },\n  },\n  {\n    name: '单例阶段',\n    id: 'single_retry_id',\n    x: 400,\n    y: 300,\n    itemStyle: {\n      color: '#f0f0f0'\n    }\n  },\n  {\n    name: '超发阶段',\n    id: 'hedging_retry_id',\n    x: 500,\n    y: 300,\n    itemStyle: {\n      color: '#f0f0f0'\n    }\n  },\n  {\n    name: '结束',\n    id: 'end_retry_id',\n    x: 600,\n    y: 300,\n    itemStyle: {\n      color: '#f0f0f0'\n    }\n  }\n]\nif (context.panel.data.series[0]?.meta.custom.data && context.panel.data.series[0].meta.custom.data.length > 0) {\n  const panelData = context.panel.data.series[0].meta.custom.data;\n  panelData.map((item, index) => {\n    const setNode = data.filter(node => node.id === item.name)[0];\n    if (setNode.id === 'end_retry_id' && item.status === 'success') {\n      setNode.itemStyle.color = '#1677ff'\n    } else { \n      setNode.itemStyle.color = getstatusColor(item.status)\n    }\n    \n  })\n  if (panelData[1].status === 'success') {\n    links[0].lineStyle = {\n      opacity: 0.9,\n      width: 2,\n      color: 'source',\n      type: 'solid',\n      curveness: 0\n    }\n  }\n  if (panelData[2].trigger) {\n    if (panelData[2].status === 'success') {\n      links[1].lineStyle = {\n        opacity: 0.9,\n        width: 2,\n        color: 'source',\n        type: 'solid',\n        curveness: 0\n      }\n    }\n    if (panelData[3].status === 'success' || panelData[3].status === 'succeed') {\n      links[2].lineStyle = {\n        opacity: 0.9,\n        width: 2,\n        color: 'source',\n        type: 'solid',\n        curveness: 0\n      }\n    }\n  } else {\n    if (panelData[3].status === 'success' || panelData[3].status === 'succeed') {\n      links.pop();\n      links[links.length - 1].target = 'end_retry_id'\n      links[links.length - 1].lineStyle = {\n        opacity: 0.9,\n        width: 2,\n        color: 'source',\n        type: 'solid',\n        curveness: 0.2\n      }\n    }\n  }\n}\n\nreturn {\n  tooltip: {},\n  animationDurationUpdate: 1500,\n  animationEasingUpdate: 'quinticInOut',\n  series: [\n    {\n      edgeSymbol: ['', 'arrow'],\n      type: 'graph',\n      layout: 'none',\n      symbolSize: 50,\n      roam: true,\n      label: {\n        show: true\n      },\n      data: data,\n      links: links,\n      lineStyle: {\n        opacity: 0.9,\n        width: 2,\n        color: 'source',\n        type: 'dashed', // 设置虚线类型\n        curveness: 0\n      },\n    }\n  ]\n};",
+            "google": {
+              "callback": "gmapReady",
+              "key": ""
+            },
+            "map": "json",
+            "renderer": "svg",
+            "themeEditor": {
+              "config": "{}",
+              "name": "default"
+            },
+            "visualEditor": {
+              "code": "\n// 动态添加CSS\nfunction addAnimationCSS() {\n  const css = `\n  @keyframes spin {\n    0 % { transform: rotate(0deg); }\n      100% {transform: rotate(360deg); }\n    }\n  .node-border {\n    stroke: #000; /* 边框颜色 */\n  stroke-width: 3; /* 边框宽度 */\n  stroke-dasharray: 4; /* 边框虚线样式 */\n  animation: spin 2s linear infinite; /* 转圈动画 */\n    }\n  `;\n  const style = document.createElement('style');\n  style.type = 'text/css';\n  style.appendChild(document.createTextNode(css));\n  document.head.appendChild(style);\n}\n\n// 添加动画到节点\nfunction applyAnimationToNodes() {\n  const nodes = document.querySelectorAll('g.node'); // 选择所有节点，适应实际情况调整选择器\n  nodes.forEach(node => {\n    const circle = node.querySelector('circle'); // 假设节点是圆形的\n    if (circle) {\n      circle.classList.add('node-border'); // 为每个节点添加自定义类\n    }\n  });\n}\n\n// 调用函数以添加动画CSS和应用节点动画\naddAnimationCSS();\n\n// 延迟确保节点渲染完成后应用动画\nsetTimeout(applyAnimationToNodes, 1000); // 根据实际情况调整延迟时间\n\nreturn {\n  tooltip: {},\n  animationDurationUpdate: 1500,\n  animationEasingUpdate: 'quinticInOut',\n  series: [\n    {\n      type: 'graph',\n      layout: 'none',\n      symbolSize: 50,\n      roam: true,\n      label: {\n        show: true\n      },\n      edgeSymbol: ['circle', 'arrow'],\n      edgeSymbolSize: [4, 10],\n      edgeLabel: {\n        fontSize: 20\n      },\n      data: [\n        {\n          name: '开始',\n          x: 300,\n          y: 300\n        },\n        {\n          name: '单例阶段',\n          x: 400,\n          y: 300\n        },\n        {\n          name: '超发阶段',\n          x: 500,\n          y: 300\n        },\n        {\n          name: '结束',\n          x: 600,\n          y: 300\n        }\n      ],\n      // links: [],\n      links: [\n\n        {\n          source: '开始',\n          target: '单例阶段',\n\n        },\n        {\n          source: '单例阶段',\n          target: '超发阶段'\n        },\n        {\n          source: '超发阶段',\n          target: '结束'\n        },\n      ],\n      lineStyle: {\n        opacity: 0.9,\n        width: 2,\n        curveness: 0\n      }\n    }\n  ]\n};",
+              "dataset": [],
+              "series": []
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "targets": [
+            {
+              "columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+              },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
+              "refId": "A",
+              "root_selector": "",
+              "source": "url",
+              "type": "json",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/apis/v1/tkp_status?sitName=$site&cluster=$cluster&vtkp_namespace=$namespace&vtkp_name=$tkpName",
+              "url_options": {
+                "data": "",
+                "method": "GET"
+              }
+            }
+          ],
+          "title": "当前阶段",
+          "type": "volkovlabs-echarts-panel"
+        },
+        {
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "fillOpacity": 70,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineWidth": 0,
+                "spanNulls": false
+              },
+              "links": [
+                {
+                  "targetBlank": true,
+                  "title": "Pod诊断",
+                  "url": "d/lunettes-debugpod/lunettes-debugpod?orgId=1&var-podinfo=name&var-podinfovalue=${__field.name}"
+                }
+              ],
+              "mappings": [
+                {
+                  "options": {
+                    "Creating": {
+                      "color": "#c4d9f8",
+                      "index": 0,
+                      "text": "创建阶段"
+                    },
+                    "Deleting": {
+                      "color": "#c9c9c9",
+                      "index": 2,
+                      "text": "删除阶段"
+                    },
+                    "None": {
+                      "color": "#ffffff",
+                      "index": 3,
+                      "text": "结束"
+                    },
+                    "Running": {
+                      "color": "#73BF69",
+                      "index": 1,
+                      "text": "运行阶段"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 24
+          },
+          "id": 7,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "mergeValues": true,
+            "rowHeight": 0.9,
+            "showValue": "auto",
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "c60b6674-0bb4-4104-ad02-fd5855c9dada"
+              },
+              "filters": [],
+              "format": "as-is",
+              "global_query_id": "",
+              "refId": "A",
+              "root_selector": "",
+              "source": "url",
+              "type": "json",
+              "url": "http://grafanadi.lunettes.svc.cluster.local:8080/ownerpodmaps?searchkey=name&searchvalue=${tkpName}&debugfrom=workload",
+              "url_options": {
+                "data": "",
+                "method": "GET"
+              }
+            }
+          ],
+          "title": "托管记录",
+          "type": "state-timeline"
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 38,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "hide": 2,
+            "name": "podinfovalue",
+            "query": "",
+            "skipUrlSync": false,
+            "type": "constant"
+          },
+          {
+            "hide": 2,
+            "name": "cluster",
+            "query": "",
+            "skipUrlSync": false,
+            "type": "constant"
+          },
+          {
+            "hide": 2,
+            "name": "namespace",
+            "query": "",
+            "skipUrlSync": false,
+            "type": "constant"
+          },
+          {
+            "hide": 2,
+            "name": "site",
+            "query": "",
+            "skipUrlSync": false,
+            "type": "constant"
+          },
+          {
+            "hide": 2,
+            "name": "workloadName",
+            "query": "",
+            "skipUrlSync": false,
+            "type": "constant"
+          },
+          {
+            "hide": 2,
+            "name": "tkpName",
+            "query": "",
+            "skipUrlSync": false,
+            "type": "constant"
+          },
+          {
+            "hide": 2,
+            "name": "podinfo",
+            "query": "",
+            "skipUrlSync": false,
+            "type": "constant"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-5m",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "TKP容器托管服务",
+      "uid": "tkp-delivery-service",
+      "version": 5,
+      "weekStart": ""
+    }
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -4121,7 +4735,7 @@ data:
     ;enable_alpha = false
     ;app_tls_skip_verify_insecure = false
     # Enter a comma-separated list of plugin identifiers to identify plugins to load even if they are unsigned. Plugins with modified signatures are never loaded.
-    allow_loading_unsigned_plugins = antgroup-yaml-panel
+    allow_loading_unsigned_plugins = antgroup-yaml-panel,antgroup-tkptable-panel
     # Enable or disable installing / uninstalling / updating plugins directly from within Grafana.
     ;plugin_admin_enabled = false
     ;plugin_admin_external_manage_enabled = false
