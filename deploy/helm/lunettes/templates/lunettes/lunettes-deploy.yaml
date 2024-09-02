@@ -78,7 +78,7 @@ spec:
         - --trace-enable={{ .Values.traceEnable }}
         - --pod_info_cache_size=100000
         - --doc_num_peer_query=200
-        - --num_scroll_slice=8
+        - --num_scroll_slice=1
         env:
         - name: GOTRACEBACK
           value: crash
