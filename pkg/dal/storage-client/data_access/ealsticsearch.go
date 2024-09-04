@@ -19,6 +19,10 @@ import (
 	"k8s.io/klog"
 )
 
+const (
+	LunettesLatencyTag = "LastReadTime"
+)
+
 // 2. 定义一个 StorageSqlImpl struct, 该struct 包含了存储client
 type StorageEsImpl struct {
 	DB *elastic.Client
@@ -1482,6 +1486,53 @@ func (s *StorageEsImpl) QueryResourceYamlWithName(kind, name string) (interface{
 	}
 
 	return result, nil
+}
+
+func (s *StorageEsImpl) QueryLunettesLatency(data interface{}, opts ...model.OptionFunc) error {
+	options := &model.Options{
+		Limit: 5,
+	}
+	for _, do := range opts {
+		do(options)
+	}
+	_, esTableName, _, err := utils.GetMetaName(data)
+	if err != nil {
+		return err
+	}
+	query := elastic.NewBoolQuery().Must(elastic.NewExistsQuery(LunettesLatencyTag))
+	begin := time.Now()
+	defer func() {
+		metrics.ObserveQueryMethodDuration("QueryLunettesMeta", begin)
+	}()
+
+	searchReulst, err := s.DB.Search().
+		Index(esTableName).
+		Size(options.Limit).
+		Query(query).
+		Do(context.Background())
+	if err != nil {
+		klog.Error(err)
+		return fmt.Errorf("the LunettesMeta error")
+	}
+
+	if err != nil {
+		return fmt.Errorf("error%v", err)
+	}
+
+	res, ok := data.(*[]*model.LunettesMeta)
+	if !ok {
+		return fmt.Errorf("unmarshal LunettesMeta error")
+	}
+	for _, hit := range searchReulst.Hits.Hits {
+		meta := &model.LunettesMeta{}
+		meta.ClusterName = hit.Id
+		err = json.Unmarshal(hit.Source, meta)
+		if err != nil {
+			return err
+		}
+		*res = append(*res, meta)
+	}
+	return nil
 }
 
 func (s *StorageEsImpl) QuerySloTraceDataWithOwnerId(data interface{}, ownerid string, opts ...model.OptionFunc) error {

@@ -69,4 +69,9 @@ type StorageInterface interface {
 	PodLifePhaseInterface
 	SpanInterface
 	PodInfoInterface
+	LunettesMetaInterface
+}
+
+type LunettesMetaInterface interface {
+	QueryLunettesLatency(data interface{}, opts ...model.OptionFunc) error
 }

@@ -76,6 +76,9 @@ func (s *Server) StartServer(stopCh chan struct{}) {
 		r.Path("/apis/v1/tkp_detail").HandlerFunc(handlerWrapper(handler.VTkpDetailFactory, s.Storage))
 		r.Path("/apis/v1/tkp_status").HandlerFunc(handlerWrapper(handler.VTkpStatusFactory, s.Storage))
 
+		//lunettes meta api
+		r.Path("/apis/v1/lunettes-meta").HandlerFunc(handlerWrapper(handler.LunettesLatencyFactory, s.Storage))
+
 		err := http.ListenAndServe(s.Config.ListenAddr, r)
 		if err != nil {
 			klog.Errorf("failed to ListenAndServe, err:%s", err.Error())
