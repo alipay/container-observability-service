@@ -68,10 +68,9 @@ spec:
           name: logs
         - mountPath: /var/grafana
           name: grafana-pv
-        - mountPath: /app/config-file.yaml
+        - mountPath: /app
           name: cm-vol
           readOnly: true
-          subPath: config-file.yaml
       volumes:
       - name: grafana-pv
         hostPath:

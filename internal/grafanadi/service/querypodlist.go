@@ -32,6 +32,16 @@ func ConvertPodyamls2Table(podyamls []*storagemodel.PodYaml) []*model.QueryPodLi
 			State:      state,
 			PodPhase:   string(v.Pod.Status.Phase),
 		}
+		workloadInfo := &model.WorkloadTable{
+			ClusterName: v.ClusterName,
+			Namespace:   v.Namespace,
+		}
+		if len(v.Pod.OwnerReferences) > 0 {
+			workloadInfo.Name = v.Pod.OwnerReferences[0].Name
+			workloadInfo.UID = string(v.Pod.OwnerReferences[0].UID)
+			workloadInfo.Kind = v.Pod.OwnerReferences[0].Kind
+		}
+		t.WorkloadInfo = *workloadInfo
 		tables = append(tables, t)
 
 	}

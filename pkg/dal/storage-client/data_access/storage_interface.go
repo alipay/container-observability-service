@@ -43,6 +43,7 @@ type SloTraceDataInterface interface {
 	QuerySloTraceDataWithPodUID(data interface{}, uid string) error
 	QueryDeleteSloWithResult(data interface{}, opts *model.SloOptions) error
 	QueryUpgradeSloWithResult(data interface{}, opts *model.SloOptions) error
+	QuerySloTraceDataWithOwnerId(data interface{}, ownerid string, opts ...model.OptionFunc) error
 	QueryCreateSloWithResult(data interface{}, opts *model.SloOptions) error
 }
 

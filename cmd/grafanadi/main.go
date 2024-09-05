@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	tkpReqProvider "github.com/alipay/container-observability-service/pkg/tkp_provider"
 	"os"
 	"os/signal"
 	"syscall"
@@ -25,7 +26,7 @@ var (
 
 func newRootCmd() *cobra.Command {
 	config := &server.ServerConfig{}
-	var cfgFile, kubeConfigFile string
+	var cfgFile, kubeConfigFile, tkpRefCfgFile string
 
 	cmd := &cobra.Command{
 		Use:   "grafanadi",
@@ -46,6 +47,12 @@ func newRootCmd() *cobra.Command {
 			err = utils.InitKube(kubeConfigFile)
 			if err != nil {
 				klog.Errorf("failed to init kube client [%s], err:%s", kubeConfigFile, err.Error())
+				panic(err.Error())
+			}
+
+			err = tkpReqProvider.InitTkpReqConfig(tkpRefCfgFile)
+			if err != nil {
+				klog.Errorf("failed to init tkp config [%s] err:%s", tkpRefCfgFile, err.Error())
 				panic(err.Error())
 			}
 
@@ -70,6 +77,7 @@ func newRootCmd() *cobra.Command {
 	// for storage
 	cmd.PersistentFlags().StringVarP(&cfgFile, "config-file", "", "/app/storage-config.yaml", "storage config file")
 	cmd.PersistentFlags().StringVarP(&service.GrafanaUrl, "grafana-url", "", "", "grafana url")
+	cmd.PersistentFlags().StringVarP(&tkpRefCfgFile, "tkp-req-config-file", "", "/app/tkp-req-config-file.json", "tkp req config file")
 
 	// kubeconfig for k8s client
 	cmd.PersistentFlags().StringVarP(&kubeConfigFile, "kubeconfig", "", "/etc/kubernetes/kubeconfig/admin.kubeconfig", "Path to kubeconfig file with authorization and apiserver information.")
