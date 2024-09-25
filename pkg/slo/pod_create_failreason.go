@@ -298,11 +298,14 @@ func getScheduleStatus(pod *v1.Pod) (int, time.Time) {
 	if pod == nil {
 		return -1, t
 	}
-	if pod.Spec.NodeName == "" {
-		return 0, t
+	if pod.Spec.NodeName != "" {
+		return 1, t
 	}
 	for _, condition := range pod.Status.Conditions {
 		if condition.Type == v1.PodScheduled && condition.Status == v1.ConditionTrue {
+			if pod.Spec.NodeName == "" {
+				return 0, t
+			}
 			return 1, condition.LastTransitionTime.Time
 		} else if condition.Type == v1.PodScheduled && condition.Status == v1.ConditionFalse &&
 			condition.Reason == v1.PodReasonUnschedulable {
