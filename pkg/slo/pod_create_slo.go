@@ -591,10 +591,6 @@ func (data *PodStartupMilestones) updateLatencyMetrics(milestone string, end tim
 // IsComplete returns true is data is complete (ready to be included in the metric)
 // and if it haven't been included in the metric yet.
 func (data *PodStartupMilestones) IsComplete() bool {
-	if data.IsJob {
-		return !data.RunningAt.IsZero() || !data.SucceedAt.IsZero() || !data.FailedAt.IsZero()
-	}
-
 	return !data.ReadyAt.IsZero()
 }
 
