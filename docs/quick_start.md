@@ -25,7 +25,6 @@ Note: Beginning in Helm v3.8.0, OCI support is enabled by default, and it gradua
 
 ```bash
 helm upgrade --install lunettes oci://registry-1.docker.io/lunettes/lunettes-chart --version [version]
-  
 ```
 see available [version](https://hub.docker.com/r/lunettes/lunettes-chart/tags)
 
