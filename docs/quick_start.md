@@ -44,6 +44,6 @@ Open broswer to visit
 - grafana: http://localhost:9097 The default username and password are admin/admin.
   - debugpod: [http://localhost:9097/d/lunettes-debugslo/lunettes-debugslo?orgId=1](http://localhost:9097/d/lunettes-debugslo/lunettes-debugslo?orgId=1)
   - debugslo: [http://localhost:9097/d/lunettes-debugslo/lunettes-debugslo?orgId=1](http://localhost:9097/d/lunettes-debugslo/lunettes-debugslo?orgId=1)
-- jaejer: [http://localhost:9095/search](http://localhost:9095/search)
+- jaeger: [http://localhost:9095/search](http://localhost:9095/search)
 - kibana: [http://localhost:9092](http://localhost:9092)
 - prometheus: [http://localhost:9091/graph?](http://localhost:9091/graph?)
